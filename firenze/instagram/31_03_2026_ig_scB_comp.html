@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram PA · Firenze vs Bologna · Scenario B 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161e;
+    --bg3: #1a1e28;
+    --bg4: #222733;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8eaf0;
+    --text2: #8b90a0;
+    --text3: #555b6e;
+    --bo: #1db974;
+    --bo-dim: rgba(29,185,116,0.15);
+    --bo-dim2: rgba(29,185,116,0.08);
+    --fi: #e84855;
+    --fi-dim: rgba(232,72,85,0.15);
+    --fi-dim2: rgba(232,72,85,0.08);
+    --accent: #f0c040;
+    --accent-dim: rgba(240,192,64,0.15);
+    --sidebar: 260px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: var(--sidebar);
+    min-height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sidebar-logo .title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .sidebar-logo .title span { color: var(--accent); }
+
+  .sidebar-profiles {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .profile-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+  }
+  .profile-chip .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .profile-chip .handle { font-family: 'DM Mono', monospace; font-size: 11px; }
+  .profile-chip .er { margin-left: auto; font-weight: 700; font-size: 11px; }
+  .chip-bo { background: var(--bo-dim2); }
+  .chip-bo .dot { background: var(--bo); }
+  .chip-bo .er { color: var(--bo); }
+  .chip-fi { background: var(--fi-dim2); }
+  .chip-fi .dot { background: var(--fi); }
+  .chip-fi .er { color: var(--fi); }
+
+  nav { padding: 16px 12px; flex: 1; }
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text2);
+    font-size: 13px;
+    font-weight: 400;
+    transition: all 0.2s;
+    margin-bottom: 2px;
+  }
+  nav a:hover { background: var(--bg3); color: var(--text); }
+  nav a.active { background: var(--bg4); color: var(--text); }
+  nav a .nav-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    width: 16px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: var(--sidebar);
+    flex: 1;
+    padding: 48px 56px;
+    max-width: calc(1920px - var(--sidebar));
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  section.visible { opacity: 1; transform: translateY(0); }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 32px;
+  }
+  .section-title span { color: var(--accent); }
+
+  /* ── BIG NUMBERS ── */
+  .bignums {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .bignum-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bignum-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .bignum-card.bo::before { background: var(--bo); }
+  .bignum-card.fi::before { background: var(--fi); }
+  .bignum-card.gap::before { background: var(--accent); }
+  .bignum-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .bignum-profile {
+    font-size: 11px;
+    color: var(--text2);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .bignum-profile .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .bignum-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .bignum-value.bo { color: var(--bo); }
+  .bignum-value.fi { color: var(--fi); }
+  .bignum-value.gap { color: var(--accent); }
+  .bignum-sub {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 6px;
+  }
+
+  /* ── COMPARE CARDS ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .compare-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+  }
+  .compare-card.bo { border-top: 2px solid var(--bo); }
+  .compare-card.fi { border-top: 2px solid var(--fi); }
+  .compare-handle {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .compare-handle .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .compare-handle.bo { color: var(--bo); }
+  .compare-handle.fi { color: var(--fi); }
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row .label { color: var(--text2); }
+  .stat-row .value { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); font-weight: 500; }
+  .stat-row .value.good { color: var(--bo); }
+  .stat-row .value.bad { color: var(--fi); }
+
+  /* ── SCORING BARS ── */
+  .scoring-table {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .scoring-header {
+    display: grid;
+    grid-template-columns: 240px 1fr 56px 1fr 56px;
+    gap: 16px;
+    padding: 14px 24px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+  .scoring-row {
+    display: grid;
+    grid-template-columns: 240px 1fr 56px 1fr 56px;
+    gap: 16px;
+    padding: 14px 24px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .scoring-row:last-child { border-bottom: none; }
+  .scoring-row:hover { background: var(--bg3); }
+  .scoring-row.priority { background: rgba(240,192,64,0.04); }
+  .axis-name {
+    font-size: 13px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .priority-star {
+    font-size: 10px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .bar-track {
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+  .bar-fill.bo { background: var(--bo); }
+  .bar-fill.fi { background: var(--fi); }
+  .score-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+  .score-num.bo { color: var(--bo); }
+  .score-num.fi { color: var(--fi); }
+  .scoring-total {
+    display: grid;
+    grid-template-columns: 240px 1fr 56px 1fr 56px;
+    gap: 16px;
+    padding: 16px 24px;
+    background: var(--bg3);
+    border-top: 1px solid var(--border2);
+    align-items: center;
+  }
+  .total-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    color: var(--text2);
+  }
+  .total-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+  .total-num.bo { color: var(--bo); }
+  .total-num.fi { color: var(--fi); }
+
+  /* ── ER CONFRONTO ── */
+  .er-section {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+  }
+  .er-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+    color: var(--text2);
+    margin-bottom: 24px;
+  }
+  .er-bars { display: flex; flex-direction: column; gap: 20px; }
+  .er-row { display: flex; align-items: center; gap: 20px; }
+  .er-profile {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    width: 200px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .er-track {
+    flex: 1;
+    height: 32px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  .er-fill {
+    height: 100%;
+    border-radius: 6px;
+    width: 0%;
+    transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+  }
+  .er-fill.bo { background: linear-gradient(90deg, rgba(29,185,116,0.3), rgba(29,185,116,0.6)); }
+  .er-fill.fi { background: linear-gradient(90deg, rgba(232,72,85,0.3), rgba(232,72,85,0.6)); }
+  .er-fill span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .er-fill.bo span { color: var(--bo); }
+  .er-fill.fi span { color: var(--fi); }
+  .er-objective {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: var(--accent-dim);
+    border-radius: 8px;
+    border: 1px solid rgba(240,192,64,0.2);
+  }
+  .er-objective .label { font-size: 12px; color: var(--text2); }
+  .er-objective .value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    margin-left: auto;
+  }
+
+  /* ── GAP ANALYSIS ── */
+  .gap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .gap-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .gap-priority {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-top: 5px;
+  }
+  .gap-priority.high { background: var(--fi); }
+  .gap-priority.mid { background: var(--accent); }
+  .gap-priority.low { background: var(--text3); }
+  .gap-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .gap-detail { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .gap-badge {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .gap-badge.alta { background: var(--fi-dim); color: var(--fi); }
+  .gap-badge.media { background: var(--accent-dim); color: var(--accent); }
+
+  /* ── SWOT ── */
+  .swot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .swot-card {
+    border-radius: 12px;
+    padding: 24px 26px;
+    border: 1px solid var(--border);
+  }
+  .swot-card.forze { background: rgba(29,185,116,0.06); border-color: rgba(29,185,116,0.2); }
+  .swot-card.debolezze { background: rgba(232,72,85,0.06); border-color: rgba(232,72,85,0.2); }
+  .swot-card.opportunita { background: rgba(59,130,246,0.06); border-color: rgba(59,130,246,0.2); }
+  .swot-card.rischi { background: rgba(240,192,64,0.06); border-color: rgba(240,192,64,0.2); }
+  .swot-header {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .swot-header.forze { color: var(--bo); }
+  .swot-header.debolezze { color: var(--fi); }
+  .swot-header.opportunita { color: #60a5fa; }
+  .swot-header.rischi { color: var(--accent); }
+  .swot-item {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    padding-left: 12px;
+    position: relative;
+  }
+  .swot-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .swot-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 16px;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .swot-card.forze .swot-item::before { background: var(--bo); }
+  .swot-card.debolezze .swot-item::before { background: var(--fi); }
+  .swot-card.opportunita .swot-item::before { background: #60a5fa; }
+  .swot-card.rischi .swot-item::before { background: var(--accent); }
+  .swot-data { font-size: 11px; color: var(--text3); margin-top: 3px; font-family: 'DM Mono', monospace; }
+
+  /* ── PIANO D'AZIONE ── */
+  .phase-block { margin-bottom: 20px; }
+  .phase-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .phase-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .phase-tag.p1 { background: var(--fi-dim); color: var(--fi); }
+  .phase-tag.p2 { background: var(--accent-dim); color: var(--accent); }
+  .phase-tag.p3 { background: var(--bo-dim); color: var(--bo); }
+  .phase-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+  .actions-list { display: flex; flex-direction: column; gap: 10px; }
+  .action-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: 14px;
+    align-items: start;
+  }
+  .action-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--text3);
+    line-height: 1;
+    padding-top: 1px;
+  }
+  .action-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .action-why { font-size: 12px; color: var(--text2); line-height: 1.55; }
+  .action-kpi {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    margin-left: 4px;
+    align-self: start;
+    margin-top: 2px;
+  }
+  .action-kpi.p1 { background: var(--fi-dim); color: var(--fi); }
+  .action-kpi.p2 { background: var(--accent-dim); color: var(--accent); }
+  .action-kpi.p3 { background: var(--bo-dim); color: var(--bo); }
+
+  /* ── KPI TABLE ── */
+  .kpi-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .kpi-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+  .kpi-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  .kpi-table tr:last-child td { border-bottom: none; }
+  .kpi-table tr:hover td { background: var(--bg3); }
+  .kpi-table .baseline { font-family: 'DM Mono', monospace; color: var(--fi); font-size: 12px; }
+  .kpi-table .target { font-family: 'DM Mono', monospace; color: var(--bo); font-size: 12px; font-weight: 500; }
+  .kpi-table .mid { font-family: 'DM Mono', monospace; color: var(--accent); font-size: 12px; }
+  .kpi-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* ── TOP POST ── */
+  .top-post-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .top-post-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .top-post-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .top-post-card:nth-child(1)::after { background: var(--bo); }
+  .top-post-card:nth-child(2)::after { background: rgba(29,185,116,0.5); }
+  .top-post-card:nth-child(3)::after { background: rgba(29,185,116,0.25); }
+  .post-like {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--bo);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .post-like-label { font-size: 11px; color: var(--text3); margin-bottom: 14px; }
+  .post-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  .post-pattern { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .post-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-top: 10px;
+    background: var(--bo-dim);
+    color: var(--bo);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+
+  .balance-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 12px;
+  }
+  .balance-title { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 8px; }
+  .balance-rule { font-size: 12px; color: var(--text2); padding: 5px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: baseline; }
+  .balance-rule:last-child { border-bottom: none; }
+  .balance-pill { font-family: 'DM Mono', monospace; font-size: 10px; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; }
+  .pill-feed { background: var(--fi-dim); color: var(--fi); }
+  .pill-stories { background: var(--bg4); color: var(--text3); }
+  .pill-forma { background: rgba(59,130,246,0.15); color: #60a5fa; }
+
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div class="tag">Instagram PA · Scenario B · 2026</div>
+    <div class="title">Firenze<br>vs <span>Bologna</span></div>
+  </div>
+  <div class="sidebar-profiles">
+    <div class="profile-chip chip-bo">
+      <span class="dot"></span>
+      <span class="handle">@comunedibologna</span>
+      <span class="er">2,09%</span>
+    </div>
+    <div class="profile-chip chip-fi">
+      <span class="dot"></span>
+      <span class="handle">@cittadifirenzeufficiale</span>
+      <span class="er">0,08%</span>
+    </div>
+  </div>
+  <nav>
+    <a href="#overview" class="active"><span class="nav-num">01</span> Panoramica</a>
+    <a href="#scoring"><span class="nav-num">02</span> Scoring 8 assi</a>
+    <a href="#er"><span class="nav-num">03</span> Engagement rate</a>
+    <a href="#toppost"><span class="nav-num">04</span> Top post</a>
+    <a href="#gap"><span class="nav-num">05</span> Gap analysis</a>
+    <a href="#swot"><span class="nav-num">06</span> SWOT</a>
+    <a href="#piano"><span class="nav-num">07</span> Piano d'azione</a>
+    <a href="#kpi"><span class="nav-num">08</span> KPI monitor</a>
+  </nav>
+  <div class="sidebar-footer">31 marzo 2026 · dati pubblici</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- 01 PANORAMICA -->
+  <section id="overview">
+    <div class="section-label">01 · panoramica</div>
+    <div class="section-title">Dati di <span>profilo</span></div>
+
+    <div class="bignums">
+      <div class="bignum-card bo">
+        <div class="bignum-label">Engagement rate</div>
+        <div class="bignum-profile"><span class="dot" style="background:var(--bo)"></span>@comunedibologna</div>
+        <div class="bignum-value bo">2,09%</div>
+        <div class="bignum-sub">media 3.420 interazioni · 164K follower</div>
+      </div>
+      <div class="bignum-card fi">
+        <div class="bignum-label">Engagement rate</div>
+        <div class="bignum-profile"><span class="dot" style="background:var(--fi)"></span>@cittadifirenzeufficiale</div>
+        <div class="bignum-value fi">0,08%</div>
+        <div class="bignum-sub">media 99 interazioni · 119K follower</div>
+      </div>
+      <div class="bignum-card gap">
+        <div class="bignum-label">Gap da colmare</div>
+        <div class="bignum-profile"><span style="color:var(--text3)">obiettivo realistico</span></div>
+        <div class="bignum-value gap">26×</div>
+        <div class="bignum-sub">target: 0,5% ER entro 6 mesi</div>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card bo">
+        <div class="compare-handle bo"><span class="dot" style="background:var(--bo)"></span>@comunedibologna</div>
+        <div class="stat-row"><span class="label">Follower</span><span class="value good">164.000</span></div>
+        <div class="stat-row"><span class="label">Post totali</span><span class="value">5.695</span></div>
+        <div class="stat-row"><span class="label">Following</span><span class="value good">3.026</span></div>
+        <div class="stat-row"><span class="label">Follower / post</span><span class="value good">28,8</span></div>
+        <div class="stat-row"><span class="label">Frequenza</span><span class="value">~15-20 post/mese</span></div>
+        <div class="stat-row"><span class="label">Bio</span><span class="value good">Bilingue IT/EN + CTA</span></div>
+        <div class="stat-row"><span class="label">Linktree</span><span class="value good">Servizi al cittadino</span></div>
+      </div>
+      <div class="compare-card fi">
+        <div class="compare-handle fi"><span class="dot" style="background:var(--fi)"></span>@cittadifirenzeufficiale</div>
+        <div class="stat-row"><span class="label">Follower</span><span class="value">119.000</span></div>
+        <div class="stat-row"><span class="label">Post totali</span><span class="value">7.680</span></div>
+        <div class="stat-row"><span class="label">Following</span><span class="value bad">778</span></div>
+        <div class="stat-row"><span class="label">Follower / post</span><span class="value bad">15,5</span></div>
+        <div class="stat-row"><span class="label">Frequenza</span><span class="value bad">~6 post/giorno</span></div>
+        <div class="stat-row"><span class="label">Bio</span><span class="value bad">Generica, zero CTA</span></div>
+        <div class="stat-row"><span class="label">Linktree</span><span class="value bad">Solo canali dell'ente</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 SCORING -->
+  <section id="scoring">
+    <div class="section-label">02 · scoring comparativo</div>
+    <div class="section-title">Analisi <span>8 assi</span></div>
+    <div class="scoring-table">
+      <div class="scoring-header">
+        <span>Asse</span>
+        <span style="text-align:center">Bologna</span>
+        <span style="text-align:center">Score</span>
+        <span style="text-align:center">Firenze</span>
+        <span style="text-align:center">Score</span>
+      </div>
+      <div class="scoring-row">
+        <div class="axis-name">1. Identità e posizionamento</div>
+        <div class="bar-track"><div class="bar-fill bo" data-w="100"></div></div>
+        <div class="score-num bo">5/5</div>
+        <div class="bar-track"><div class="bar-fill fi" data-w="40"></div></div>
+        <div class="score-num fi">2/5</div>
+      </div>
+      <div class="scoring-row">
+        <div class="axis-name">2. Strategia editoriale</div>
+        <div class="bar-track"><div class="bar-fill bo" data-w="100"></div></div>
+        <div class="score-num bo">5/5</div>
+        <div class="bar-track"><div class="bar-fill fi" data-w="40"></div></div>
+        <div class="score-num fi">2/5</div>
+      </div>
+      <div class="scoring-row">
+        <div class="axis-name">3. Qualità e stile contenuti</div>
+        <div class="bar-track"><div class="bar-fill bo" data-w="100"></div></div>
+        <div class="score-num bo">5/5</div>
+        <div class="bar-track"><div class="bar-fill fi" data-w="60"></div></div>
+        <div class="score-num fi">3/5</div>
+      </div>
+      <div class="scoring-row">
+        <div class="axis-name">4. Community e crescita</div>
+        <div class="bar-track"><div class="bar-fill bo" data-w="100"></div></div>
+        <div class="score-num bo">5/5</div>
+        <div class="bar-track"><div class="bar-fill fi" data-w="20"></div></div>
+        <div class="score-num fi">1/5</div>
+      </div>
+      <div class="scoring-row">
+        <div class="axis-name">5. Funzionalità native</div>
+        <div class="bar-track"><div class="bar-fill bo" data-w="100"></div></div>
+        <div class="score-num bo">5/5</div>
+        <div class="bar-track"><div class="bar-fill fi" data-w="60"></div></div>
+        <div class="score-num fi">3/5</div>
+      </div>
+      <div class="scoring-row priority">
+        <div class="axis-name">6. Orientamento all'azione <span class="priority-star">★ prioritario</span></div>
+        <div class="bar-track"><div class="bar-fill bo" data-w="100"></div></div>
+        <div class="score-num bo">5/5</div>
+        <div class="bar-track"><div class="bar-fill fi" data-w="40"></div></div>
+        <div class="score-num fi">2/5</div>
+      </div>
+      <div class="scoring-row">
+        <div class="axis-name">7. Tono di voce e linguaggio</div>
+        <div class="bar-track"><div class="bar-fill bo" data-w="80"></div></div>
+        <div class="score-num bo">4/5</div>
+        <div class="bar-track"><div class="bar-fill fi" data-w="60"></div></div>
+        <div class="score-num fi">3/5</div>
+      </div>
+      <div class="scoring-row">
+        <div class="axis-name">8. Integrazione cross-canale</div>
+        <div class="bar-track"><div class="bar-fill bo" data-w="100"></div></div>
+        <div class="score-num bo">5/5</div>
+        <div class="bar-track"><div class="bar-fill fi" data-w="60"></div></div>
+        <div class="score-num fi">3/5</div>
+      </div>
+      <div class="scoring-total">
+        <div class="total-label">Totale</div>
+        <div></div>
+        <div class="total-num bo">39/40</div>
+        <div></div>
+        <div class="total-num fi">19/40</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ENGAGEMENT RATE -->
+  <section id="er">
+    <div class="section-label">03 · engagement rate</div>
+    <div class="section-title">Community <span>attivata</span></div>
+    <div class="er-section">
+      <div class="er-title">Engagement rate a confronto · obiettivo esplicito</div>
+      <div class="er-bars">
+        <div class="er-row">
+          <div class="er-profile"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--bo);display:inline-block"></span>Bologna</div>
+          <div class="er-track">
+            <div class="er-fill bo" data-w="100"><span>2,09%</span></div>
+          </div>
+        </div>
+        <div class="er-row">
+          <div class="er-profile"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block"></span>Obiettivo Firenze</div>
+          <div class="er-track">
+            <div class="er-fill" style="background:linear-gradient(90deg,rgba(240,192,64,0.2),rgba(240,192,64,0.45));border:1px dashed rgba(240,192,64,0.4);width:0%" data-w="24"><span style="color:var(--accent)">0,5%</span></div>
+          </div>
+        </div>
+        <div class="er-row">
+          <div class="er-profile"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--fi);display:inline-block"></span>Firenze oggi</div>
+          <div class="er-track">
+            <div class="er-fill fi" data-w="4"><span>0,08%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="er-objective">
+        <span class="label">Obiettivo realistico entro 6 mesi</span>
+        <span class="label" style="color:var(--text3)">≈ 600 interazioni medie per post con 119K follower</span>
+        <span class="value">0,5% ER</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 TOP POST -->
+  <section id="toppost">
+    <div class="section-label">04 · top post strutturali firenze</div>
+    <div class="section-title">Pattern <span>replicabili</span></div>
+    <div class="top-post-grid">
+      <div class="top-post-card">
+        <div class="post-like">1.393</div>
+        <div class="post-like-label">like · collab @sarafunaro</div>
+        <div class="post-name">Ponte sull'Arno — nome condiviso</div>
+        <div class="post-pattern">Partecipazione civica reale + CTA concreta ("Partecipa al sondaggio") + collab istituzionale. 14× la media del profilo.</div>
+        <div class="post-tag">pattern: partecipazione + CTA</div>
+      </div>
+      <div class="top-post-card">
+        <div class="post-like">474</div>
+        <div class="post-like-label">like · contenuto identitario</div>
+        <div class="post-name">Biscotti quaresimali</div>
+        <div class="post-pattern">Identità locale fiorentina (cibo, tradizioni, cultura materiale). Nessuna grafica istituzionale. Community che si riconosce.</div>
+        <div class="post-tag">pattern: identità locale</div>
+      </div>
+      <div class="top-post-card">
+        <div class="post-like">266</div>
+        <div class="post-like-label">like · #LessicoFiorentino</div>
+        <div class="post-name">Vernacolo fiorentino</div>
+        <div class="post-pattern">Formato grafico semplice, tono caldo, conversazione attiva nei commenti. Massimo engagement/effort del feed. Esce "ogni tanto" invece che con cadenza fissa.</div>
+        <div class="post-tag">pattern: cultura e dialogo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 GAP ANALYSIS -->
+  <section id="gap">
+    <div class="section-label">05 · gap analysis</div>
+    <div class="section-title">Aree <span>critiche</span></div>
+    <div class="gap-grid">
+      <div class="gap-item">
+        <span class="gap-priority high"></span>
+        <div>
+          <div class="gap-name">Engagement rate</div>
+          <div class="gap-detail">0,08% vs 2,09% — gap di 26×. La community esiste ma non è attivata. I top post dimostrano che sa reagire.</div>
+        </div>
+        <span class="gap-badge alta">Alta</span>
+      </div>
+      <div class="gap-item">
+        <span class="gap-priority high"></span>
+        <div>
+          <div class="gap-name">Linktree orientato ai servizi</div>
+          <div class="gap-detail">8 voci tutte verso canali dell'ente, zero link utili al cittadino. Modificabile in un pomeriggio.</div>
+        </div>
+        <span class="gap-badge alta">Alta</span>
+      </div>
+      <div class="gap-item">
+        <span class="gap-priority high"></span>
+        <div>
+          <div class="gap-name">#LessicoFiorentino a cadenza fissa</div>
+          <div class="gap-detail">Il formato migliore del feed esce in modo irregolare. Basta pianificarlo nel calendario.</div>
+        </div>
+        <span class="gap-badge alta">Alta</span>
+      </div>
+      <div class="gap-item">
+        <span class="gap-priority high"></span>
+        <div>
+          <div class="gap-name">Bilanciamento obbligatori / discrezionali</div>
+          <div class="gap-detail">~3-4 post/giorno su ~6 sono contenuti a basso ER nel feed. Abbassano la reach di tutti gli altri.</div>
+        </div>
+        <span class="gap-badge alta">Alta</span>
+      </div>
+      <div class="gap-item">
+        <span class="gap-priority mid"></span>
+        <div>
+          <div class="gap-name">Highlights aggiornati</div>
+          <div class="gap-detail">Referendum 2025 e Regionali 2025 ancora visibili. Segnale di mancata cura del profilo.</div>
+        </div>
+        <span class="gap-badge media">Media</span>
+      </div>
+      <div class="gap-item">
+        <span class="gap-priority mid"></span>
+        <div>
+          <div class="gap-name">Collab @destinationflorence</div>
+          <div class="gap-detail">Account destination marketing con pubblico nuovo (turisti, nuovi residenti). Potenziale non sfruttato.</div>
+        </div>
+        <span class="gap-badge media">Media</span>
+      </div>
+      <div class="gap-item">
+        <span class="gap-priority mid"></span>
+        <div>
+          <div class="gap-name">Bio con identità e CTA</div>
+          <div class="gap-detail">Bio generica che invita a uscire dal profilo. Zero elemento differenziante fiorentino.</div>
+        </div>
+        <span class="gap-badge media">Media</span>
+      </div>
+      <div class="gap-item">
+        <span class="gap-priority mid"></span>
+        <div>
+          <div class="gap-name">Fotografia reale nel feed</div>
+          <div class="gap-detail">Prevalenza di grafiche e locandine vs fotografia urbana autentica come fa Bologna.</div>
+        </div>
+        <span class="gap-badge media">Media</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 SWOT -->
+  <section id="swot">
+    <div class="section-label">06 · swot operativa</div>
+    <div class="section-title">Analisi <span>strategica</span></div>
+    <div class="swot-grid">
+      <div class="swot-card forze">
+        <div class="swot-header forze">Forze</div>
+        <div class="swot-item">Il collab @sarafunaro genera 1.393 like — 14× la media del profilo. Asset più potente, usato raramente.</div>
+        <div class="swot-item">#LessicoFiorentino: 266 like e conversazione attiva con effort minimo. Il formato funziona, manca la cadenza.
+          <div class="swot-data">obiettivo: 2 uscite/mese</div>
+        </div>
+        <div class="swot-item">#GrandiDonneFirenze: unica serie con identità visiva riconoscibile. Dimostra che il team sa fare qualità.</div>
+        <div class="swot-item">119K follower verificati: la community esiste. Il problema è l'attivazione, non la dimensione.</div>
+      </div>
+      <div class="swot-card debolezze">
+        <div class="swot-header debolezze">Debolezze</div>
+        <div class="swot-item">ER 0,08% — media 99 interazioni su 119K follower. Gap di 26× rispetto a Bologna.
+          <div class="swot-data">obiettivo realistico: 0,5% entro 6 mesi</div>
+        </div>
+        <div class="swot-item">Linktree con 8 voci verso canali dell'ente, zero link utili. Il principale strumento di conversione non converte.</div>
+        <div class="swot-item">~6 post/giorno di cui 3-4 obbligatori nel feed: l'algoritmo impara che il profilo è a basso interesse.</div>
+        <div class="swot-item">Highlights con contenuti scaduti (Referendum 2025, Regionali 2025): segnale di mancata cura.</div>
+      </div>
+      <div class="swot-card opportunita">
+        <div class="swot-header opportunita">Opportunità</div>
+        <div class="swot-item">#LessicoFiorentino a cadenza fissa (ogni 10-14gg): nessuna risorsa aggiuntiva, impatto immediato sull'engagement.</div>
+        <div class="swot-item">Collab sistematici con @destinationflorence: pubblico nuovo non raggiungibile con comunicazione istituzionale ordinaria.</div>
+        <div class="swot-item">Linktree in ottica servizi al cittadino (modello Bologna): modificabile in un pomeriggio, impatto sull'Asse 6.</div>
+        <div class="swot-item">Spostare avvisi nelle Stories: riduce il rumore nel feed senza eliminare nulla di obbligatorio.</div>
+      </div>
+      <div class="swot-card rischi">
+        <div class="swot-header rischi">Rischi</div>
+        <div class="swot-item">Aumentare il volume senza cambiare la composizione: ogni post obbligatorio a basso ER nel feed abbassa la reach di tutti.</div>
+        <div class="swot-item">Lasciare #LessicoFiorentino e @sarafunaro alla casualità: i due asset migliori non hanno frequenza programmata.</div>
+        <div class="swot-item">Gap visivo crescente con Bologna: se Firenze non interviene sulla fotografia, la differenza percepita di "cura" continua ad ampliarsi.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 PIANO D'AZIONE -->
+  <section id="piano">
+    <div class="section-label">07 · piano d'azione</div>
+    <div class="section-title">3 fasi <span>operative</span></div>
+
+    <div class="phase-block">
+      <div class="phase-title-bar">
+        <span class="phase-tag p1">Immediato · 0–30 giorni</span>
+        <span class="phase-name">Correggere la base</span>
+      </div>
+      <div class="actions-list">
+        <div class="action-item">
+          <div class="action-num">1</div>
+          <div>
+            <div class="action-title">Rifare il Linktree in ottica servizi al cittadino</div>
+            <div class="action-why">Rimuovere i link ai canali social e sostituire con: Segnala un problema · Prenotazioni · Pagamenti online · Modulistica · Sito · WhatsApp · Notizie. Zero link utili su 8 disponibili — gap critico sull'Asse 6.</div>
+          </div>
+          <span class="action-kpi p1">Linktree aggiornato entro 7gg</span>
+        </div>
+        <div class="action-item">
+          <div class="action-num">2</div>
+          <div>
+            <div class="action-title">Pulire gli highlights — rimuovere contenuti scaduti</div>
+            <div class="action-why">Rimuovere Referendum 2025 e Regionali 2025. Rinominare con naming preciso (es. "Notizie 26", "Servizi", "Tramvia", "LessicoFI").</div>
+          </div>
+          <span class="action-kpi p1">0 highlights scaduti entro 3gg</span>
+        </div>
+        <div class="action-item">
+          <div class="action-num">3</div>
+          <div>
+            <div class="action-title">Spostare avvisi e locandine nelle Stories</div>
+            <div class="action-why">Avvisi di servizio, comunicati brevi e locandine di terzi → Stories (con link diretto). Nel feed: max 1 obbligatorio ogni 3 discrezionali.</div>
+            <div class="balance-box">
+              <div class="balance-title">Regola operativa bilanciamento editoriale</div>
+              <div class="balance-rule"><span class="balance-pill pill-feed">Feed</span>Max 1 obbligatorio ogni 3 discrezionali. In settimane dense: pubblica un #LessicoFiorentino dopo ogni avviso.</div>
+              <div class="balance-rule"><span class="balance-pill pill-stories">Stories</span>Avvisi, locandine, comunicati brevi. Sempre con link diretto alla fonte.</div>
+              <div class="balance-rule"><span class="balance-pill pill-forma">Forma</span>Per gli obbligatori che restano nel feed: dato concreto + foto reale + CTA specifica.</div>
+            </div>
+          </div>
+          <span class="action-kpi p1">Rapporto 1:3 entro fine mese</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-title-bar">
+        <span class="phase-tag p2">Breve termine · 1–3 mesi</span>
+        <span class="phase-name">Attivare gli asset che già funzionano</span>
+      </div>
+      <div class="actions-list">
+        <div class="action-item">
+          <div class="action-num">4</div>
+          <div>
+            <div class="action-title">#LessicoFiorentino a cadenza fissa: 1 ogni 10-14 giorni</div>
+            <div class="action-why">266 like e conversazione attiva con sforzo minimo. Costruire un backlog di 6-10 termini. Stessa grafica già efficace.</div>
+          </div>
+          <span class="action-kpi p2">2 uscite/mese · 200+ like target</span>
+        </div>
+        <div class="action-item">
+          <div class="action-num">5</div>
+          <div>
+            <div class="action-title">Collab @sarafunaro: 2 al mese su temi partecipazione civica</div>
+            <div class="action-why">1.393 like sul post del ponte = 14× la media. Pattern: proposta concreta + coinvolgimento cittadino + CTA chiara. Non replicare la forma, ma il principio.</div>
+          </div>
+          <span class="action-kpi p2">2 collab/mese · 500+ interazioni</span>
+        </div>
+        <div class="action-item">
+          <div class="action-num">6</div>
+          <div>
+            <div class="action-title">Introdurre il pattern "dato numerico + rilevanza civica"</div>
+            <div class="action-why">Top post Bologna (5.463 like) e Firenze (1.393 like) condividono lo stesso meccanismo. Applicare su tramvia, servizi, cantieri, consultazioni.</div>
+          </div>
+          <span class="action-kpi p2">1 post/settimana con dato numerico</span>
+        </div>
+        <div class="action-item">
+          <div class="action-num">7</div>
+          <div>
+            <div class="action-title">Avviare collab sistematici con @destinationflorence</div>
+            <div class="action-why">Account destination marketing con pubblico di turisti e nuovi residenti — non sovrapponibile al pubblico istituzionale attuale.</div>
+          </div>
+          <span class="action-kpi p2">1 collab/mese per 2 mesi</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-title-bar">
+        <span class="phase-tag p3">Medio termine · 3–6 mesi</span>
+        <span class="phase-name">Costruire il sistema editoriale</span>
+      </div>
+      <div class="actions-list">
+        <div class="action-item">
+          <div class="action-num">8</div>
+          <div>
+            <div class="action-title">Definire un calendario editoriale a pilastri con frequenza programmata</div>
+            <div class="action-why">4-5 pilastri con frequenza assegnata: #LessicoFiorentino · #GrandiDonneFirenze · Collab @sarafunaro · Infrastrutture con dato numerico · Identità locale. Tutto il resto nelle Stories.</div>
+          </div>
+          <span class="action-kpi p3">Calendario pronto entro mese 3</span>
+        </div>
+        <div class="action-item">
+          <div class="action-num">9</div>
+          <div>
+            <div class="action-title">Migliorare la qualità fotografica nel feed</div>
+            <div class="action-why">≥50% dei post discrezionali con fotografia reale (non grafica/locandina). Non serve un fotografo: foto con smartphone ma con intenzionalità editoriale.</div>
+          </div>
+          <span class="action-kpi p3">50% foto reale entro mese 5</span>
+        </div>
+        <div class="action-item">
+          <div class="action-num">10</div>
+          <div>
+            <div class="action-title">Portare l'ER al 0,5% entro fine mese 6</div>
+            <div class="action-why">Con le azioni 1-9 attive, 0,5% è realistico: ~600 interazioni medie per post con 119K follower. Verificare ogni mese su ultimi 5 post. Se a mese 3 l'ER non supera 0,2%: anticipare azione 8 e intensificare collab @sarafunaro.</div>
+          </div>
+          <span class="action-kpi p3">ER ≥ 0,5% entro mese 6</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 KPI MONITOR -->
+  <section id="kpi">
+    <div class="section-label">08 · kpi di monitoraggio</div>
+    <div class="section-title">Dashboard <span>KPI</span></div>
+    <div class="kpi-wrap">
+      <table class="kpi-table">
+        <thead>
+          <tr>
+            <th style="width:30%">KPI</th>
+            <th>Baseline (oggi)</th>
+            <th>30 giorni</th>
+            <th>3 mesi</th>
+            <th>6 mesi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Engagement rate</td>
+            <td><span class="baseline">0,08%</span></td>
+            <td><span class="mid">0,12%</span></td>
+            <td><span class="mid">0,3%</span></td>
+            <td><span class="target">0,5% ✓</span></td>
+          </tr>
+          <tr>
+            <td>Media interazioni / post</td>
+            <td><span class="baseline">99</span></td>
+            <td><span class="mid">150</span></td>
+            <td><span class="mid">350</span></td>
+            <td><span class="target">600 ✓</span></td>
+          </tr>
+          <tr>
+            <td>#LessicoFiorentino uscite / mese</td>
+            <td><span class="baseline">Irregolare</span></td>
+            <td><span class="mid">2</span></td>
+            <td><span class="mid">2</span></td>
+            <td><span class="target">2 ✓</span></td>
+          </tr>
+          <tr>
+            <td>Collab @sarafunaro / mese</td>
+            <td><span class="baseline">Occasionale</span></td>
+            <td><span class="mid">1</span></td>
+            <td><span class="mid">2</span></td>
+            <td><span class="target">2 ✓</span></td>
+          </tr>
+          <tr>
+            <td>Rapporto feed obbligatori : discrezionali</td>
+            <td><span class="baseline">~1:1</span></td>
+            <td><span class="mid">1:2</span></td>
+            <td><span class="mid">1:3</span></td>
+            <td><span class="target">1:3 ✓</span></td>
+          </tr>
+          <tr>
+            <td>Highlights scaduti</td>
+            <td><span class="baseline">2</span></td>
+            <td><span class="target">0 ✓</span></td>
+            <td><span class="target">0 ✓</span></td>
+            <td><span class="target">0 ✓</span></td>
+          </tr>
+          <tr>
+            <td>Voci Linktree orientate a servizi</td>
+            <td><span class="baseline">0/8</span></td>
+            <td><span class="mid">6/8</span></td>
+            <td><span class="target">8/8 ✓</span></td>
+            <td><span class="target">8/8 ✓</span></td>
+          </tr>
+          <tr>
+            <td>Post con fotografia reale</td>
+            <td><span class="baseline">~20%</span></td>
+            <td><span class="mid">30%</span></td>
+            <td><span class="mid">40%</span></td>
+            <td><span class="target">50% ✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px;font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;">
+      Dati pubblici · 31 marzo 2026 · Analisi realizzata con supporto AI (Claude, Anthropic)
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Scroll-based section reveal
+  const sections = document.querySelectorAll('section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Animate bars
+        entry.target.querySelectorAll('.bar-fill[data-w]').forEach(bar => {
+          setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 100);
+        });
+        // Animate ER fills
+        entry.target.querySelectorAll('.er-fill[data-w]').forEach(bar => {
+          setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 200);
+        });
+      }
+    });
+  }, { threshold: 0.1 });
+  sections.forEach(s => observer.observe(s));
+
+  // Active nav on scroll
+  const navLinks = document.querySelectorAll('nav a');
+  const sectionEls = Array.from(sections);
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sectionEls.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // Smooth scroll
+  navLinks.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
