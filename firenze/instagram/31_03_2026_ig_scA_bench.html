@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>Instagram Benchmark — Città di Firenze 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg2: #111115;
+    --bg3: #18181e;
+    --bg4: #1f1f28;
+    --border: #2a2a35;
+    --border2: #35354a;
+    --text: #e8e8f0;
+    --text2: #9090a8;
+    --text3: #5a5a70;
+    --firenze: #e8002d;
+    --firenze2: #ff3355;
+    --firenze-dim: rgba(232,0,45,0.15);
+    --bologna: #f59e0b;
+    --bologna2: #fbbf24;
+    --bologna-dim: rgba(245,158,11,0.15);
+    --milano: #3b82f6;
+    --milano2: #60a5fa;
+    --milano-dim: rgba(59,130,246,0.15);
+    --torino: #8b5cf6;
+    --torino2: #a78bfa;
+    --torino-dim: rgba(139,92,246,0.15);
+    --green: #10b981;
+    --green-dim: rgba(16,185,129,0.15);
+    --red: #ef4444;
+    --sidebar: 280px;
+    --accent: #f59e0b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar);
+    min-height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    padding: 32px 24px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-logo .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-logo .title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .sidebar-logo .subtitle {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 6px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .sidebar-logo .tag {
+    display: inline-block;
+    background: var(--firenze-dim);
+    border: 1px solid var(--firenze);
+    color: var(--firenze2);
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-top: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .sidebar-nav {
+    padding: 16px 0;
+    flex: 1;
+  }
+
+  .nav-section {
+    padding: 8px 24px 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    position: relative;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    color: var(--text);
+    background: var(--bg3);
+    border-left-color: var(--accent);
+  }
+
+  .nav-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border2);
+    flex-shrink: 0;
+  }
+
+  .nav-item.active .dot { background: var(--accent); }
+
+  .sidebar-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.8;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: var(--sidebar);
+    flex: 1;
+    padding: 0;
+  }
+
+  .section {
+    padding: 64px 72px;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 72px 64px;
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 50%, #0f0f18 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,0,45,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: 30%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(245,158,11,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--firenze);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    letter-spacing: 0.03em;
+    line-height: 0.95;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .hero-title span { color: var(--firenze); }
+
+  .hero-subtitle {
+    font-size: 16px;
+    color: var(--text2);
+    max-width: 600px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hero-meta-item .value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+
+  .hero-meta-item .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-header {
+    margin-bottom: 40px;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .section-title span { color: var(--accent); }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--text2);
+    margin-top: 10px;
+    max-width: 700px;
+    font-weight: 300;
+  }
+
+  /* ── BIG NUMBERS GRID ── */
+  .bignumbers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .bignum-card {
+    background: var(--bg2);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bignum-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .bignum-card.firenze::before { background: var(--firenze); }
+  .bignum-card.bologna::before { background: var(--bologna); }
+  .bignum-card.milano::before { background: var(--milano); }
+  .bignum-card.torino::before { background: var(--torino); }
+
+  .bignum-handle {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .bignum-handle .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+
+  .bignum-card.firenze .dot { background: var(--firenze); }
+  .bignum-card.bologna .dot { background: var(--bologna); }
+  .bignum-card.milano .dot { background: var(--milano); }
+  .bignum-card.torino .dot { background: var(--torino); }
+
+  .bignum-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .bignum-card.firenze .bignum-value { color: var(--firenze2); }
+  .bignum-card.bologna .bignum-value { color: var(--bologna2); }
+  .bignum-card.milano .bignum-value { color: var(--milano2); }
+  .bignum-card.torino .bignum-value { color: var(--torino2); }
+
+  .bignum-label {
+    font-size: 12px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .bignum-sub {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .bignum-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+  }
+
+  .bignum-row .k { color: var(--text3); }
+  .bignum-row .v {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+  }
+
+  /* ── ER COMPARISON ── */
+  .er-section {
+    margin-top: 40px;
+  }
+
+  .er-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .er-row:last-child { border-bottom: none; }
+
+  .er-handle {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .er-bar-wrap {
+    flex: 1;
+    height: 8px;
+    background: var(--bg3);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .er-bar {
+    height: 100%;
+    border-radius: 4px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .er-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    width: 80px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .er-badge {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 2px;
+    width: 80px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .er-badge.good { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+  .er-badge.mid { background: var(--bologna-dim); color: var(--bologna2); border: 1px solid var(--bologna); }
+  .er-badge.low { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid var(--red); }
+  .er-badge.crit { background: rgba(239,68,68,0.15); color: #ff6b6b; border: 1px solid #ff4444; }
+
+  /* ── SCORING TABLE ── */
+  .scoring-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+
+  .scoring-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scoring-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  .scoring-table tr:hover td { background: var(--bg3); }
+
+  .scoring-table .axis-name {
+    font-weight: 500;
+    color: var(--text);
+    max-width: 240px;
+  }
+
+  .scoring-table .axis-priority {
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    margin-top: 2px;
+  }
+
+  .score-cell {
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.05em;
+  }
+
+  .score-cell.s5 { color: var(--green); }
+  .score-cell.s4 { color: var(--bologna2); }
+  .score-cell.s3 { color: var(--milano2); }
+  .score-cell.s2 { color: #f87171; }
+  .score-cell.s1 { color: #ff4444; }
+
+  .total-row td {
+    background: var(--bg3);
+    border-top: 2px solid var(--border2);
+    font-weight: 600;
+  }
+
+  .total-row .axis-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── BAR CHARTS ── */
+  .bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .bar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .bar-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .bar-label .name {
+    font-size: 12px;
+    color: var(--text2);
+    font-weight: 500;
+  }
+
+  .bar-label .score-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+  }
+
+  .bar-track {
+    height: 6px;
+    background: var(--bg3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    width: 0;
+    transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* ── AXIS DETAIL GRID ── */
+  .axis-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .axis-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .axis-card.priority {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, var(--bg2), rgba(245,158,11,0.03));
+  }
+
+  .axis-card .ax-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+  }
+
+  .axis-card .ax-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .priority-tag {
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    background: var(--bologna-dim);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 1px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  .axis-scores {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .axis-score-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .axis-score-row .handle {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    width: 160px;
+    flex-shrink: 0;
+  }
+
+  .axis-score-row .mini-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .axis-score-row .mini-fill {
+    height: 100%;
+    border-radius: 2px;
+    width: 0;
+    transition: width 1s ease;
+  }
+
+  .axis-score-row .s {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    width: 24px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ── TOP POSTS ── */
+  .toppost-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .toppost-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+  }
+
+  .toppost-card .tp-handle {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .toppost-card .tp-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .toppost-card .tp-pattern {
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 16px;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .tp-stats {
+    display: flex;
+    gap: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .tp-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .tp-stat .v {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+  }
+
+  .tp-stat .l {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── RECOMMENDATION ── */
+  .rec-card {
+    background: var(--bg2);
+    border: 1px solid var(--bologna);
+    border-radius: 4px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rec-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--bologna), var(--bologna2));
+  }
+
+  .rec-card::after {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .rec-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--bologna2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .rec-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 0.03em;
+    line-height: 0.95;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .rec-title span { color: var(--bologna2); }
+
+  .rec-desc {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 800px;
+    margin-bottom: 32px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .rec-gaps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .gap-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  .gap-card .gap-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--bologna2);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .gap-card .gap-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .gap-card .gap-desc {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* ── NEXT STEPS ── */
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .step-item:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--text3);
+    line-height: 1;
+    width: 40px;
+    flex-shrink: 0;
+  }
+
+  .step-content { flex: 1; }
+
+  .step-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-prio {
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  .prio-alta { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+  .prio-media { background: var(--bologna-dim); color: var(--bologna2); border: 1px solid rgba(245,158,11,0.3); }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--text2);
+    font-weight: 300;
+  }
+
+  .step-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 6px;
+  }
+
+  /* ── UTILS ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  .tag-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+  }
+
+  .tag.firenze { background: var(--firenze-dim); color: var(--firenze2); border: 1px solid rgba(232,0,45,0.3); }
+  .tag.bologna { background: var(--bologna-dim); color: var(--bologna2); border: 1px solid rgba(245,158,11,0.3); }
+  .tag.milano { background: var(--milano-dim); color: var(--milano2); border: 1px solid rgba(59,130,246,0.3); }
+  .tag.torino { background: var(--torino-dim); color: var(--torino2); border: 1px solid rgba(139,92,246,0.3); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+  }
+
+  .card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .alert-box {
+    background: rgba(239,68,68,0.05);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 4px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #fca5a5;
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .alert-box .icon { flex-shrink: 0; font-size: 16px; }
+
+  .info-box {
+    background: var(--bologna-dim);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 4px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: var(--bologna2);
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .info-box .icon { flex-shrink: 0; font-size: 16px; }
+
+  /* scroll progress */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: var(--sidebar); right: 0;
+    height: 2px;
+    background: var(--border);
+    z-index: 200;
+  }
+
+  .scroll-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--firenze), var(--bologna));
+    width: 0%;
+    transition: width 0.1s;
+  }
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress"><div class="scroll-progress-bar" id="progressBar"></div></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="label">Scenario A · Instagram</div>
+    <div class="title">ANALISI<br>BENCHMARK<br>PA 2026</div>
+    <div class="subtitle">31 marzo 2026</div>
+    <div class="tag">@cittadifirenzeufficiale</div>
+  </div>
+
+  <div class="sidebar-nav">
+    <div class="nav-section">Panoramica</div>
+    <a class="nav-item active" href="#profilo" onclick="setActive(this)">
+      <span class="dot"></span>Il tuo profilo
+    </a>
+    <a class="nav-item" href="#benchmark" onclick="setActive(this)">
+      <span class="dot"></span>I benchmark
+    </a>
+
+    <div class="nav-section">Analisi</div>
+    <a class="nav-item" href="#er" onclick="setActive(this)">
+      <span class="dot"></span>Engagement rate
+    </a>
+    <a class="nav-item" href="#scoring" onclick="setActive(this)">
+      <span class="dot"></span>Scoring 8 assi
+    </a>
+    <a class="nav-item" href="#dettaglio" onclick="setActive(this)">
+      <span class="dot"></span>Dettaglio assi
+    </a>
+
+    <div class="nav-section">Output</div>
+    <a class="nav-item" href="#topposts" onclick="setActive(this)">
+      <span class="dot"></span>Top post strutturali
+    </a>
+    <a class="nav-item" href="#raccomandazione" onclick="setActive(this)">
+      <span class="dot"></span>Raccomandazione
+    </a>
+    <a class="nav-item" href="#nextsteps" onclick="setActive(this)">
+      <span class="dot"></span>Prossimi passi
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    4 profili analizzati<br>
+    8 assi di valutazione<br>
+    Dati al 31.03.2026
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="section visible hero" id="profilo">
+    <div class="hero-eyebrow">Instagram · Scenario A · Analisi comparativa benchmark</div>
+    <div class="hero-title">CITTÀ DI <span>FIRENZE</span><br>VS BENCHMARK PA</div>
+    <div class="hero-subtitle">Analisi comparativa su 8 assi tra @cittadifirenzeufficiale e i principali comuni italiani su Instagram. Obiettivo: identificare il benchmark più utile per il confronto approfondito.</div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="value" style="color:var(--firenze2)">119K</div>
+        <div class="label">Follower Firenze</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="value" style="color:#f87171">0,08%</div>
+        <div class="label">Engagement rate</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="value" style="color:var(--text2)">7.680</div>
+        <div class="label">Post pubblicati</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="value" style="color:var(--text2)">15,5</div>
+        <div class="label">Follower per post</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="value" style="color:var(--text2)">3</div>
+        <div class="label">Benchmark analizzati</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENCHMARK BIG NUMBERS -->
+  <div class="section" id="benchmark">
+    <div class="section-header">
+      <div class="section-num">01 · Benchmark</div>
+      <div class="section-title">I PROFILI <span>A CONFRONTO</span></div>
+      <div class="section-desc">Dati pubblici rilevati il 31 marzo 2026 su tutti e quattro i profili analizzati.</div>
+    </div>
+
+    <div class="bignumbers-grid">
+      <div class="bignum-card firenze">
+        <div class="bignum-handle"><span class="dot"></span>@cittadifirenzeufficiale</div>
+        <div class="bignum-value">119K</div>
+        <div class="bignum-label">Follower</div>
+        <div class="bignum-sub">
+          <div class="bignum-row"><span class="k">Post totali</span><span class="v" style="color:var(--firenze2)">7.680</span></div>
+          <div class="bignum-row"><span class="k">Following</span><span class="v">778</span></div>
+          <div class="bignum-row"><span class="k">Follower/post</span><span class="v" style="color:#f87171">15,5</span></div>
+          <div class="bignum-row"><span class="k">Engagement rate</span><span class="v" style="color:#ff4444">0,08%</span></div>
+        </div>
+      </div>
+
+      <div class="bignum-card bologna">
+        <div class="bignum-handle"><span class="dot"></span>@comunedibologna</div>
+        <div class="bignum-value">164K</div>
+        <div class="bignum-label">Follower</div>
+        <div class="bignum-sub">
+          <div class="bignum-row"><span class="k">Post totali</span><span class="v" style="color:var(--bologna2)">5.695</span></div>
+          <div class="bignum-row"><span class="k">Following</span><span class="v">3.026</span></div>
+          <div class="bignum-row"><span class="k">Follower/post</span><span class="v" style="color:var(--green)">28,8</span></div>
+          <div class="bignum-row"><span class="k">Engagement rate</span><span class="v" style="color:var(--green)">2,09%</span></div>
+        </div>
+      </div>
+
+      <div class="bignum-card milano">
+        <div class="bignum-handle"><span class="dot"></span>@comune_milano</div>
+        <div class="bignum-value">148K</div>
+        <div class="bignum-label">Follower</div>
+        <div class="bignum-sub">
+          <div class="bignum-row"><span class="k">Post totali</span><span class="v" style="color:var(--milano2)">2.756</span></div>
+          <div class="bignum-row"><span class="k">Following</span><span class="v">135</span></div>
+          <div class="bignum-row"><span class="k">Follower/post</span><span class="v" style="color:var(--green)">53,8</span></div>
+          <div class="bignum-row"><span class="k">Engagement rate</span><span class="v" style="color:#f87171">0,23%</span></div>
+        </div>
+      </div>
+
+      <div class="bignum-card torino">
+        <div class="bignum-handle"><span class="dot"></span>@cittaditorino</div>
+        <div class="bignum-value">71K</div>
+        <div class="bignum-label">Follower</div>
+        <div class="bignum-sub">
+          <div class="bignum-row"><span class="k">Post totali</span><span class="v" style="color:var(--torino2)">4.658</span></div>
+          <div class="bignum-row"><span class="k">Following</span><span class="v">118</span></div>
+          <div class="bignum-row"><span class="k">Follower/post</span><span class="v" style="color:#f87171">15,2</span></div>
+          <div class="bignum-row"><span class="k">Engagement rate</span><span class="v" style="color:#fbbf24">0,97%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENGAGEMENT RATE -->
+  <div class="section" id="er">
+    <div class="section-header">
+      <div class="section-num">02 · Engagement Rate</div>
+      <div class="section-title">INTERAZIONI <span>REALI</span></div>
+      <div class="section-desc">Calcolato su like + commenti degli ultimi 5 post / follower. Dati raccolti direttamente sui profili il 31 marzo 2026.</div>
+    </div>
+
+    <div class="er-section">
+      <div class="er-row">
+        <div class="er-handle" style="color:var(--bologna2)">@comunedibologna</div>
+        <div class="er-bar-wrap">
+          <div class="er-bar" data-width="100" style="background: var(--bologna);"></div>
+        </div>
+        <div class="er-value" style="color:var(--bologna2)">2,09%</div>
+        <div class="er-badge good">ECCELLENTE</div>
+      </div>
+      <div class="er-row">
+        <div class="er-handle" style="color:var(--torino2)">@cittaditorino</div>
+        <div class="er-bar-wrap">
+          <div class="er-bar" data-width="46" style="background: var(--torino);"></div>
+        </div>
+        <div class="er-value" style="color:var(--torino2)">0,97%</div>
+        <div class="er-badge mid">DISCONTINUO</div>
+      </div>
+      <div class="er-row">
+        <div class="er-handle" style="color:var(--milano2)">@comune_milano</div>
+        <div class="er-bar-wrap">
+          <div class="er-bar" data-width="11" style="background: var(--milano);"></div>
+        </div>
+        <div class="er-value" style="color:var(--milano2)">0,23%</div>
+        <div class="er-badge low">BASSO</div>
+      </div>
+      <div class="er-row">
+        <div class="er-handle" style="color:var(--firenze2)">@cittadifirenzeufficiale</div>
+        <div class="er-bar-wrap">
+          <div class="er-bar" data-width="4" style="background: var(--firenze);"></div>
+        </div>
+        <div class="er-value" style="color:var(--firenze2)">0,08%</div>
+        <div class="er-badge crit">CRITICO</div>
+      </div>
+    </div>
+
+    <div class="alert-box" style="margin-top:24px">
+      <span class="icon">⚠</span>
+      <span>Firenze ha l'ER più basso di tutti e 4 i profili — incluso Milano che ha 29.000 follower in più. Con 7.680 post pubblicati e media di 99 interazioni per post, il problema non è la visibilità ma la qualità della relazione con la community.</span>
+    </div>
+  </div>
+
+  <!-- SCORING TABLE -->
+  <div class="section" id="scoring">
+    <div class="section-header">
+      <div class="section-num">03 · Scoring</div>
+      <div class="section-title">TABELLA <span>8 ASSI</span></div>
+      <div class="section-desc">Score 1–5 per ciascun asse. L'asse 6 (Orientamento all'azione) è l'asse prioritario dell'analisi.</div>
+    </div>
+
+    <table class="scoring-table">
+      <thead>
+        <tr>
+          <th style="width:260px">Asse</th>
+          <th style="text-align:center;color:var(--bologna2)">Bologna</th>
+          <th style="text-align:center;color:var(--milano2)">Milano</th>
+          <th style="text-align:center;color:var(--torino2)">Torino</th>
+          <th style="text-align:center;color:var(--firenze2)">Firenze</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="axis-name">1. Identità e posizionamento</td>
+          <td class="score-cell s5">5</td>
+          <td class="score-cell s4">4</td>
+          <td class="score-cell s2">2</td>
+          <td class="score-cell s2">2</td>
+        </tr>
+        <tr>
+          <td class="axis-name">2. Strategia editoriale</td>
+          <td class="score-cell s5">5</td>
+          <td class="score-cell s4">4</td>
+          <td class="score-cell s2">2</td>
+          <td class="score-cell s2">2</td>
+        </tr>
+        <tr>
+          <td class="axis-name">3. Qualità e stile contenuti</td>
+          <td class="score-cell s5">5</td>
+          <td class="score-cell s4">4</td>
+          <td class="score-cell s2">2</td>
+          <td class="score-cell s3">3</td>
+        </tr>
+        <tr>
+          <td class="axis-name">4. Community e crescita</td>
+          <td class="score-cell s5">5</td>
+          <td class="score-cell s3">3</td>
+          <td class="score-cell s3">3</td>
+          <td class="score-cell s1">1</td>
+        </tr>
+        <tr>
+          <td class="axis-name">5. Funzionalità native Instagram</td>
+          <td class="score-cell s5">5</td>
+          <td class="score-cell s4">4</td>
+          <td class="score-cell s2">2</td>
+          <td class="score-cell s3">3</td>
+        </tr>
+        <tr style="background:rgba(245,158,11,0.03)">
+          <td class="axis-name">
+            6. Orientamento all'azione
+            <div class="axis-priority">⭐ ASSE PRIORITARIO</div>
+          </td>
+          <td class="score-cell s5">5</td>
+          <td class="score-cell s4">4</td>
+          <td class="score-cell s3">3</td>
+          <td class="score-cell s2">2</td>
+        </tr>
+        <tr>
+          <td class="axis-name">7. Tono di voce e linguaggio</td>
+          <td class="score-cell s4">4</td>
+          <td class="score-cell s4">4</td>
+          <td class="score-cell s2">2</td>
+          <td class="score-cell s3">3</td>
+        </tr>
+        <tr>
+          <td class="axis-name">8. Integrazione cross-canale</td>
+          <td class="score-cell s5">5</td>
+          <td class="score-cell s3">3</td>
+          <td class="score-cell s2">2</td>
+          <td class="score-cell s3">3</td>
+        </tr>
+        <tr class="total-row">
+          <td class="axis-name">TOTALE</td>
+          <td class="score-cell" style="color:var(--bologna2);font-size:28px">39/40</td>
+          <td class="score-cell" style="color:var(--milano2);font-size:28px">30/40</td>
+          <td class="score-cell" style="color:var(--torino2);font-size:28px">18/40</td>
+          <td class="score-cell" style="color:var(--firenze2);font-size:28px">19/40</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- BAR COMPARISON -->
+    <div class="two-col" style="margin-top:40px">
+      <div>
+        <div class="card-title" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px">Score totale comparativo</div>
+        <div class="bar-chart">
+          <div class="bar-group">
+            <div class="bar-label">
+              <span class="name" style="color:var(--bologna2)">@comunedibologna</span>
+              <span class="score-num" style="color:var(--bologna2)">39</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-width="97.5" style="background:var(--bologna)"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">
+              <span class="name" style="color:var(--milano2)">@comune_milano</span>
+              <span class="score-num" style="color:var(--milano2)">30</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-width="75" style="background:var(--milano)"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">
+              <span class="name" style="color:var(--firenze2)">@cittadifirenzeufficiale</span>
+              <span class="score-num" style="color:var(--firenze2)">19</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-width="47.5" style="background:var(--firenze)"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">
+              <span class="name" style="color:var(--torino2)">@cittaditorino</span>
+              <span class="score-num" style="color:var(--torino2)">18</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-width="45" style="background:var(--torino)"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card-title" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px">Gap Firenze vs Bologna (per asse)</div>
+        <div class="bar-chart">
+          <div class="bar-group">
+            <div class="bar-label">
+              <span class="name">Identità e posizionamento</span>
+              <span class="score-num" style="color:#f87171">−3</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-width="60" style="background:var(--firenze)"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">
+              <span class="name">Strategia editoriale</span>
+              <span class="score-num" style="color:#f87171">−3</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-width="60" style="background:var(--firenze)"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">
+              <span class="name">Community e crescita</span>
+              <span class="score-num" style="color:#ff4444">−4</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-width="80" style="background:#ff4444"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">
+              <span class="name">Orientamento all'azione ⭐</span>
+              <span class="score-num" style="color:#f87171">−3</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-width="60" style="background:var(--bologna)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETTAGLIO ASSI -->
+  <div class="section" id="dettaglio">
+    <div class="section-header">
+      <div class="section-num">04 · Dettaglio</div>
+      <div class="section-title">ANALISI PER <span>ASSE</span></div>
+      <div class="section-desc">Score e motivazione sintetica per ciascuno degli 8 assi di valutazione.</div>
+    </div>
+
+    <div class="axis-grid">
+      <!-- Asse 1 -->
+      <div class="axis-card">
+        <div class="ax-num">ASSE 01</div>
+        <div class="ax-title">Identità e posizionamento</div>
+        <div class="axis-scores">
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--bologna2)">@comunedibologna</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="100" style="background:var(--bologna)"></div></div>
+            <span class="s s5">5</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--milano2)">@comune_milano</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="80" style="background:var(--milano)"></div></div>
+            <span class="s s4">4</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--torino2)">@cittaditorino</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="40" style="background:var(--torino)"></div></div>
+            <span class="s s2">2</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--firenze2)">@cittadifirenze</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="40" style="background:var(--firenze)"></div></div>
+            <span class="s s2">2</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text2);font-weight:300;line-height:1.5">Bio generica senza CTA. Il claim "Seguici anche su tutti gli altri canali" invita a uscire dal profilo. Bologna ha bio bilingue IT/EN con indirizzo fisico e Thread collegato.</div>
+      </div>
+
+      <!-- Asse 2 -->
+      <div class="axis-card">
+        <div class="ax-num">ASSE 02</div>
+        <div class="ax-title">Strategia editoriale</div>
+        <div class="axis-scores">
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--bologna2)">@comunedibologna</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="100" style="background:var(--bologna)"></div></div>
+            <span class="s s5">5</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--milano2)">@comune_milano</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="80" style="background:var(--milano)"></div></div>
+            <span class="s s4">4</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--torino2)">@cittaditorino</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="40" style="background:var(--torino)"></div></div>
+            <span class="s s2">2</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--firenze2)">@cittadifirenze</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="40" style="background:var(--firenze)"></div></div>
+            <span class="s s2">2</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text2);font-weight:300;line-height:1.5">Solo #GrandiDonneFirenze è un format strutturale solido. Alto volume (7.680 post) con bassa coerenza. Avvisi obbligatori nel feed senza bilanciamento penalizzano la reach.</div>
+      </div>
+
+      <!-- Asse 3 -->
+      <div class="axis-card">
+        <div class="ax-num">ASSE 03</div>
+        <div class="ax-title">Qualità e stile dei contenuti</div>
+        <div class="axis-scores">
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--bologna2)">@comunedibologna</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="100" style="background:var(--bologna)"></div></div>
+            <span class="s s5">5</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--milano2)">@comune_milano</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="80" style="background:var(--milano)"></div></div>
+            <span class="s s4">4</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--firenze2)">@cittadifirenze</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="60" style="background:var(--firenze)"></div></div>
+            <span class="s s3">3</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--torino2)">@cittaditorino</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="40" style="background:var(--torino)"></div></div>
+            <span class="s s2">2</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text2);font-weight:300;line-height:1.5">#GrandiDonneFirenze ha grafica curata. Feed generale frammentato: rosso istituzionale convive con foto neutre e grafiche eterogenee senza sistema visivo unificante.</div>
+      </div>
+
+      <!-- Asse 4 -->
+      <div class="axis-card">
+        <div class="ax-num">ASSE 04</div>
+        <div class="ax-title">Community e crescita</div>
+        <div class="axis-scores">
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--bologna2)">@comunedibologna</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="100" style="background:var(--bologna)"></div></div>
+            <span class="s s5">5</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--milano2)">@comune_milano</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="60" style="background:var(--milano)"></div></div>
+            <span class="s s3">3</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--torino2)">@cittaditorino</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="60" style="background:var(--torino)"></div></div>
+            <span class="s s3">3</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--firenze2)">@cittadifirenze</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="20" style="background:var(--firenze)"></div></div>
+            <span class="s s1">1</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text2);font-weight:300;line-height:1.5">ER 0,08% — il più basso della shortlist. 119K follower con media 99 interazioni per post. La community esiste ma non interagisce. Gap di 26 punti ER rispetto a Bologna.</div>
+      </div>
+
+      <!-- Asse 5 -->
+      <div class="axis-card">
+        <div class="ax-num">ASSE 05</div>
+        <div class="ax-title">Funzionalità native Instagram</div>
+        <div class="axis-scores">
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--bologna2)">@comunedibologna</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="100" style="background:var(--bologna)"></div></div>
+            <span class="s s5">5</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--milano2)">@comune_milano</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="80" style="background:var(--milano)"></div></div>
+            <span class="s s4">4</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--firenze2)">@cittadifirenze</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="60" style="background:var(--firenze)"></div></div>
+            <span class="s s3">3</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--torino2)">@cittaditorino</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="40" style="background:var(--torino)"></div></div>
+            <span class="s s2">2</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text2);font-weight:300;line-height:1.5">Highlights presenti (7) ma con contenuti scaduti: Referendum e Regionali 2025 ancora visibili. Bologna ha highlights aggiornati e Thread collegato.</div>
+      </div>
+
+      <!-- Asse 6 PRIORITY -->
+      <div class="axis-card priority">
+        <div class="ax-num">ASSE 06</div>
+        <div class="ax-title">Orientamento all'azione <span class="priority-tag">PRIORITARIO</span></div>
+        <div class="axis-scores">
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--bologna2)">@comunedibologna</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="100" style="background:var(--bologna)"></div></div>
+            <span class="s s5">5</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--milano2)">@comune_milano</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="80" style="background:var(--milano)"></div></div>
+            <span class="s s4">4</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--torino2)">@cittaditorino</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="60" style="background:var(--torino)"></div></div>
+            <span class="s s3">3</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--firenze2)">@cittadifirenze</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="40" style="background:var(--firenze)"></div></div>
+            <span class="s s2">2</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text2);font-weight:300;line-height:1.5">Il Linktree di Firenze rimanda solo ai canali social — nessun link a servizi. Bologna ha "Segnala un problema", Ciclostazioni, Deviazioni bus. Gap operativo colmabile in pochi giorni.</div>
+      </div>
+
+      <!-- Asse 7 -->
+      <div class="axis-card">
+        <div class="ax-num">ASSE 07</div>
+        <div class="ax-title">Tono di voce e linguaggio</div>
+        <div class="axis-scores">
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--bologna2)">@comunedibologna</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="80" style="background:var(--bologna)"></div></div>
+            <span class="s s4">4</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--milano2)">@comune_milano</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="80" style="background:var(--milano)"></div></div>
+            <span class="s s4">4</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--firenze2)">@cittadifirenze</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="60" style="background:var(--firenze)"></div></div>
+            <span class="s s3">3</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--torino2)">@cittaditorino</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="40" style="background:var(--torino)"></div></div>
+            <span class="s s2">2</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text2);font-weight:300;line-height:1.5">#GrandiDonneFirenze ha tono narrativo curato. Avvisi e aggregatori eventi hanno tono burocratico. Mix disomogeneo. Hashtag branded presente ma non sfruttato strategicamente.</div>
+      </div>
+
+      <!-- Asse 8 -->
+      <div class="axis-card">
+        <div class="ax-num">ASSE 08</div>
+        <div class="ax-title">Integrazione cross-canale</div>
+        <div class="axis-scores">
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--bologna2)">@comunedibologna</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="100" style="background:var(--bologna)"></div></div>
+            <span class="s s5">5</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--firenze2)">@cittadifirenze</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="60" style="background:var(--firenze)"></div></div>
+            <span class="s s3">3</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--milano2)">@comune_milano</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="60" style="background:var(--milano)"></div></div>
+            <span class="s s3">3</span>
+          </div>
+          <div class="axis-score-row">
+            <span class="handle" style="color:var(--torino2)">@cittaditorino</span>
+            <div class="mini-bar"><div class="mini-fill" data-width="40" style="background:var(--torino)"></div></div>
+            <span class="s s2">2</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text2);font-weight:300;line-height:1.5">Collab strutturale confermato con @sarafunaro — asset replicabile e da valorizzare. Ecosistema multicanale dichiarato ma non ancora sfruttato per ampliare la reach organica.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP POST STRUTTURALI -->
+  <div class="section" id="topposts">
+    <div class="section-header">
+      <div class="section-num">05 · Top post strutturali</div>
+      <div class="section-title">PATTERN CHE <span>FUNZIONANO</span></div>
+      <div class="section-desc">Solo contenuti strutturali — campagne stagionali e ricorrenze escluse. Il pattern è ciò che conta, non il singolo post.</div>
+    </div>
+
+    <div class="toppost-grid">
+      <div class="toppost-card">
+        <div class="tp-handle"><span style="width:6px;height:6px;border-radius:50%;background:var(--bologna);display:inline-block"></span> @comunedibologna</div>
+        <div class="tp-title">Risultati del Referendum</div>
+        <div class="tp-pattern">Infografica con dato numerico grande (71,61% votanti) + rilevanza civica diretta. Nessuna grafica elaborata — solo il dato, leggibile a colpo d'occhio.</div>
+        <div class="tp-stats">
+          <div class="tp-stat"><span class="v" style="color:var(--bologna2)">5.463</span><span class="l">Like</span></div>
+          <div class="tp-stat"><span class="v" style="color:var(--bologna2)">189</span><span class="l">Commenti</span></div>
+          <div class="tp-stat"><span class="v" style="color:var(--green)">2,09%</span><span class="l">ER post</span></div>
+        </div>
+      </div>
+
+      <div class="toppost-card">
+        <div class="tp-handle"><span style="width:6px;height:6px;border-radius:50%;background:var(--bologna);display:inline-block"></span> @comunedibologna</div>
+        <div class="tp-title">La Nuova Via San Felice</div>
+        <div class="tp-pattern">Trasformazione urbana raccontata con un titolo bold su foto reale del luogo. Contenuto che tocca la vita quotidiana dei cittadini — traffico, mobilità, spazio pubblico.</div>
+        <div class="tp-stats">
+          <div class="tp-stat"><span class="v" style="color:var(--bologna2)">5.252</span><span class="l">Like</span></div>
+          <div class="tp-stat"><span class="v" style="color:var(--bologna2)">71</span><span class="l">Commenti</span></div>
+          <div class="tp-stat"><span class="v" style="color:var(--green)">3,24%</span><span class="l">ER post</span></div>
+        </div>
+      </div>
+
+      <div class="toppost-card" style="border-color:var(--firenze);background:linear-gradient(135deg,var(--bg2),rgba(232,0,45,0.03))">
+        <div class="tp-handle"><span style="width:6px;height:6px;border-radius:50%;background:var(--firenze);display:inline-block"></span> @cittadifirenzeufficiale</div>
+        <div class="tp-title">#GrandiDonneFirenze</div>
+        <div class="tp-pattern">Unico format strutturale consolidato. Sfondo scuro, foto in bianco e nero, testo narrativo. Riconoscibile e replicabile — il pattern da potenziare e estendere.</div>
+        <div class="tp-stats">
+          <div class="tp-stat"><span class="v" style="color:var(--firenze2)">193</span><span class="l">Like (est.)</span></div>
+          <div class="tp-stat"><span class="v" style="color:var(--firenze2)">8</span><span class="l">Commenti</span></div>
+          <div class="tp-stat"><span class="v" style="color:var(--bologna2)">0,17%</span><span class="l">ER post</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top:24px">
+      <span class="icon">💡</span>
+      <span><strong>Pattern replicabile da Bologna:</strong> dato numerico grande + rilevanza civica diretta = engagement massimo. Non serve una campagna stagionale. Qualsiasi aggiornamento urbano (tramvia, cantieri, dati servizi) può diventare un post ad alto impatto con questo format.</span>
+    </div>
+  </div>
+
+  <!-- RACCOMANDAZIONE -->
+  <div class="section" id="raccomandazione">
+    <div class="section-header">
+      <div class="section-num">06 · Raccomandazione</div>
+      <div class="section-title">IL BENCHMARK <span>DA SCEGLIERE</span></div>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-eyebrow">Benchmark raccomandato per lo Scenario B</div>
+      <div class="rec-title">COMUNE DI <span>BOLOGNA</span></div>
+      <div class="rec-desc">L'unico profilo PA italiano che dimostra che alto volume editoriale e alto engagement possono coesistere. Con 164K follower e ER del 2,09%, Bologna è un caso anomalo positivo nel panorama istituzionale italiano — e i gap rispetto a Firenze sono operativi, concreti e aggredibili.</div>
+
+      <div style="display:flex;gap:32px;flex-wrap:wrap">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px">Score Bologna</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--bologna2);line-height:1">39<span style="font-size:32px;color:var(--text3)">/40</span></div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px">ER Bologna</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--green);line-height:1">2,09<span style="font-size:32px;color:var(--text3)">%</span></div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px">Gap ER da colmare</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--firenze2);line-height:1">+2,01<span style="font-size:32px;color:var(--text3)">pp</span></div>
+        </div>
+      </div>
+
+      <div class="rec-gaps">
+        <div class="gap-card">
+          <div class="gap-num">01</div>
+          <div class="gap-title">Linktree → servizi</div>
+          <div class="gap-desc">Da rimandi ai canali social a link diretti a servizi al cittadino (segnalazioni, prenotazioni, aggiornamenti cantieri). Modificabile in pochi giorni.</div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-num">02</div>
+          <div class="gap-title">Fotografia umana</div>
+          <div class="gap-desc">Bologna usa ritratti autentici e foto urbane reali. Firenze usa prevalentemente grafiche istituzionali. Cambio di approccio, non di risorse.</div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-num">03</div>
+          <div class="gap-title">Bilanciamento editoriale</div>
+          <div class="gap-desc">Contenuti obbligatori (avvisi) nelle Stories, non nel feed. Rapporto 1:3 tra obbligatori e discrezionali nel feed principale.</div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-num">04</div>
+          <div class="gap-title">Pattern top post</div>
+          <div class="gap-desc">Dato numerico grande + rilevanza civica diretta = ER massimo. Replicabile su qualsiasi aggiornamento urbano (tramvia, cantieri, servizi).</div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-num">05</div>
+          <div class="gap-title">Collab strutturale</div>
+          <div class="gap-desc">@sarafunaro è già attivo — da strutturare come serie ricorrente, non come post occasionale. Bologna usa following alto (3.026) per costruire relazioni.</div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-num">06</div>
+          <div class="gap-title">Bio bilingue + CTA</div>
+          <div class="gap-desc">Bologna ha bio IT/EN con indirizzo fisico. Firenze ha bio generica senza CTA. Intervento minimo, impatto immediato sul posizionamento internazionale.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top:20px">
+      <span class="icon">ℹ</span>
+      <span><strong>Milano come riferimento secondario:</strong> interessante per il sistema grafico tipografico categorizzato e il rapporto follower/post (53,8 — il migliore della shortlist). Non adatto come benchmark principale per l'ER 0,23% — crea coerenza visiva ma non relazione con la community.</span>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="section" id="nextsteps">
+    <div class="section-header">
+      <div class="section-num">07 · Prossimi passi</div>
+      <div class="section-title">AZIONI <span>IMMEDIATE</span></div>
+      <div class="section-desc">Interventi prioritari indipendenti dallo Scenario B — attuabili già questa settimana senza attendere l'analisi approfondita.</div>
+    </div>
+
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">Avviare Scenario B con @comunedibologna <span class="step-prio prio-alta">ALTA PRIORITÀ</span></div>
+          <div class="step-desc">Confronto testa a testa approfondito per costruire piano d'azione con KPI misurabili su engagement rate, frequenza, mix editoriale e orientamento ai servizi.</div>
+          <div class="step-time">⏱ Subito</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">Aggiornare Linktree con link a servizi al cittadino <span class="step-prio prio-alta">ALTA PRIORITÀ</span></div>
+          <div class="step-desc">Sostituire i rimandi ai canali social con link diretti a: segnala un problema, prenotazione servizi, aggiornamenti tramvia, modulistica. Modello: Bologna.</div>
+          <div class="step-time">⏱ 1–2 giorni</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">Rimuovere highlights scaduti <span class="step-prio prio-media">MEDIA PRIORITÀ</span></div>
+          <div class="step-desc">Eliminare o aggiornare gli highlight "Referendum" e "Regionali 2025". Creare almeno un highlight evergreen per i servizi principali al cittadino.</div>
+          <div class="step-time">⏱ 1 giorno</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-title">Aggiornare bio con CTA specifica <span class="step-prio prio-media">MEDIA PRIORITÀ</span></div>
+          <div class="step-desc">Sostituire "Seguici anche su tutti gli altri canali" con una CTA orientata all'azione. Valutare aggiunta lingua inglese (es. "Città di Firenze | Official profile").</div>
+          <div class="step-time">⏱ 1 ora</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <div class="step-title">Analizzare Insights interni — Scenario C <span class="step-prio prio-alta">ALTA PRIORITÀ</span></div>
+          <div class="step-desc">Dopo lo Scenario B, avviare l'analisi degli Insights reali (copertura, formato, pubblico demografico) per basare il piano d'azione su dati interni misurabili.</div>
+          <div class="step-time">⏱ Dopo Scenario B</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Scroll progress
+  window.addEventListener('scroll', () => {
+    const el = document.getElementById('progressBar');
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    el.style.width = (window.scrollY / docH * 100) + '%';
+  });
+
+  // Nav active state
+  function setActive(el) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Intersection observer for sections + bars
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Animate bars inside this section
+        entry.target.querySelectorAll('.er-bar, .bar-fill, .mini-fill').forEach(bar => {
+          const w = bar.dataset.width;
+          if (w) setTimeout(() => { bar.style.width = w + '%'; }, 200);
+        });
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  // Smooth nav highlight on scroll
+  const sections = document.querySelectorAll('.section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
