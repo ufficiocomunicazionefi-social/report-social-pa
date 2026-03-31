@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategia Instagram — Scenario C · @cittadifirenzeufficiale</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blu:#1F3864;--azzurro:#2E75B6;--verde:#1E6B3C;--arancio:#C65911;--viola:#5B2C8D;--rosso:#922B21;
+  --verde-l:#E9F7EF;--arancio-l:#FEF5E7;--viola-l:#F4ECF7;--rosso-l:#FDEDEC;--azzurro-l:#EBF5FB;
+  --grigio-bg:#0F1923;--sidebar-bg:#141E2B;--card-bg:#1A2535;--card-border:#243040;
+  --text-primary:#E8EDF3;--text-secondary:#8A9BB0;--text-muted:#4A5A6E;
+  --accent:#2E75B6;--accent2:#C65911;--accent3:#1E6B3C;
+  --sidebar-w:260px
+}
+body{font-family:'DM Sans',sans-serif;background:var(--grigio-bg);color:var(--text-primary);display:flex;min-height:100vh;overflow-x:hidden}
+
+/* SIDEBAR */
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sidebar-bg);border-right:1px solid var(--card-border);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar-header{padding:28px 20px 20px;border-bottom:1px solid var(--card-border)}
+.sidebar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:1px;line-height:1.1}
+.sidebar-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);margin-top:4px}
+.sidebar-date{font-size:11px;color:var(--text-muted);margin-top:8px}
+nav{padding:16px 0;flex:1}
+.nav-section{font-size:10px;color:var(--text-muted);padding:8px 20px 4px;text-transform:uppercase;letter-spacing:1.2px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;color:var(--text-secondary);cursor:pointer;transition:all .2s;text-decoration:none;border-left:2px solid transparent}
+.nav-link:hover,.nav-link.active{color:var(--text-primary);background:rgba(46,117,182,.12);border-left-color:var(--accent)}
+.nav-link .dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);flex-shrink:0}
+.nav-link.active .dot{background:var(--accent)}
+.sidebar-footer{padding:16px 20px;border-top:1px solid var(--card-border);font-size:11px;color:var(--text-muted);line-height:1.5}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);flex:1;padding:0 40px 80px}
+
+/* SEZIONI */
+.section{padding-top:60px}
+.section-label{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;font-family:'DM Mono',monospace}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--text-primary);letter-spacing:1px;margin-bottom:6px}
+.section-desc{font-size:14px;color:var(--text-secondary);margin-bottom:32px;line-height:1.6;max-width:760px}
+.divider{height:1px;background:var(--card-border);margin:0 0 32px}
+
+/* CARD */
+.card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:24px}
+.card-title{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px;font-family:'DM Mono',monospace}
+
+/* GRIGLIA */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+
+/* BIG NUMBER CARD */
+.big-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:20px 24px;position:relative;overflow:hidden}
+.big-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-top,var(--accent))}
+.big-card .label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-family:'DM Mono',monospace}
+.big-card .value{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--text-primary);line-height:1;margin-bottom:4px}
+.big-card .sub{font-size:12px;color:var(--text-secondary)}
+.big-card .trend{font-size:12px;font-weight:600;margin-top:6px}
+.trend-up{color:#27AE60}.trend-down{color:#E74C3C}.trend-warn{color:#F39C12}
+
+/* BARRE SCORING */
+.bar-row{margin-bottom:16px}
+.bar-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.bar-label span:first-child{font-size:13px;color:var(--text-secondary)}
+.bar-label span:last-child{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-primary)}
+.bar-track{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.4,0,.2,1);width:0}
+
+/* TABELLE */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{background:rgba(46,117,182,.15);color:var(--text-secondary);font-size:11px;text-transform:uppercase;letter-spacing:.8px;padding:10px 14px;text-align:left;font-weight:500;font-family:'DM Mono',monospace}
+.tbl td{padding:10px 14px;border-bottom:1px solid var(--card-border);color:var(--text-primary);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(255,255,255,.025)}
+.mono{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;font-family:'DM Mono',monospace}
+.badge-g{background:rgba(30,107,60,.25);color:#5DBF8A}
+.badge-r{background:rgba(146,43,33,.25);color:#E57B76}
+.badge-y{background:rgba(198,89,17,.25);color:#F0A070}
+.badge-b{background:rgba(46,117,182,.25);color:#7BB8E8}
+
+/* SWOT */
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:12px;overflow:hidden;margin-bottom:20px}
+.swot-cell{padding:24px}
+.swot-header{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:16px}
+.swot-item{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start}
+.swot-item .bullet{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.swot-item p{font-size:13px;line-height:1.5;color:var(--text-secondary)}
+.swot-item p strong{color:var(--text-primary);font-weight:500}
+
+/* PIANO D'AZIONE */
+.fase-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;margin-bottom:20px}
+.azione-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;padding:20px 24px;margin-bottom:14px;border-left:3px solid var(--accent)}
+.azione-num{font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--accent);letter-spacing:1px;margin-bottom:6px}
+.azione-title{font-size:15px;color:var(--text-primary);margin-bottom:10px;font-weight:500}
+.azione-body{font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:10px}
+.azione-kpi{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--accent3);font-family:'DM Mono',monospace;background:rgba(30,107,60,.1);padding:8px 12px;border-radius:6px}
+
+/* CHART WRAPPER */
+.chart-wrap{position:relative;width:100%}
+
+/* KPI TABLE */
+.kpi-table{width:100%;border-collapse:collapse;font-size:13px}
+.kpi-table th{background:rgba(46,117,182,.15);color:var(--text-secondary);font-size:11px;text-transform:uppercase;letter-spacing:.8px;padding:10px 14px;text-align:center;font-weight:500;font-family:'DM Mono',monospace}
+.kpi-table th:first-child{text-align:left}
+.kpi-table td{padding:10px 14px;border-bottom:1px solid var(--card-border);color:var(--text-primary);text-align:center;font-family:'DM Mono',monospace;font-size:12px}
+.kpi-table td:first-child{text-align:left;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text-secondary)}
+.kpi-table tr:last-child td{border-bottom:none}
+.kpi-table .val-base{color:var(--text-muted)}
+.kpi-table .val-30{color:#F0A070}
+.kpi-table .val-3m{color:#7BB8E8}
+.kpi-table .val-6m{color:#5DBF8A;font-weight:600}
+
+/* PICCHI */
+.picco-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;padding:18px 20px;margin-bottom:12px;border-left:3px solid var(--arancio)}
+.picco-date{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--arancio);letter-spacing:1px;margin-bottom:4px}
+.picco-causa{font-size:12px;color:var(--text-muted);margin-bottom:10px}
+.picco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.picco-metric{background:rgba(255,255,255,.04);border-radius:6px;padding:8px 10px}
+.picco-metric .pm-label{font-size:10px;color:var(--text-muted);margin-bottom:3px;font-family:'DM Mono',monospace}
+.picco-metric .pm-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text-primary)}
+.picco-metric .pm-delta{font-size:11px;color:#5DBF8A}
+
+/* PATTERN CARD */
+.pattern-card{background:rgba(30,107,60,.08);border:1px solid rgba(30,107,60,.2);border-radius:10px;padding:20px;margin-bottom:14px}
+.pattern-title{font-size:14px;color:#5DBF8A;font-weight:500;margin-bottom:8px}
+.pattern-body{font-size:13px;color:var(--text-secondary);line-height:1.6}
+
+/* ASSE CARD */
+.asse-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;padding:20px 24px;margin-bottom:14px}
+.asse-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.asse-title{font-size:15px;color:var(--text-primary);font-weight:500}
+.asse-body{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.asse-data{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.asse-datum{background:rgba(255,255,255,.04);border-radius:6px;padding:6px 12px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text-primary)}
+
+/* SCROLL OBSERVER */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,rgba(31,56,100,.4) 0%,rgba(46,117,182,.15) 100%);border:1px solid var(--card-border);border-radius:16px;padding:40px 48px;margin-bottom:32px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(46,117,182,.08) 0%,transparent 70%)}
+.hero-tag{font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--accent);letter-spacing:3px;margin-bottom:12px}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:54px;color:var(--text-primary);line-height:1;margin-bottom:8px;letter-spacing:1px}
+.hero-handle{font-family:'DM Mono',monospace;font-size:18px;color:var(--accent);margin-bottom:16px}
+.hero-meta{display:flex;gap:24px;flex-wrap:wrap}
+.hero-meta-item{font-size:13px;color:var(--text-secondary)}
+.hero-meta-item span{color:var(--text-primary);font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">Social PA<br>Analytics</div>
+    <div class="sidebar-sub">@cittadifirenzeufficiale</div>
+    <div class="sidebar-date">Scenario C · 31 marzo 2026</div>
+  </div>
+  <nav>
+    <div class="nav-section">Overview</div>
+    <a class="nav-link active" href="#overview"><span class="dot"></span>Big Numbers</a>
+    <a class="nav-link" href="#trend"><span class="dot"></span>Trend mensile</a>
+    <a class="nav-link" href="#picchi"><span class="dot"></span>Picchi e anomalie</a>
+    <div class="nav-section">Analisi</div>
+    <a class="nav-link" href="#assi"><span class="dot"></span>6 assi strategici</a>
+    <a class="nav-link" href="#confronto"><span class="dot"></span>Confronto Scenario B</a>
+    <a class="nav-link" href="#swot"><span class="dot"></span>SWOT operativa</a>
+    <div class="nav-section">Piano</div>
+    <a class="nav-link" href="#azioni"><span class="dot"></span>Piano d'azione</a>
+    <a class="nav-link" href="#kpi"><span class="dot"></span>KPI di monitoraggio</a>
+  </nav>
+  <div class="sidebar-footer">
+    Analisi realizzata con<br>supporto AI · Claude, Anthropic<br>Dati: Meta Business Suite CSV
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- HERO -->
+<div class="section" id="overview">
+  <div class="hero reveal">
+    <div class="hero-tag">Strategia di Miglioramento Instagram — Scenario C</div>
+    <div class="hero-title">Comune<br>di Firenze</div>
+    <div class="hero-handle">@cittadifirenzeufficiale</div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">Periodo: <span>1 gen – 30 mar 2026 (90 giorni)</span></div>
+      <div class="hero-meta-item">Follower: <span>119.487</span></div>
+      <div class="hero-meta-item">Fonte: <span>Export CSV Meta Business Suite</span></div>
+      <div class="hero-meta-item">Integra: <span>Report Scenario B · 31 mar 2026</span></div>
+    </div>
+  </div>
+
+  <!-- BIG NUMBERS -->
+  <div class="section-label">Big Numbers · 90 giorni</div>
+  <div class="grid-4 reveal">
+    <div class="big-card" style="--accent-top:#2E75B6">
+      <div class="label">Visualizzazioni</div>
+      <div class="value" data-count="6055009" data-format="M">0</div>
+      <div class="sub">68.034 / giorno</div>
+      <div class="trend trend-down">▼ 1,4% vs periodo precedente</div>
+    </div>
+    <div class="big-card" style="--accent-top:#1E6B3C">
+      <div class="label">Copertura totale</div>
+      <div class="value" data-count="1416803" data-format="K">0</div>
+      <div class="sub">15.919 persone / giorno</div>
+      <div class="trend trend-up">▲ 4,6% vs periodo precedente</div>
+    </div>
+    <div class="big-card" style="--accent-top:#C65911">
+      <div class="label">Interazioni totali</div>
+      <div class="value" data-count="107708" data-format="K">0</div>
+      <div class="sub">1.210 / giorno</div>
+      <div class="trend trend-up">▲ 10,8% vs periodo precedente</div>
+    </div>
+    <div class="big-card" style="--accent-top:#5B2C8D">
+      <div class="label">Nuovi follower</div>
+      <div class="value" data-count="5252" data-format="N">0</div>
+      <div class="sub">59,7 / giorno</div>
+      <div class="trend trend-down">▼ 20,2% vs periodo precedente</div>
+    </div>
+  </div>
+  <div class="grid-4 reveal">
+    <div class="big-card" style="--accent-top:#E74C3C">
+      <div class="label">Engagement Rate reale</div>
+      <div class="value" style="color:#5DBF8A">7,60%</div>
+      <div class="sub">Interazioni / copertura</div>
+      <div class="trend trend-up">▲ Vs stima pubblica 0,08%</div>
+    </div>
+    <div class="big-card" style="--accent-top:#E74C3C">
+      <div class="label">CTR link in bio</div>
+      <div class="value" style="color:#E57B76">0,186%</div>
+      <div class="sub">2.641 clic totali</div>
+      <div class="trend trend-down">▼ Gap critico da correggere</div>
+    </div>
+    <div class="big-card" style="--accent-top:#2E75B6">
+      <div class="label">Visite al profilo</div>
+      <div class="value" data-count="40074" data-format="K">0</div>
+      <div class="sub">450 / giorno</div>
+      <div class="trend" style="color:var(--text-muted)">Conversione in clic: 6,6%</div>
+    </div>
+    <div class="big-card" style="--accent-top:#1E6B3C">
+      <div class="label">Non-follower raggiunti</div>
+      <div class="value" style="color:#7BB8E8">57%</div>
+      <div class="sub">della copertura mensile</div>
+      <div class="trend trend-up">▲ Distribuzione organica attiva</div>
+    </div>
+  </div>
+</div>
+
+<!-- TREND MENSILE -->
+<div class="section reveal" id="trend">
+  <div class="section-label">Breakdown mensile</div>
+  <div class="section-title">Trend gennaio → marzo</div>
+  <div class="section-desc">Il calo dei nuovi follower (-28,8% in tre mesi) è il dato più critico. La copertura perde il -16,3%. Le interazioni reggono grazie ai picchi di febbraio.</div>
+
+  <div class="grid-2">
+    <div class="card reveal">
+      <div class="card-title">Copertura mensile</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="chartCopertura"></canvas></div>
+    </div>
+    <div class="card reveal">
+      <div class="card-title">Nuovi follower mensili</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="chartFollower"></canvas></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card reveal">
+      <div class="card-title">Interazioni mensili</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="chartInterazioni"></canvas></div>
+    </div>
+    <div class="card reveal">
+      <div class="card-title">Engagement Rate mensile</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="chartER"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-title">Riepilogo breakdown mensile</div>
+    <table class="tbl">
+      <thead><tr><th>Mese</th><th>Nuovi follower</th><th>Interazioni</th><th>Copertura</th><th>Clic link</th><th>ER mensile</th></tr></thead>
+      <tbody>
+        <tr><td>Gennaio 2026</td><td>2.090 <span class="badge badge-g">67,4/gg</span></td><td>38.708 <span class="badge badge-b">1.248/gg</span></td><td>549.188</td><td>1.042</td><td class="mono">7,05%</td></tr>
+        <tr><td>Febbraio 2026</td><td>1.673 <span class="badge badge-y">59,8/gg</span></td><td>36.973 <span class="badge badge-b">1.320/gg</span></td><td>407.701</td><td>646</td><td class="mono" style="color:#7BB8E8">9,07%</td></tr>
+        <tr><td>Marzo 2026</td><td>1.489 <span class="badge badge-r">51,3/gg</span></td><td>32.027 <span class="badge badge-y">1.068/gg</span></td><td>459.914</td><td>953</td><td class="mono">6,96%</td></tr>
+        <tr style="background:rgba(198,89,17,.06)"><td><strong>Trend gen→mar</strong></td><td class="mono" style="color:#E57B76">−28,8%</td><td class="mono" style="color:#E57B76">−17,3%</td><td class="mono" style="color:#E57B76">−16,3%</td><td class="mono" style="color:#F0A070">−8,5%</td><td class="mono" style="color:#F0A070">−0,09pp</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PICCHI -->
+<div class="section reveal" id="picchi">
+  <div class="section-label">Picchi e anomalie</div>
+  <div class="section-title">Giorni ad alto impatto</div>
+  <div class="section-desc">Il picco del 27-28 febbraio identifica il pattern editoriale più potente del profilo: notizia civica concreta + partecipazione diretta del cittadino. È strutturalmente replicabile.</div>
+
+  <div class="picco-card reveal" style="border-left-color:#5DBF8A">
+    <div class="picco-date">27 febbraio 2026 — PICCO MASSIMO</div>
+    <div class="picco-causa">Varo nuovo ponte sull'Arno · Sondaggio nome del ponte · Collab @sarafunaro</div>
+    <div class="picco-grid">
+      <div class="picco-metric"><div class="pm-label">Interazioni</div><div class="pm-val">8.569</div><div class="pm-delta">+608% vs media</div></div>
+      <div class="picco-metric"><div class="pm-label">Copertura</div><div class="pm-val">36.000</div><div class="pm-delta">+126% vs media</div></div>
+      <div class="picco-metric"><div class="pm-label">Visualizzazioni</div><div class="pm-val">247.322</div><div class="pm-delta">+263% vs media</div></div>
+    </div>
+  </div>
+  <div class="picco-card reveal">
+    <div class="picco-date">28 febbraio 2026</div>
+    <div class="picco-causa">Coda di viralità del contenuto precedente</div>
+    <div class="picco-grid">
+      <div class="picco-metric"><div class="pm-label">Interazioni</div><div class="pm-val">2.647</div><div class="pm-delta">+119% vs media</div></div>
+      <div class="picco-metric"><div class="pm-label">Nuovi follower</div><div class="pm-val">164</div><div class="pm-delta">+175% vs media</div></div>
+      <div class="picco-metric"><div class="pm-label">Copertura</div><div class="pm-val">35.497</div><div class="pm-delta">+123% vs media</div></div>
+    </div>
+  </div>
+  <div class="picco-card reveal">
+    <div class="picco-date">26 marzo 2026</div>
+    <div class="picco-causa">Picco secondario — causa da verificare</div>
+    <div class="picco-grid">
+      <div class="picco-metric"><div class="pm-label">Interazioni</div><div class="pm-val">2.227</div><div class="pm-delta">+84% vs media</div></div>
+      <div class="picco-metric"><div class="pm-label">Copertura</div><div class="pm-val">30.527</div><div class="pm-delta">+92% vs media</div></div>
+      <div class="picco-metric"><div class="pm-label">Clic link</div><div class="pm-val">163</div><div class="pm-delta">+449% vs media</div></div>
+    </div>
+  </div>
+
+  <div class="pattern-card reveal">
+    <div class="pattern-title">Pattern replicabile #1 — Notizia civica + partecipazione diretta</div>
+    <div class="pattern-body">
+      Ingredienti validati dai dati: (1) fatto reale di trasformazione urbana con impatto visibile sulla vita dei cittadini · (2) elemento partecipativo diretto (sondaggio, scelta, commenta la tua idea) · (3) dato numerico concreto (data, impatto infrastrutturale, cifre) · (4) collab con figura istituzionale riconoscibile.<br><br>
+      Applicazioni non stagionali: avanzamento tramvia · nuovi parchi e spazi pubblici · risultati di consultazioni · inaugurazioni di servizi · decisioni su infrastrutture urbane.
+    </div>
+  </div>
+  <div class="pattern-card reveal" style="background:rgba(46,117,182,.06);border-color:rgba(46,117,182,.2)">
+    <div class="pattern-title" style="color:#7BB8E8">Pattern replicabile #2 — Identità locale fiorentina</div>
+    <div class="pattern-body">
+      Contenuti con radicamento culturale autentico (#LessicoFiorentino, tradizioni, cibo, storia locale) generano engagement stabile e conversazione attiva nei commenti. Costo produttivo basso, formato replicabile ogni 10-14 giorni senza dipendere da eventi stagionali.
+    </div>
+  </div>
+</div>
+
+<!-- 6 ASSI -->
+<div class="section reveal" id="assi">
+  <div class="section-label">Analisi strategica interna</div>
+  <div class="section-title">6 assi strategici</div>
+  <div class="section-desc">Analisi basata su 90 giorni di dati Insights reali (1 gen – 30 mar 2026). Ogni asse è collegato agli obiettivi dichiarati: reach organica, engagement rate, cittadini ai servizi, crescita follower.</div>
+
+  <div class="card reveal" style="margin-bottom:20px">
+    <div class="card-title">Scoring indicativo per asse (basato su dati reali)</div>
+    <div id="barreAssi" style="margin-top:8px">
+      <div class="bar-row"><div class="bar-label"><span>Copertura e visibilità</span><span>6/10 — in calo -16,3%</span></div><div class="bar-track"><div class="bar-fill" data-w="60" style="background:#2E75B6"></div></div></div>
+      <div class="bar-row"><div class="bar-label"><span>Engagement e qualità interazione</span><span>8/10 — ER 7,60%</span></div><div class="bar-track"><div class="bar-fill" data-w="80" style="background:#1E6B3C"></div></div></div>
+      <div class="bar-row"><div class="bar-label"><span>Crescita community</span><span>5/10 — -28,8% gen→mar</span></div><div class="bar-track"><div class="bar-fill" data-w="50" style="background:#C65911"></div></div></div>
+      <div class="bar-row"><div class="bar-label"><span>Performance per formato</span><span>5/10 — reel non strutturale</span></div><div class="bar-track"><div class="bar-fill" data-w="50" style="background:#5B2C8D"></div></div></div>
+      <div class="bar-row"><div class="bar-label"><span>Pubblico reale</span><span>6/10 — dati demografici da completare</span></div><div class="bar-track"><div class="bar-fill" data-w="60" style="background:#2E75B6"></div></div></div>
+      <div class="bar-row"><div class="bar-label"><span>Top performer strutturali</span><span>8/10 — pattern validati</span></div><div class="bar-track"><div class="bar-fill" data-w="80" style="background:#1E6B3C"></div></div></div>
+    </div>
+  </div>
+
+  <div class="asse-card reveal">
+    <div class="asse-header"><span class="asse-title">Asse 1 · Copertura e visibilità</span><span class="badge badge-y">In calo</span></div>
+    <div class="asse-body">Copertura media 15.919 persone/giorno = 13,2% dei follower raggiunti ogni giorno. Rapporto visualizzazioni/copertura al 23,4%: i contenuti vengono visti più volte dalle stesse persone, non da nuovi utenti. Il 57% della copertura mensile raggiunge non-follower: segnale positivo, ma il trend è negativo (-16,3% gen→mar). Senza reel strutturali la reach continuerà a scendere.</div>
+    <div class="asse-data"><div class="asse-datum">Reach media/gg: 15.919</div><div class="asse-datum">Non-follower: 57%</div><div class="asse-datum">Trend: -16,3%</div><div class="asse-datum">Proiezione giugno: ~380K/mese</div></div>
+  </div>
+  <div class="asse-card reveal">
+    <div class="asse-header"><span class="asse-title">Asse 2 · Engagement e qualità dell'interazione</span><span class="badge badge-g">Solido</span></div>
+    <div class="asse-body">ER reale 7,60% su copertura: risultato solido per un profilo istituzionale. Il profilo è molto più sano di quanto appariva dall'ER pubblico (0,08%). Il CTR del link in bio è lo 0,186% — gap critico: su 40.074 visite al profilo solo il 6,6% clicca il link. Questo è il principale ostacolo all'obiettivo "portare cittadini ai servizi".</div>
+    <div class="asse-data"><div class="asse-datum">ER reale: 7,60%</div><div class="asse-datum">CTR link: 0,186%</div><div class="asse-datum">Conversione visite→clic: 6,6%</div><div class="asse-datum">Obiettivo CTR: 0,5%</div></div>
+  </div>
+  <div class="asse-card reveal">
+    <div class="asse-header"><span class="asse-title">Asse 3 · Crescita della community</span><span class="badge badge-r">Critico</span></div>
+    <div class="asse-body">5.252 nuovi follower in 90 giorni (+4,4%), ma il ritmo è in calo accelerato: -28,8% da gennaio a marzo. Proiezione senza intervento: giugno sotto 1.000 nuovi follower/mese. La correlazione è diretta: i giorni con picchi di engagement acquisiscono 2-3× più follower. Il 28 febbraio: 164 nuovi follower in un giorno vs media 59,7.</div>
+    <div class="asse-data"><div class="asse-datum">Gennaio: 2.090/mese</div><div class="asse-datum">Marzo: 1.489/mese</div><div class="asse-datum">Trend: -28,8%</div><div class="asse-datum">Obiettivo: 2.000/mese</div></div>
+  </div>
+  <div class="asse-card reveal">
+    <div class="asse-header"><span class="asse-title">Asse 4 · Performance per formato</span><span class="badge badge-y">Da completare</span></div>
+    <div class="asse-body">Il breakdown per formato non è disponibile nei CSV. Segnale indiretto: il picco di 247.322 visualizzazioni del 27 febbraio non è raggiungibile con un post statico su 119K follower — suggerisce presenza di video/reel. I giorni sotto 600 interazioni coincidono con le grafiche istituzionali statiche. I reel non sono strutturati come formato fisso nel piano editoriale.</div>
+    <div class="asse-data"><div class="asse-datum">Reel: non strutturale</div><div class="asse-datum">Dato mancante: sezione "Contenuti" app Instagram</div></div>
+  </div>
+  <div class="asse-card reveal">
+    <div class="asse-header"><span class="asse-title">Asse 5 · Pubblico reale</span><span class="badge badge-y">Parziale</span></div>
+    <div class="asse-body">Dati disponibili: 57% copertura mensile da non-follower (66.677 su ~116.000). Dati demografici (età, genere, città) non raccolti in questa sessione — necessari per verificare corrispondenza con target strategico. Indicazioni qualitative: forte risposta a identità locale e contenuti infrastrutturali → pubblico prevalentemente residente.</div>
+    <div class="asse-data"><div class="asse-datum">Non-follower: 57%</div><div class="asse-datum">Demografici: da completare</div></div>
+  </div>
+  <div class="asse-card reveal">
+    <div class="asse-header"><span class="asse-title">Asse 6 · Top performer strutturali</span><span class="badge badge-g">Validato</span></div>
+    <div class="asse-body">Pattern 1 validato: notizia civica + partecipazione diretta (+608% interazioni, +126% copertura). Pattern 2 validato: identità locale fiorentina (engagement stabile, basso costo produttivo). Contenuti a basso rendimento: grafiche istituzionali 393-703 interazioni vs media 1.210 — da spostare nelle Stories.</div>
+    <div class="asse-data"><div class="asse-datum">Picco massimo: 8.569 interazioni</div><div class="asse-datum">Media strutturale: 1.210/gg</div><div class="asse-datum">Grafiche istituzionali: 393-703</div></div>
+  </div>
+</div>
+
+<!-- CONFRONTO SCENARIO B -->
+<div class="section reveal" id="confronto">
+  <div class="section-label">Integrazione Scenario B</div>
+  <div class="section-title">Aggiornamento KPI</div>
+  <div class="section-desc">Lo Scenario B stimava un ER dello 0,08% su base pubblica. I dati Insights reali mostrano un profilo significativamente più sano. I due ER non sono confrontabili: misurano metriche diverse.</div>
+
+  <div class="card reveal">
+    <div class="card-title">Scenario B vs Scenario C — confronto metriche</div>
+    <table class="tbl">
+      <thead><tr><th>Metrica</th><th>Scenario B (stima pubblica)</th><th>Scenario C (dati reali Insights)</th><th>Valutazione</th></tr></thead>
+      <tbody>
+        <tr><td>Engagement rate</td><td class="mono" style="color:#E57B76">0,08% (like+commenti/follower)</td><td class="mono" style="color:#5DBF8A">7,60% (interazioni/copertura)</td><td><span class="badge badge-g">Profilo più sano del previsto</span></td></tr>
+        <tr><td>Media interazioni/post</td><td class="mono" style="color:#E57B76">~99 (like+commenti)</td><td class="mono" style="color:#5DBF8A">~1.210/giorno</td><td><span class="badge badge-g">Include salvataggi e condivisioni</span></td></tr>
+        <tr><td>Copertura mensile</td><td class="mono" style="color:var(--text-muted)">Non disponibile</td><td class="mono" style="color:#7BB8E8">~472.000 persone</td><td><span class="badge badge-b">Nuovo dato</span></td></tr>
+        <tr><td>Clic link in bio/mese</td><td class="mono" style="color:var(--text-muted)">Non disponibile</td><td class="mono" style="color:#E57B76">~880 clic (media 90gg)</td><td><span class="badge badge-r">Gap critico confermato</span></td></tr>
+        <tr><td>Nuovi follower/mese</td><td class="mono" style="color:var(--text-muted)">Non disponibile</td><td class="mono" style="color:#F0A070">~1.750 (media 90gg)</td><td><span class="badge badge-y">In calo — da invertire</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card reveal" style="margin-top:16px">
+    <div class="card-title">Confronto visivo ER — stima pubblica vs dato reale</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="chartER2"></canvas></div>
+  </div>
+</div>
+
+<!-- SWOT -->
+<div class="section reveal" id="swot">
+  <div class="section-label">Analisi strategica</div>
+  <div class="section-title">SWOT operativa</div>
+  <div class="section-desc">Ogni voce contiene un dato numerico reale degli Insights e una sola affermazione specifica per questo profilo. Basata esclusivamente su contenuti strutturali permanenti.</div>
+
+  <div class="swot-grid reveal">
+    <div class="swot-cell" style="background:rgba(30,107,60,.12);border-top:3px solid #1E6B3C">
+      <div class="swot-header" style="color:#5DBF8A">PUNTI DI FORZA</div>
+      <div class="swot-item"><div class="bullet" style="background:#5DBF8A"></div><p><strong>ER reale al 7,60%:</strong> chi vede i contenuti interagisce. La qualità percepita è alta. Il profilo è molto più sano di quanto appariva dall'ER pubblico (0,08%).</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#5DBF8A"></div><p><strong>57% della copertura mensile</strong> raggiunge non-follower: distribuzione organica oltre la base esistente — l'algoritmo non ha penalizzato il profilo strutturalmente.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#5DBF8A"></div><p><strong>Pattern civico validato:</strong> il formato "notizia urbana + partecipazione" genera +608% interazioni e +175% nuovi follower in un giorno. È replicabile senza dipendere da eventi stagionali.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#5DBF8A"></div><p><strong>119.487 follower verificati:</strong> la community esiste ed è reattiva. Il problema è l'attivazione sistematica, non la dimensione.</p></div>
+    </div>
+    <div class="swot-cell" style="background:rgba(198,89,17,.1);border-top:3px solid #C65911">
+      <div class="swot-header" style="color:#F0A070">PUNTI DI DEBOLEZZA</div>
+      <div class="swot-item"><div class="bullet" style="background:#F0A070"></div><p><strong>CTR link in bio allo 0,186%:</strong> su 263.009 persone raggiunte in 90 giorni, solo 2.641 hanno cliccato. L'obiettivo "portare cittadini ai servizi" è oggi quasi inaccessibile da Instagram.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#F0A070"></div><p><strong>Nuovi follower in calo del -28,8% in 3 mesi:</strong> da 2.090 a 1.489 mensili. Proiezione giugno: sotto 1.000/mese.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#F0A070"></div><p><strong>Copertura in calo del -16,3%</strong> (gen→mar): assenza di reel strutturali come formato fisso di distribuzione verso non-follower.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#F0A070"></div><p><strong>Dipendenza dai picchi:</strong> 8-10 giorni eccezionali su 90 trainano le medie. Nei restanti 80 giorni le interazioni scendono nella fascia 500-1.000.</p></div>
+    </div>
+    <div class="swot-cell" style="background:rgba(91,44,141,.1);border-bottom:3px solid #5B2C8D">
+      <div class="swot-header" style="color:#C39BD3">OPPORTUNITÀ</div>
+      <div class="swot-item"><div class="bullet" style="background:#C39BD3"></div><p><strong>Linktree orientato ai servizi:</strong> modificabile in un pomeriggio, può triplicare il CTR da 0,186% a 0,5%+ senza aumentare follower o copertura. La leva con il più alto rapporto impatto/sforzo.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#C39BD3"></div><p><strong>1 contenuto partecipativo/mese:</strong> il pattern del 27 febbraio è già validato. 1 sondaggio civico al mese garantisce almeno un picco mensile di acquisizione follower e engagement.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#C39BD3"></div><p><strong>Reel strutturali:</strong> 2-3 reel/mese possono invertire il calo della copertura portandola a 20.000+ persone/giorno senza costi aggiuntivi.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#C39BD3"></div><p><strong>#LessicoFiorentino a cadenza fissa:</strong> già validato come miglior formato per rapporto engagement/effort. Da "ogni tanto" a 2 uscite/mese: nessuna risorsa aggiuntiva.</p></div>
+    </div>
+    <div class="swot-cell" style="background:rgba(146,43,33,.1);border-bottom:3px solid #922B21">
+      <div class="swot-header" style="color:#E57B76">MINACCE</div>
+      <div class="swot-item"><div class="bullet" style="background:#E57B76"></div><p><strong>Trend di calo non corretto:</strong> -16,3% in 3 mesi proiettato su 6 mesi porta a perdere oltre il 30% della reach organica. Il trend si autoalimenta.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#E57B76"></div><p><strong>Calo acquisizione follower accelerato:</strong> meno reach → meno esposizione → meno nuovi follower → meno segnale positivo all'algoritmo. Ciclo negativo già avviato.</p></div>
+      <div class="swot-item"><div class="bullet" style="background:#E57B76"></div><p><strong>Assenza di linktree orientato ai servizi:</strong> ~30 clic persi verso i servizi ogni giorno. Su base annuale: oltre 10.000 opportunità di contatto non convertite.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- PIANO D'AZIONE -->
+<div class="section reveal" id="azioni">
+  <div class="section-label">Piano d'azione</div>
+  <div class="section-title">3 fasi temporali</div>
+  <div class="section-desc">10 azioni specifiche con KPI misurabili. Piano realizzabile da un team di comunicazione PA senza risorse aggiuntive o budget di agenzia.</div>
+
+  <div class="fase-badge reveal" style="background:rgba(198,89,17,.15);color:#F0A070;border:1px solid rgba(198,89,17,.3)">
+    FASE 1 — Immediato (0-30 giorni): Correggere le basi
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#C65911">
+    <div class="azione-num">AZIONE 1</div>
+    <div class="azione-title">Ristrutturare il linktree in ottica servizi al cittadino</div>
+    <div class="azione-body">Sostituire le 8 voci attuali (tutte orientate ai canali social dell'ente) con link ai servizi concreti: Segnala un problema · Prenotazioni online · Pagamenti · Modulistica · Agenda eventi · WhatsApp del Comune · Sito istituzionale. Aggiornare il link in bio con micro-CTA ("Servizi, notizie e molto altro").<br><br>Perché: CTR allo 0,186% — su 263.009 persone raggiunte in 90 giorni solo 2.641 hanno cliccato. Con un hub orientato al cittadino il CTR può raggiungere 0,5%.</div>
+    <div class="azione-kpi">KPI → Clic mensili sul link: da 953 a 1.500 entro 30 giorni</div>
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#C65911">
+    <div class="azione-num">AZIONE 2</div>
+    <div class="azione-title">CTA esplicita in ogni caption di post discrezionale</div>
+    <div class="azione-body">Ogni post su un servizio, un'iniziativa o un'opportunità per il cittadino termina con una CTA specifica ("→ Link in bio per prenotare", "→ Trova il modulo in bio"). Non CTA generiche ma azioni precise.<br><br>Perché: il 6,6% delle visite al profilo clicca il link. Con CTA dirette questo tasso può salire al 10-12%, generando 400-500 clic aggiuntivi al mese senza aumentare la copertura.</div>
+    <div class="azione-kpi">KPI → Conversione visite→clic: da 6,6% a 10% entro 30 giorni</div>
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#C65911">
+    <div class="azione-num">AZIONE 3</div>
+    <div class="azione-title">Spostare le grafiche istituzionali nelle Stories</div>
+    <div class="azione-body">Avvisi di servizio, comunicati brevi, locandine di terzi → Stories (con link diretto). Nel feed: max 1 contenuto obbligatorio ogni 3 discrezionali. Per i contenuti obbligatori che restano nel feed: aggiungere sempre una foto reale, un dato concreto e una CTA specifica.<br><br>Perché: i giorni con interazioni sotto 600 corrispondono a grafiche istituzionali. Ogni post a basso engagement abbassa il segnale algoritmico di tutti gli altri, contribuendo al calo copertura del -16,3%.</div>
+    <div class="azione-kpi">KPI → Interazione media/giorno da 1.210 a 1.500 · rapporto feed obbl:discrez ≤ 1:3</div>
+  </div>
+
+  <div class="fase-badge reveal" style="background:rgba(46,117,182,.15);color:#7BB8E8;border:1px solid rgba(46,117,182,.3);margin-top:16px">
+    FASE 2 — Breve termine (1-3 mesi): Attivare i pattern che funzionano
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#2E75B6">
+    <div class="azione-num">AZIONE 4</div>
+    <div class="azione-title">1 contenuto partecipativo civico al mese</div>
+    <div class="azione-body">Ogni mese: 1 tema di trasformazione urbana o decisione civica concreta + sondaggio o domanda aperta + CTA. Temi non stagionali: avanzamento tramvia, nuovi parchi, inaugurazioni, nomi di spazi urbani.<br><br>Perché: il pattern del 27 febbraio (8.569 interazioni, 164 nuovi follower in un giorno) dimostra che questo meccanismo funziona e non dipende da eventi stagionali.</div>
+    <div class="azione-kpi">KPI → Almeno 1 giorno/mese con interazioni >3.000 · nuovi follower/mese a 2.000+</div>
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#2E75B6">
+    <div class="azione-num">AZIONE 5</div>
+    <div class="azione-title">2 reel strutturali al mese — format "Firenze si trasforma"</div>
+    <div class="azione-body">Riprese brevi (30-60 secondi) di cantieri, nuovi spazi pubblici, inaugurazioni. Testo sovrapposto con dato concreto, musica. Produzione con smartphone.<br><br>Perché: la copertura è in calo del -16,3%. I reel sono l'unico formato che Instagram distribuisce sistematicamente a non-follower. Il rapporto visualizzazioni/copertura al 23,4% indica che il profilo fatica a espandere l'audience.</div>
+    <div class="azione-kpi">KPI → Copertura media/giorno da 15.919 a 20.000 entro 60 giorni</div>
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#2E75B6">
+    <div class="azione-num">AZIONE 6</div>
+    <div class="azione-title">#LessicoFiorentino a cadenza fissa: 2 uscite/mese</div>
+    <div class="azione-body">Backlog di 10-12 termini del vernacolo fiorentino. Pubblicare ogni 12-15 giorni con il formato grafico esistente. Fissare le date nel calendario editoriale.<br><br>Perché: validato come miglior formato per rapporto engagement/effort. Il problema non è il formato ma la mancanza di programmazione.</div>
+    <div class="azione-kpi">KPI → 2 uscite/mese per 3 mesi consecutivi · ≥200 interazioni per uscita</div>
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#2E75B6">
+    <div class="azione-num">AZIONE 7</div>
+    <div class="azione-title">Strutturare la strategia hashtag</div>
+    <div class="azione-body">Set fisso per categoria: 3 branded (#Firenze #CittàdiFirenze #cittadifirenzeufficiale) + 4 di nicchia (#FirenzeSostenibile #FirenzeServizi #FirenzeSiTrasforma #LessicoFiorentino) + 3 geografici (#Toscana #FirenzeCity #VisitFlorence). Applicare in modo coerente per categoria.<br><br>Perché: hashtag inconsistenti non costruiscono visibilità cumulativa. Una strategia coerente aumenta la distribuzione verso non-follower per affinità tematica.</div>
+    <div class="azione-kpi">KPI → Copertura da non-follower: da 57% a 65% entro 3 mesi</div>
+  </div>
+
+  <div class="fase-badge reveal" style="background:rgba(30,107,60,.15);color:#5DBF8A;border:1px solid rgba(30,107,60,.3);margin-top:16px">
+    FASE 3 — Medio termine (3-6 mesi): Costruire il sistema editoriale
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#1E6B3C">
+    <div class="azione-num">AZIONE 8</div>
+    <div class="azione-title">2 serie editoriali fisse aggiuntive</div>
+    <div class="azione-body">Serie A — "Firenze dall'alto": foto aerea settimanale del territorio urbano. Costo produttivo basso, resa visiva alta. 1 uscita/settimana.<br>Serie B — "Numeri della città": 1 dato concreto sulla città ogni settimana (alberi piantati, km tramvia, servizi attivati). Formato testo + grafica minimalista. Applica il pattern "dato numerico + rilevanza civica" già validato.<br><br>Perché: le serie fisse costruiscono attesa, aumentano la frequenza di ritorno al profilo, migliorano il segnale all'algoritmo per continuità tematica.</div>
+    <div class="azione-kpi">KPI → 2 serie attive con cadenza rispettata per 2 mesi · ER medio mensile ≥7,5%</div>
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#1E6B3C">
+    <div class="azione-num">AZIONE 9</div>
+    <div class="azione-title">Collab @sarafunaro a 2/mese su temi civici strutturali</div>
+    <div class="azione-body">2 collab al mese con contenuti che replicano il pattern del ponte: partecipazione civica con scelta o azione reale. Non replicare la forma (sondaggio) ma il principio: il cittadino viene coinvolto in una decisione concreta.<br><br>Perché: il collab del 27 febbraio (8.569 interazioni) è il contenuto con la performance più alta degli ultimi 90 giorni e non ha una frequenza programmata.</div>
+    <div class="azione-kpi">KPI → 2 collab/mese per 2 mesi · ≥2.000 interazioni per collab</div>
+  </div>
+  <div class="azione-card reveal" style="border-left-color:#1E6B3C">
+    <div class="azione-num">AZIONE 10</div>
+    <div class="azione-title">Monitoraggio mensile con export Insights</div>
+    <div class="azione-body">Ogni primo lunedì del mese: esportare i dati Insights degli ultimi 28 giorni da Meta Business Suite e verificare i 5 KPI chiave. Se un KPI è sotto target per 2 mesi consecutivi, anticipare l'azione della fase successiva.<br><br>KPI da monitorare: copertura media/giorno · nuovi follower/mese · CTR link in bio · ER mensile su copertura · copertura da non-follower.</div>
+    <div class="azione-kpi">KPI → Verifica mensile obbligatoria · report export ogni primo lunedì del mese</div>
+  </div>
+</div>
+
+<!-- KPI DASHBOARD -->
+<div class="section reveal" id="kpi">
+  <div class="section-label">Dashboard di monitoraggio</div>
+  <div class="section-title">KPI con obiettivi temporali</div>
+  <div class="section-desc">Baseline al 30 marzo 2026. Obiettivi a 30 giorni, 3 mesi e 6 mesi. Verifica mensile con export CSV Meta Business Suite.</div>
+
+  <div class="card reveal">
+    <table class="kpi-table">
+      <thead>
+        <tr>
+          <th>KPI</th>
+          <th>Baseline mar 2026</th>
+          <th>Obiettivo 30gg</th>
+          <th>Obiettivo 3 mesi</th>
+          <th>Obiettivo 6 mesi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Copertura media / giorno</td><td class="val-base">15.919</td><td class="val-30">16.500</td><td class="val-3m">20.000</td><td class="val-6m">25.000</td></tr>
+        <tr><td>Nuovi follower / mese</td><td class="val-base">1.489</td><td class="val-30">1.700</td><td class="val-3m">2.000</td><td class="val-6m">2.500</td></tr>
+        <tr><td>CTR link in bio</td><td class="val-base">0,186%</td><td class="val-30">0,35%</td><td class="val-3m">0,5%</td><td class="val-6m">0,7%</td></tr>
+        <tr><td>Clic link / mese</td><td class="val-base">953</td><td class="val-30">1.500</td><td class="val-3m">2.500</td><td class="val-6m">4.000</td></tr>
+        <tr><td>ER su copertura</td><td class="val-base">7,60%</td><td class="val-30">7,5%+</td><td class="val-3m">7,5%+</td><td class="val-6m">8%+</td></tr>
+        <tr><td>Interazioni media / giorno</td><td class="val-base">1.210</td><td class="val-30">1.500</td><td class="val-3m">1.700</td><td class="val-6m">2.000</td></tr>
+        <tr><td>Copertura da non-follower</td><td class="val-base">57%</td><td class="val-30">58%</td><td class="val-3m">63%</td><td class="val-6m">68%</td></tr>
+        <tr><td>Rapporto feed obbl:discrez</td><td class="val-base">~1:1</td><td class="val-30">1:2</td><td class="val-3m">1:3</td><td class="val-6m">1:3</td></tr>
+        <tr><td>Reel pubblicati / mese</td><td class="val-base">Non strutturale</td><td class="val-30">1</td><td class="val-3m">2</td><td class="val-6m">3</td></tr>
+        <tr><td>Serie editoriali fisse attive</td><td class="val-base">2 (irregolari)</td><td class="val-30">3</td><td class="val-3m">4</td><td class="val-6m">5</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card reveal" style="margin-top:16px">
+    <div class="card-title">Proiezione KPI critici — obiettivo vs baseline</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="chartKPI"></canvas></div>
+  </div>
+
+  <div style="margin-top:32px;padding:20px;border:1px solid var(--card-border);border-radius:10px;font-size:12px;color:var(--text-muted);line-height:1.7">
+    <strong style="color:var(--text-secondary)">Note metodologiche</strong> · Dati Insights estratti da Meta Business Suite il 31 marzo 2026. Periodo: 1 gennaio – 30 marzo 2026 (90 giorni). · ER calcolato come interazioni/copertura: diverso dall'ER pubblico (like+commenti/follower) — i due valori non sono confrontabili. · I dati demografici del pubblico e il breakdown per formato non sono disponibili nei CSV: da completare con screenshot sezione "Pubblico" e "Contenuti" dell'app Instagram. · Il picco del 27-28 febbraio è classificato come contenuto strutturalmente replicabile, non stagionale. · Analisi realizzata con supporto AI (Claude, Anthropic). · Integra il Report Scenario B — Firenze vs Bologna, 31 marzo 2026.
+  </div>
+</div>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const MESI = ['Gennaio','Febbraio','Marzo'];
+const COLORI = {blu:'#2E75B6',verde:'#1E6B3C',arancio:'#C65911',viola:'#5B2C8D',rosso:'#922B21'};
+const gridColor = 'rgba(255,255,255,0.05)';
+const tickColor = '#4A5A6E';
+const baseOpts = {
+  responsive:true, maintainAspectRatio:false,
+  plugins:{legend:{display:false}},
+  scales:{
+    x:{grid:{color:gridColor},ticks:{color:tickColor,font:{family:'DM Mono',size:11}}},
+    y:{grid:{color:gridColor},ticks:{color:tickColor,font:{family:'DM Mono',size:11}}}
+  }
+};
+
+new Chart(document.getElementById('chartCopertura'),{
+  type:'bar',
+  data:{labels:MESI,datasets:[{data:[549188,407701,459914],backgroundColor:['#2E75B6','#1F4E7A','#2E75B6'],borderRadius:4,borderSkipped:false}]},
+  options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:v=>'Copertura: '+v.raw.toLocaleString('it')}}}}
+});
+new Chart(document.getElementById('chartFollower'),{
+  type:'bar',
+  data:{labels:MESI,datasets:[{data:[2090,1673,1489],backgroundColor:['#1E6B3C','#C65911','#922B21'],borderRadius:4,borderSkipped:false}]},
+  options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:v=>'Nuovi follower: '+v.raw.toLocaleString('it')}}}}
+});
+new Chart(document.getElementById('chartInterazioni'),{
+  type:'bar',
+  data:{labels:MESI,datasets:[{data:[38708,36973,32027],backgroundColor:['#5B2C8D','#5B2C8D','#5B2C8D'],borderRadius:4,borderSkipped:false}]},
+  options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:v=>'Interazioni: '+v.raw.toLocaleString('it')}}}}
+});
+new Chart(document.getElementById('chartER'),{
+  type:'line',
+  data:{labels:MESI,datasets:[{data:[7.05,9.07,6.96],borderColor:'#1E6B3C',backgroundColor:'rgba(30,107,60,0.1)',fill:true,tension:.3,pointBackgroundColor:'#1E6B3C',pointRadius:5}]},
+  options:{...baseOpts,scales:{...baseOpts.scales,y:{...baseOpts.scales.y,min:5,max:11,ticks:{...baseOpts.scales.y.ticks,callback:v=>v+'%'}}},plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:v=>v.raw.toFixed(2)+'%'}}}}
+});
+new Chart(document.getElementById('chartER2'),{
+  type:'bar',
+  data:{
+    labels:['ER pubblico (Scenario B)\nlike+commenti/follower','ER reale (Scenario C)\ninterazioni/copertura'],
+    datasets:[{data:[0.08,7.60],backgroundColor:['#922B21','#1E6B3C'],borderRadius:6,borderSkipped:false}]
+  },
+  options:{...baseOpts,indexAxis:'y',scales:{
+    x:{grid:{color:gridColor},ticks:{color:tickColor,font:{family:'DM Mono',size:11},callback:v=>v+'%'},max:10},
+    y:{grid:{display:false},ticks:{color:tickColor,font:{family:'DM Mono',size:11}}}
+  },plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:v=>v.raw.toFixed(2)+'%'}}}}
+});
+
+const FASCE = ['Baseline','30 giorni','3 mesi','6 mesi'];
+new Chart(document.getElementById('chartKPI'),{
+  type:'line',
+  data:{
+    labels:FASCE,
+    datasets:[
+      {label:'Copertura/gg',data:[15919,16500,20000,25000],borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,0.07)',fill:true,tension:.3,pointBackgroundColor:'#2E75B6',pointRadius:4,yAxisID:'y'},
+      {label:'Follower/mese',data:[1489,1700,2000,2500],borderColor:'#1E6B3C',backgroundColor:'rgba(30,107,60,0.07)',fill:true,tension:.3,pointBackgroundColor:'#1E6B3C',pointRadius:4,yAxisID:'y'},
+      {label:'Clic link/mese',data:[953,1500,2500,4000],borderColor:'#C65911',backgroundColor:'rgba(198,89,17,0.07)',fill:true,tension:.3,pointBackgroundColor:'#C65911',pointRadius:4,yAxisID:'y'},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{display:true,position:'top',labels:{color:tickColor,font:{family:'DM Mono',size:11},boxWidth:10,padding:16}},
+      tooltip:{mode:'index',intersect:false}
+    },
+    scales:{
+      x:{grid:{color:gridColor},ticks:{color:tickColor,font:{family:'DM Mono',size:11}}},
+      y:{grid:{color:gridColor},ticks:{color:tickColor,font:{family:'DM Mono',size:11},callback:v=>v.toLocaleString('it')}}
+    }
+  }
+});
+
+// BARRE ANIMATE
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.bar-fill[data-w]').forEach(b=>{
+        setTimeout(()=>{b.style.width=b.dataset.w+'%'},100);
+      });
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll('#barreAssi').forEach(el=>io.observe(el));
+
+// COUNT UP
+function countUp(el,target,fmt){
+  let start=0;const dur=1400;const step=16;const steps=dur/step;const inc=target/steps;
+  const t=setInterval(()=>{
+    start=Math.min(start+inc,target);
+    if(fmt==='M') el.textContent=(start/1e6).toFixed(1)+' mln';
+    else if(fmt==='K') el.textContent=Math.round(start/1000).toLocaleString('it')+'K';
+    else el.textContent=Math.round(start).toLocaleString('it');
+    if(start>=target) clearInterval(t);
+  },step);
+}
+const ioNum=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target;
+      countUp(el,+el.dataset.count,el.dataset.format);
+      ioNum.unobserve(el);
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>ioNum.observe(el));
+
+// REVEAL ON SCROLL
+const ioReveal=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ioReveal.unobserve(e.target);}});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>ioReveal.observe(el));
+
+// ACTIVE NAV
+const sections=document.querySelectorAll('.section[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+const ioNav=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>{
+        l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id);
+      });
+    }
+  });
+},{rootMargin:'-30% 0px -60% 0px'});
+sections.forEach(s=>ioNav.observe(s));
+</script>
+</body>
+</html>
