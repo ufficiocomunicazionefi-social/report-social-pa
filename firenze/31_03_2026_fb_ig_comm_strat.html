@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategia Multicanale IG+FB — Comune di Firenze Q2 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #16213e;
+    --card: #1e2840;
+    --card2: #1a2535;
+    --ig: #e1306c;
+    --fb: #4267b2;
+    --gold: #f5a623;
+    --green: #27ae60;
+    --white: #ffffff;
+    --light: #e8eaf0;
+    --muted: #8899aa;
+    --border: #2a3550;
+    --sidebar-w: 260px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--light);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-logo .logo-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .sidebar-logo .logo-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+
+  .sidebar-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 4px 10px;
+    background: rgba(225,48,108,0.15);
+    border: 1px solid rgba(225,48,108,0.3);
+    border-radius: 4px;
+    font-size: 10px;
+    color: var(--ig);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  nav {
+    flex: 1;
+    padding: 16px 0;
+    overflow-y: auto;
+  }
+
+  .nav-section {
+    padding: 8px 16px 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+  }
+
+  .nav-link:hover, .nav-link.active {
+    color: var(--white);
+    background: rgba(255,255,255,0.04);
+    border-left-color: var(--ig);
+  }
+
+  .nav-link .nav-icon { font-size: 15px; width: 20px; text-align: center; }
+
+  .sidebar-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* MAIN */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 0;
+  }
+
+  /* SECTIONS */
+  .section {
+    padding: 56px 60px;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .section.visible { opacity: 1; transform: translateY(0); }
+
+  .section-header {
+    margin-bottom: 40px;
+  }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--ig);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1.0;
+  }
+
+  .section-sub {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* BIG NUMBERS */
+  .bignums-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .bignum-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bignum-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .bignum-card.ig::before { background: var(--ig); }
+  .bignum-card.fb::before { background: var(--fb); }
+  .bignum-card.both::before { background: linear-gradient(90deg, var(--ig), var(--fb)); }
+
+  .bignum-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .bignum-values {
+    display: flex;
+    gap: 24px;
+    align-items: baseline;
+  }
+
+  .bignum-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    line-height: 1;
+  }
+
+  .bignum-val.ig { color: var(--ig); }
+  .bignum-val.fb { color: var(--fb); }
+
+  .bignum-channel {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  /* COMPARISON TABLE */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+  }
+
+  .comp-table th {
+    background: var(--card2);
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comp-table th.ig-h { color: var(--ig); }
+  .comp-table th.fb-h { color: var(--fb); }
+
+  .comp-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .comp-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .comp-table td.val-ig { color: var(--ig); font-weight: 600; font-family: 'DM Mono', monospace; }
+  .comp-table td.val-fb { color: var(--fb); font-weight: 600; font-family: 'DM Mono', monospace; }
+  .comp-table td.val-note { color: var(--muted); font-size: 12px; }
+
+  /* SCORE BARS */
+  .score-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .score-bar-label {
+    width: 200px;
+    font-size: 13px;
+    color: var(--light);
+    flex-shrink: 0;
+  }
+
+  .score-bars {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .score-bar-track {
+    background: var(--card2);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .score-bar-fill.ig { background: linear-gradient(90deg, var(--ig), #ff6b9d); }
+  .score-bar-fill.fb { background: linear-gradient(90deg, var(--fb), #6b8cd1); }
+
+  .score-bar-val {
+    width: 60px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* SWOT */
+  .swot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .swot-card {
+    border-radius: 10px;
+    padding: 24px;
+    min-height: 220px;
+  }
+
+  .swot-card.strengths { background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.3); }
+  .swot-card.weaknesses { background: rgba(231,76,60,0.12); border: 1px solid rgba(231,76,60,0.3); }
+  .swot-card.opportunities { background: rgba(66,103,178,0.15); border: 1px solid rgba(66,103,178,0.3); }
+  .swot-card.threats { background: rgba(142,68,173,0.12); border: 1px solid rgba(142,68,173,0.3); }
+
+  .swot-title {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .swot-card.strengths .swot-title { color: #27ae60; }
+  .swot-card.weaknesses .swot-title { color: #e74c3c; }
+  .swot-card.opportunities .swot-title { color: var(--fb); }
+  .swot-card.threats .swot-title { color: #9b59b6; }
+
+  .swot-items li {
+    font-size: 12.5px;
+    color: var(--light);
+    margin-bottom: 8px;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .swot-items li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+  }
+
+  /* ACTION CARDS */
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 48px 0 24px;
+    padding: 16px 24px;
+    border-radius: 8px;
+  }
+
+  .phase-header.p1 { background: rgba(225,48,108,0.1); border-left: 4px solid var(--ig); }
+  .phase-header.p2 { background: rgba(66,103,178,0.1); border-left: 4px solid var(--fb); }
+  .phase-header.p3 { background: rgba(39,174,96,0.1); border-left: 4px solid var(--green); }
+
+  .phase-icon { font-size: 28px; }
+
+  .phase-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+  }
+
+  .phase-header.p1 .phase-title { color: var(--ig); }
+  .phase-header.p2 .phase-title { color: var(--fb); }
+  .phase-header.p3 .phase-title { color: var(--green); }
+
+  .phase-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .action-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .action-card:hover { transform: translateY(-2px); border-color: var(--ig); }
+
+  .action-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 40px;
+    text-align: center;
+  }
+
+  .action-card.p1 .action-num { color: var(--ig); }
+  .action-card.p2 .action-num { color: var(--fb); }
+  .action-card.p3 .action-num { color: var(--green); }
+
+  .action-body { flex: 1; }
+
+  .action-title {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .action-channel {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .action-channel.ent { background: rgba(245,166,35,0.15); color: var(--gold); border: 1px solid rgba(245,166,35,0.3); }
+  .action-channel.ig { background: rgba(225,48,108,0.15); color: var(--ig); border: 1px solid rgba(225,48,108,0.3); }
+  .action-channel.fb { background: rgba(66,103,178,0.15); color: var(--fb); border: 1px solid rgba(66,103,178,0.3); }
+  .action-channel.coord { background: rgba(39,174,96,0.1); color: var(--green); border: 1px solid rgba(39,174,96,0.3); }
+
+  .action-detail {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  .action-kpi {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+
+  /* KPI DASHBOARD */
+  .kpi-section {
+    margin-top: 32px;
+  }
+
+  .kpi-channel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
+
+  .kpi-channel-title.ig { background: rgba(225,48,108,0.15); color: var(--ig); }
+  .kpi-channel-title.fb { background: rgba(66,103,178,0.15); color: var(--fb); }
+  .kpi-channel-title.cross { background: rgba(245,166,35,0.12); color: var(--gold); }
+
+  .kpi-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+  }
+
+  .kpi-table th {
+    background: var(--card2);
+    padding: 11px 16px;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .kpi-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .kpi-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .kpi-table td:first-child { color: var(--light); }
+  .kpi-table td.baseline { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 12px; }
+  .kpi-table td.target3 { color: var(--green); font-weight: 700; font-family: 'DM Mono', monospace; }
+  .kpi-table td.target6 { color: #5ddfb0; font-family: 'DM Mono', monospace; }
+
+  /* PATTERN CALLOUT */
+  .pattern-callout {
+    background: linear-gradient(135deg, rgba(225,48,108,0.1), rgba(66,103,178,0.08));
+    border: 1px solid rgba(225,48,108,0.25);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+
+  .pattern-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--ig);
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+
+  .pattern-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .pattern-stat {
+    text-align: center;
+  }
+
+  .pattern-stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--gold);
+  }
+
+  .pattern-stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .pattern-ingredients {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .pattern-ing {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--light);
+  }
+
+  .pattern-ing-icon { font-size: 18px; flex-shrink: 0; }
+
+  /* INCOERENZE TABLE */
+  .incoerenze-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .incoerenze-table th {
+    background: var(--card2);
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .incoerenze-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12.5px;
+    vertical-align: top;
+  }
+
+  .incoerenze-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .incoerenze-table td:first-child { color: var(--light); font-weight: 600; }
+  .incoerenze-table td.ig-cell { color: rgba(225,48,108,0.9); }
+  .incoerenze-table td.fb-cell { color: rgba(100,140,200,0.9); }
+  .incoerenze-table td.prob-cell { color: var(--gold); font-size: 12px; }
+
+  /* CHART BAR */
+  .chart-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    margin: 24px 0;
+  }
+
+  .chart-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--white);
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+
+  .chart-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .chart-row-label {
+    width: 220px;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .chart-track {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .chart-fill {
+    height: 100%;
+    border-radius: 5px;
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .chart-fill.ig { background: linear-gradient(90deg, var(--ig), #ff6b9d); }
+  .chart-fill.fb { background: linear-gradient(90deg, var(--fb), #7a9fd4); }
+
+  .chart-val {
+    width: 80px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--light);
+  }
+
+  /* HERO TOP BAR */
+  .top-hero {
+    background: linear-gradient(135deg, #0d1321 0%, #16213e 60%, #1a1030 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 60px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .top-hero::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(225,48,108,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--ig);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    letter-spacing: 3px;
+    color: var(--white);
+    line-height: 1.0;
+  }
+
+  .hero-title span { color: var(--ig); }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 12px;
+    max-width: 600px;
+  }
+
+  .hero-meta {
+    margin-top: 24px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 12px;
+    letter-spacing: 0.5px;
+  }
+
+  /* UTILITY */
+  .callout-box {
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 13px;
+    color: var(--light);
+    line-height: 1.6;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+  }
+
+  .tag.ig { background: rgba(225,48,108,0.15); color: var(--ig); }
+  .tag.fb { background: rgba(66,103,178,0.15); color: var(--fb); }
+  .tag.cross { background: rgba(39,174,96,0.12); color: var(--green); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-title">COMUNE<br>DI FIRENZE</div>
+    <div class="logo-sub">SOCIAL PA V10 · Q2 2026</div>
+    <div class="sidebar-tag">MULTICANALE IG + FB</div>
+  </div>
+  <nav>
+    <div class="nav-section">Overview</div>
+    <a class="nav-link active" onclick="scrollTo('overview')"><span class="nav-icon">📊</span> Big Numbers</a>
+    <a class="nav-link" onclick="scrollTo('confronto')"><span class="nav-icon">⚡</span> Confronto canali</a>
+    <div class="nav-section" style="margin-top:8px">Analisi</div>
+    <a class="nav-link" onclick="scrollTo('pattern')"><span class="nav-icon">🎯</span> Il pattern 27/2</a>
+    <a class="nav-link" onclick="scrollTo('incoerenze')"><span class="nav-icon">🔗</span> Cross-platform</a>
+    <a class="nav-link" onclick="scrollTo('swot')"><span class="nav-icon">🧩</span> SWOT</a>
+    <div class="nav-section" style="margin-top:8px">Piano d'azione</div>
+    <a class="nav-link" onclick="scrollTo('fase1')"><span class="nav-icon">⚡</span> Fase 1 — 0–30 giorni</a>
+    <a class="nav-link" onclick="scrollTo('fase2')"><span class="nav-icon">📈</span> Fase 2 — 1–3 mesi</a>
+    <a class="nav-link" onclick="scrollTo('fase3')"><span class="nav-icon">🎯</span> Fase 3 — 3–6 mesi</a>
+    <div class="nav-section" style="margin-top:8px">Monitoraggio</div>
+    <a class="nav-link" onclick="scrollTo('kpi')"><span class="nav-icon">📋</span> Dashboard KPI</a>
+  </nav>
+  <div class="sidebar-footer">
+    Dati: Meta Business Suite<br>Periodo: gen–apr 2026<br>Baseline: 31 marzo 2026
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+
+  <!-- HERO -->
+  <div class="top-hero">
+    <div class="hero-eyebrow">Social PA v10 · Scenario C Instagram + Facebook</div>
+    <div class="hero-title">STRATEGIA<br><span>MULTICANALE</span></div>
+    <div class="hero-sub">Piano di lavoro integrato per Instagram e Facebook · Comune di Firenze · Q2 2026</div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">📱 @cittadifirenzeufficiale</div>
+      <div class="hero-meta-item">📘 facebook.com/cittadifirenzeufficiale</div>
+      <div class="hero-meta-item">📅 Insights: gen–apr 2026 (90 giorni)</div>
+      <div class="hero-meta-item">🎯 3 obiettivi · 15 azioni · 2 canali</div>
+    </div>
+  </div>
+
+  <!-- SEZIONE 1: BIG NUMBERS -->
+  <div class="section" id="overview">
+    <div class="section-header">
+      <div class="section-eyebrow">01 — Overview</div>
+      <div class="section-title">BIG NUMBERS</div>
+      <div class="section-sub">Dati Insights reali · Meta Business Suite · 90 giorni</div>
+    </div>
+
+    <div class="bignums-grid">
+      <div class="bignum-card both">
+        <div class="bignum-label">Follower totali</div>
+        <div class="bignum-values">
+          <div>
+            <div class="bignum-val ig">119.487</div>
+            <div class="bignum-channel">INSTAGRAM</div>
+          </div>
+          <div>
+            <div class="bignum-val fb">137.373</div>
+            <div class="bignum-channel">FACEBOOK</div>
+          </div>
+        </div>
+      </div>
+      <div class="bignum-card both">
+        <div class="bignum-label">Visualizzazioni / giorno</div>
+        <div class="bignum-values">
+          <div>
+            <div class="bignum-val ig">68.034</div>
+            <div class="bignum-channel">INSTAGRAM</div>
+          </div>
+          <div>
+            <div class="bignum-val fb">61.071</div>
+            <div class="bignum-channel">FACEBOOK</div>
+          </div>
+        </div>
+      </div>
+      <div class="bignum-card both">
+        <div class="bignum-label">Interazioni / giorno</div>
+        <div class="bignum-values">
+          <div>
+            <div class="bignum-val ig">1.210</div>
+            <div class="bignum-channel">INSTAGRAM</div>
+          </div>
+          <div>
+            <div class="bignum-val fb">686</div>
+            <div class="bignum-channel">FACEBOOK</div>
+          </div>
+        </div>
+      </div>
+      <div class="bignum-card ig">
+        <div class="bignum-label">ER su visualizzazioni (reale)</div>
+        <div class="bignum-values">
+          <div>
+            <div class="bignum-val ig">7,60%</div>
+            <div class="bignum-channel">INSTAGRAM</div>
+          </div>
+          <div>
+            <div class="bignum-val fb">1,12%</div>
+            <div class="bignum-channel">FACEBOOK</div>
+          </div>
+        </div>
+      </div>
+      <div class="bignum-card fb">
+        <div class="bignum-label">CTR verso servizi (gap critico)</div>
+        <div class="bignum-values">
+          <div>
+            <div class="bignum-val ig">0,186%</div>
+            <div class="bignum-channel">INSTAGRAM</div>
+          </div>
+          <div>
+            <div class="bignum-val fb">0,087%</div>
+            <div class="bignum-channel">FACEBOOK</div>
+          </div>
+        </div>
+      </div>
+      <div class="bignum-card both">
+        <div class="bignum-label">Nuovi follower / mese</div>
+        <div class="bignum-values">
+          <div>
+            <div class="bignum-val ig">1.489</div>
+            <div class="bignum-channel">IG (−28,8%)</div>
+          </div>
+          <div>
+            <div class="bignum-val fb">~1.025</div>
+            <div class="bignum-channel">FB (stabile)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-box">
+      <strong>Il dato che conta di più:</strong> entrambi i canali soffrono dello stesso problema critico — il CTR verso i servizi è quasi inesistente (0,186% IG · 0,087% FB). Su 5,5 milioni di visualizzazioni FB e 1,4 milioni di persone raggiunte su IG in 90 giorni, meno di 8.000 clic totali verso i servizi comunali. Il canale comunica ma non converte.
+    </div>
+  </div>
+
+  <!-- SEZIONE 2: CONFRONTO -->
+  <div class="section" id="confronto">
+    <div class="section-header">
+      <div class="section-eyebrow">02 — Confronto canali</div>
+      <div class="section-title">IG VS FB</div>
+      <div class="section-sub">Performance comparata su metriche chiave</div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title">INTERAZIONI GIORNALIERE — CONFRONTO</div>
+      <div class="chart-row">
+        <div class="chart-row-label">Instagram · 1.210/gg</div>
+        <div class="chart-track"><div class="chart-fill ig" data-w="100"></div></div>
+        <div class="chart-val" style="color:var(--ig)">1.210</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-row-label">Facebook · 686/gg</div>
+        <div class="chart-track"><div class="chart-fill fb" data-w="56.7"></div></div>
+        <div class="chart-val" style="color:var(--fb)">686</div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title">CTR VERSO SERVIZI — QUANTO BASSO È IL GAP</div>
+      <div class="chart-row">
+        <div class="chart-row-label">Instagram · 0,186%</div>
+        <div class="chart-track"><div class="chart-fill ig" data-w="100"></div></div>
+        <div class="chart-val" style="color:var(--ig)">0,186%</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-row-label">Facebook · 0,087%</div>
+        <div class="chart-track"><div class="chart-fill fb" data-w="46.8"></div></div>
+        <div class="chart-val" style="color:var(--fb)">0,087%</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-row-label" style="color:var(--green)">Obiettivo IG 3 mesi</div>
+        <div class="chart-track"><div class="chart-fill" style="background:var(--green)" data-w="268.8"></div></div>
+        <div class="chart-val" style="color:var(--green)">0,5%</div>
+      </div>
+    </div>
+
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Metrica</th>
+          <th class="ig-h">Instagram</th>
+          <th class="fb-h">Facebook</th>
+          <th>Osservazione</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Follower</td><td class="val-ig">119.487</td><td class="val-fb">137.373</td><td class="val-note">FB +15% — ma IG cresce più rapidamente</td></tr>
+        <tr><td>Visualizzazioni/giorno</td><td class="val-ig">68.034</td><td class="val-fb">61.071</td><td class="val-note">IG +11,4%</td></tr>
+        <tr><td>Interazioni/giorno</td><td class="val-ig">1.210</td><td class="val-fb">686</td><td class="val-note">IG +76,4% — pubblico più attivo</td></tr>
+        <tr><td>CTR verso servizi</td><td class="val-ig">0,186%</td><td class="val-fb">0,087%</td><td class="val-note">Entrambi critici. Gap principale del piano.</td></tr>
+        <tr><td>ER su visualizzazioni</td><td class="val-ig">7,60%</td><td class="val-fb">1,12%</td><td class="val-note">Metriche non comparabili — metodi diversi</td></tr>
+        <tr><td>Reel pubblicati/mese</td><td class="val-ig">Non strutturale</td><td class="val-fb">~2,7</td><td class="val-note">Gap comune: formato più efficiente mai sistematizzato</td></tr>
+        <tr><td>Nuovi follower/mese</td><td class="val-ig">1.489 (−28,8%)</td><td class="val-fb">~1.025 (stabile)</td><td class="val-note">IG in calo accelerato — priorità critica</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SEZIONE 3: PATTERN -->
+  <div class="section" id="pattern">
+    <div class="section-header">
+      <div class="section-eyebrow">03 — Il pattern che funziona</div>
+      <div class="section-title">27 FEBBRAIO 2026</div>
+      <div class="section-sub">Varo nuovo ponte Arno + sondaggio nome + collab @sarafunaro · Picco documentato su entrambi i canali</div>
+    </div>
+
+    <div class="pattern-callout">
+      <div class="pattern-title">RISULTATI DEL PICCO (INSTAGRAM — DATO PRIMARIO)</div>
+      <div class="pattern-stats">
+        <div class="pattern-stat">
+          <div class="pattern-stat-val">+608%</div>
+          <div class="pattern-stat-label">Interazioni vs media<br>giornaliera</div>
+        </div>
+        <div class="pattern-stat">
+          <div class="pattern-stat-val">+126%</div>
+          <div class="pattern-stat-label">Copertura giornaliera<br>(36.000 persone)</div>
+        </div>
+        <div class="pattern-stat">
+          <div class="pattern-stat-val">+175%</div>
+          <div class="pattern-stat-label">Nuovi follower<br>in 24 ore</div>
+        </div>
+        <div class="pattern-stat">
+          <div class="pattern-stat-val">2</div>
+          <div class="pattern-stat-label">Canali con picco<br>lo stesso giorno</div>
+        </div>
+      </div>
+
+      <div style="font-size:13px; color:var(--muted); margin-bottom:16px;">Anche su Facebook il 27 febbraio è il giorno con il secondo picco di interazioni del trimestre (+123 nuovi follower). Il pattern funziona su entrambe le piattaforme.</div>
+
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;color:var(--light);margin-bottom:10px;">INGREDIENTI REPLICABILI — NON STAGIONALI</div>
+      <div class="pattern-ingredients">
+        <div class="pattern-ing"><span class="pattern-ing-icon">🏗️</span> Notizia di trasformazione urbana concreta con impatto visibile sulla città</div>
+        <div class="pattern-ing"><span class="pattern-ing-icon">🗳️</span> Elemento partecipativo diretto: sondaggio, scelta, domanda aperta ai cittadini</div>
+        <div class="pattern-ing"><span class="pattern-ing-icon">📊</span> Dato numerico concreto in apertura (data, metro, euro, cifra, tempistica)</div>
+        <div class="pattern-ing"><span class="pattern-ing-icon">🤝</span> Collab istituzionale @sarafunaro — amplificazione immediata della reach</div>
+      </div>
+    </div>
+
+    <div class="callout-box">
+      <strong>Temi candidati per le prossime attivazioni (non stagionali):</strong> avanzamento cantieri Tramvia · nuovi parchi o spazi pubblici · inaugurazioni di servizi · risultati di consultazioni · nomi di spazi urbani · variazioni di servizi con impatto diretto sul quotidiano dei cittadini.
+    </div>
+  </div>
+
+  <!-- SEZIONE 4: INCOERENZE CROSS-PLATFORM -->
+  <div class="section" id="incoerenze">
+    <div class="section-header">
+      <div class="section-eyebrow">04 — Sintesi cross-platform</div>
+      <div class="section-title">ASSE 8: INTEGRAZIONE<br>CROSS-CANALE</div>
+      <div class="section-sub">Cosa funziona già · Cosa manca · Dove intervenire</div>
+    </div>
+
+    <div style="margin-bottom:32px;">
+      <div style="font-weight:700;color:var(--green);margin-bottom:12px;font-size:14px;">✅ Cosa funziona già</div>
+      <ul style="list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <li style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px 16px;font-size:13px;color:var(--light)">📡 Crossposting su 5 canali istituzionali — coerenza narrativa di base garantita</li>
+        <li style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px 16px;font-size:13px;color:var(--light)">🤝 Collab @sarafunaro attivi su entrambi i canali — asset con resa più alta</li>
+        <li style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px 16px;font-size:13px;color:var(--light)">🎨 Identità visiva istituzionale riconoscibile su entrambe le piattaforme</li>
+        <li style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px 16px;font-size:13px;color:var(--light)">📅 Campagne stagionali coordinate (GrandiDonneFirenze, FirenzeLibera)</li>
+      </ul>
+    </div>
+
+    <div style="font-weight:700;color:var(--ig);margin-bottom:12px;font-size:14px;">⚠️ Aree di incoerenza da correggere</div>
+    <table class="incoerenze-table">
+      <thead>
+        <tr>
+          <th>Dimensione</th>
+          <th>Instagram</th>
+          <th>Facebook</th>
+          <th>Problema / Soluzione</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Accesso ai servizi</td>
+          <td class="ig-cell">Linktree orientato ai social</td>
+          <td class="fb-cell">Post-link quasi invisibili</td>
+          <td class="prob-cell">Nessun canale porta ai servizi → Azione 1</td>
+        </tr>
+        <tr>
+          <td>Uso dei Reel</td>
+          <td class="ig-cell">Non strutturato nel piano</td>
+          <td class="fb-cell">Solo 8 in 90 giorni</td>
+          <td class="prob-cell">Stesso video IG adattato su FB → Azione 7</td>
+        </tr>
+        <tr>
+          <td>Contenuti obbligatori</td>
+          <td class="ig-cell">Nel feed → abbassano ER</td>
+          <td class="fb-cell">Come post-link → invisibili</td>
+          <td class="prob-cell">Policy condivisa: foto + dato + CTA → Azione 2</td>
+        </tr>
+        <tr>
+          <td>Serie editoriali</td>
+          <td class="ig-cell">#LessicoFiorentino irregolare</td>
+          <td class="fb-cell">#BuonGiornoFirenze stabile</td>
+          <td class="prob-cell">Calendario condiviso fisso → Azione 10</td>
+        </tr>
+        <tr>
+          <td>Contenuti partecipativi</td>
+          <td class="ig-cell">1 episodio (27/2) — non ripetuto</td>
+          <td class="fb-cell">Non documentati</td>
+          <td class="prob-cell">1 contenuto coordinato/mese → Azione 6</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SEZIONE 5: SWOT -->
+  <div class="section" id="swot">
+    <div class="section-header">
+      <div class="section-eyebrow">05 — SWOT operativa</div>
+      <div class="section-title">SWOT CROSS-PLATFORM</div>
+      <div class="section-sub">Basata su dati Insights reali · Solo contenuti strutturali permanenti</div>
+    </div>
+
+    <div class="swot-grid">
+      <div class="swot-card strengths">
+        <div class="swot-title">💪 PUNTI DI FORZA</div>
+        <ul class="swot-items">
+          <li>IG: ER reale 7,60% — chi vede i contenuti interagisce in modo significativo</li>
+          <li>FB: reach organica 44,5% della fanbase ogni giorno — nessuna penalizzazione algoritmica grave</li>
+          <li>Ecosistema cross-canale su 5 piattaforme già attivo e funzionante</li>
+          <li>Collab @sarafunaro: +608% interazioni (27/2 IG) — asset con resa più alta</li>
+          <li>FB: Reel genera 2,2× visualizzazioni e 2,7× interazioni vs foto</li>
+          <li>Pattern civico-partecipativo validato dai dati su entrambi i canali</li>
+        </ul>
+      </div>
+      <div class="swot-card weaknesses">
+        <div class="swot-title">⚠️ PUNTI DI DEBOLEZZA</div>
+        <ul class="swot-items">
+          <li>CTR verso servizi: 0,186% IG · 0,087% FB — obiettivo "servizi" quasi inaccessibile</li>
+          <li>IG: follower in calo −28,8% in 3 mesi — accelerazione preoccupante</li>
+          <li>IG: copertura in calo −16,3% gen→mar — trend non arrestato</li>
+          <li>FB: 117 Storie in 90 giorni con ER 0,71% — massimo spreco produttivo</li>
+          <li>FB: Reel solo 8 in 90 giorni — formato più efficiente mai sistematizzato</li>
+          <li>Nessuna policy condivisa tra i due canali sui contenuti obbligatori</li>
+        </ul>
+      </div>
+      <div class="swot-card opportunities">
+        <div class="swot-title">🚀 OPPORTUNITÀ</div>
+        <ul class="swot-items">
+          <li>Linktree IG → servizi: potenziale +2.500 clic/mese con 1 pomeriggio di lavoro</li>
+          <li>Stesso Reel su IG e FB: costo produttivo ×1, reach ×2 — economia immediata</li>
+          <li>Pattern 27/2 replicabile 1×/mese su entrambi i canali con temi civici non stagionali</li>
+          <li>#LessicoFiorentino testabile su FB — pubblico 45–65 anni è target ideale per il vernacolo</li>
+          <li>Events FB: sezione abbandonata dal 2019 con reach organica autonoma non sfruttata</li>
+          <li>Strategia hashtag IG strutturata: potenziale crescita non-follower da 57% a 65%</li>
+        </ul>
+      </div>
+      <div class="swot-card threats">
+        <div class="swot-title">🔴 MINACCE</div>
+        <ul class="swot-items">
+          <li>IG: senza intervento, follower scenderanno sotto 1.000/mese a giugno 2026</li>
+          <li>FB: CTR link <0,1% → rischio classificazione come "bassa utilità" dall'algoritmo</li>
+          <li>Pubblico FB invecchia (61,9% oltre 45 anni, 1,1% under 25) — non auto-rinnovante</li>
+          <li>Storie FB a volume elevato (117 in 90gg) disperde risorse che potrebbero fare Reel</li>
+          <li>Senza monitoraggio mensile strutturato, la baseline acquisita viene persa</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEZIONE 6: FASE 1 -->
+  <div class="section" id="fase1">
+    <div class="section-header">
+      <div class="section-eyebrow">06 — Piano d'azione · Fase 1</div>
+      <div class="section-title">IMMEDIATO<br>0–30 GIORNI</div>
+      <div class="section-sub">Correggere le fondamenta · 5 azioni prioritarie su entrambi i canali</div>
+    </div>
+
+    <div class="phase-header p1">
+      <div class="phase-icon">⚡</div>
+      <div>
+        <div class="phase-title">Correggere le fondamenta</div>
+        <div class="phase-sub">Queste azioni non richiedono nuove risorse — solo una decisione e un'ora di lavoro ciascuna</div>
+      </div>
+    </div>
+
+    <div class="action-grid">
+      <div class="action-card p1">
+        <div class="action-num">1</div>
+        <div class="action-body">
+          <div class="action-title">Ristrutturare l'accesso ai servizi</div>
+          <span class="action-channel ent">Entrambi i canali</span>
+          <div class="action-detail">IG: sostituire le 8 voci del linktree (tutte orientate ai social) con servizi concreti — Segnala un problema · Prenotazioni · Pagamenti · Modulistica · Agenda · Sito istituzionale. Micro-CTA in bio.<br><br>FB: mai più post con solo link. Ogni post che rimanda fuori deve avere foto reale + CTA di 1 riga ("Tutti i dettagli qui →").</div>
+          <div class="action-kpi">KPI: IG clic/mese 953→1.500 entro 30gg · FB CTR mensile >2.000 clic entro 60gg</div>
+        </div>
+      </div>
+
+      <div class="action-card p1">
+        <div class="action-num">2</div>
+        <div class="action-body">
+          <div class="action-title">Policy editoriale condivisa</div>
+          <span class="action-channel ent">Entrambi i canali</span>
+          <div class="action-detail">Regola unica per IG e FB: contenuto obbligatorio nel feed SOLO se ha foto reale + dato in apertura + CTA specifica. Altrimenti: Stories.<br><br>Rapporto minimo: 1 contenuto obbligatorio ogni 3 discrezionali nel feed.</div>
+          <div class="action-kpi">KPI: rapporto feed obbligatori:discrezionali ≤ 1:3 su entrambi entro 30 giorni</div>
+        </div>
+      </div>
+
+      <div class="action-card p1">
+        <div class="action-num">3</div>
+        <div class="action-body">
+          <div class="action-title">CTA esplicita in ogni caption</div>
+          <span class="action-channel ent">Entrambi i canali</span>
+          <div class="action-detail">Ogni post che riguarda un servizio o un'opportunità termina con una CTA specifica. Non generica.<br><br>IG: "→ Link in bio per prenotare" / "→ Trova il modulo in bio"<br>FB: "→ Tutti i dettagli e la domanda qui: [link diretto]"</div>
+          <div class="action-kpi">KPI: IG conversione visite→clic da 6,6% a 10% · FB: doppio CTR su 5 post con CTA vs senza</div>
+        </div>
+      </div>
+
+      <div class="action-card p1">
+        <div class="action-num">4</div>
+        <div class="action-body">
+          <div class="action-title">Ridurre Storie FB · Portare Reel a 8/mese</div>
+          <span class="action-channel fb">Facebook</span>
+          <div class="action-detail">Storie FB: da 1,3/giorno a 3–4/settimana (max 16/mese). Eliminare quelle decorative o duplicative del feed.<br><br>Le risorse risparmiate vanno ai Reel: da ~2,7 a 8/mese (2/settimana). Non serve produzione professionale — smartphone e stabilizzatore.</div>
+          <div class="action-kpi">KPI: Reel FB da ~2,7 a 8/mese entro 30 giorni · Storie ridotte a max 16/mese</div>
+        </div>
+      </div>
+
+      <div class="action-card p1" style="grid-column: 1 / -1;">
+        <div class="action-num">5</div>
+        <div class="action-body">
+          <div class="action-title">Monitoraggio mensile unificato</div>
+          <span class="action-channel ent">Entrambi i canali</span>
+          <div class="action-detail">Ogni primo lunedì del mese: export Meta Business Suite per entrambi i canali. 5 KPI per canale registrati in un foglio condiviso e confrontati con la baseline. Senza monitoring, la baseline acquisita con questi report viene persa.</div>
+          <div class="action-kpi">KPI: dashboard attiva dal primo mese · dati registrati senza interruzione per 3 mesi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEZIONE 7: FASE 2 -->
+  <div class="section" id="fase2">
+    <div class="section-header">
+      <div class="section-eyebrow">07 — Piano d'azione · Fase 2</div>
+      <div class="section-title">BREVE TERMINE<br>1–3 MESI</div>
+      <div class="section-sub">Attivare i pattern che funzionano · 5 azioni di costruzione</div>
+    </div>
+
+    <div class="phase-header p2">
+      <div class="phase-icon">📈</div>
+      <div>
+        <div class="phase-title">Attivare i pattern che funzionano</div>
+        <div class="phase-sub">Il 27 febbraio ha dimostrato cosa funziona. Queste azioni lo replicano in modo sistematico.</div>
+      </div>
+    </div>
+
+    <div class="action-grid">
+      <div class="action-card p2">
+        <div class="action-num">6</div>
+        <div class="action-body">
+          <div class="action-title">Contenuto civico-partecipativo mensile</div>
+          <span class="action-channel coord">Coordinato entrambi</span>
+          <div class="action-detail">Ogni mese: 1 tema di trasformazione urbana o decisione civica concreta. Prodotto in formato nativo per ciascun canale e pubblicato nella stessa settimana.<br><br>IG: reel breve + sondaggio Stories + collab @sarafunaro<br>FB: foto + dato in apertura + domanda nei commenti + collab @sarafunaro</div>
+          <div class="action-kpi">KPI: IG >3.000 int in 1gg/mese · FB >2.000 int in 1gg/mese · 1 tema/mese x3 mesi consecutivi</div>
+        </div>
+      </div>
+
+      <div class="action-card p2">
+        <div class="action-num">7</div>
+        <div class="action-body">
+          <div class="action-title">Reel come formato strutturale</div>
+          <span class="action-channel ent">Entrambi i canali</span>
+          <div class="action-detail">ECONOMIA: lo stesso video prodotto per IG viene adattato e pubblicato su FB con caption più lunga e dato in apertura. Costo produttivo ×1 — reach ×2.<br><br>IG: 2 reel/mese · format "Firenze si trasforma" (30–60 sec)<br>FB: 2 reel/settimana dagli stessi video IG adattati</div>
+          <div class="action-kpi">KPI: IG copertura/gg 15.919→20.000 entro 60gg · FB viz/gg 61.071→70.000 entro 90gg</div>
+        </div>
+      </div>
+
+      <div class="action-card p2">
+        <div class="action-num">8</div>
+        <div class="action-body">
+          <div class="action-title">Format "Firenze in cantiere" — settimanale</div>
+          <span class="action-channel ent">Entrambi i canali</span>
+          <div class="action-detail">Struttura fissa: dato concreto in apertura ("Questa settimana: X metri di binario. Mancano Y settimane") + foto/video reale del cantiere + CTA all'aggiornamento sul sito.<br><br>Priorità assoluta: Tramvia. IG: reel o carosello · FB: foto + caption + dato</div>
+          <div class="action-kpi">KPI: 8 settimane consecutive · IG ≥200 int/post · FB >400 int/post entro settimana 8</div>
+        </div>
+      </div>
+
+      <div class="action-card p2">
+        <div class="action-num">9</div>
+        <div class="action-body">
+          <div class="action-title">Collab @sarafunaro a 2/mese</div>
+          <span class="action-channel coord">Coordinato entrambi</span>
+          <div class="action-detail">Checklist interna: quale contenuto merita il collab, chi lo richiede, con quanto anticipo. Il principio: il cittadino viene coinvolto in una decisione o trasformazione concreta.<br><br>I collab escono coordinati su entrambi i canali nella stessa settimana.</div>
+          <div class="action-kpi">KPI: 2 collab/mese per 2 mesi consecutivi · IG ≥2.000 int/collab · FB: monitorare reach incrementale</div>
+        </div>
+      </div>
+
+      <div class="action-card p2" style="grid-column: 1 / -1;">
+        <div class="action-num">10</div>
+        <div class="action-body">
+          <div class="action-title">#LessicoFiorentino a cadenza fissa + test su Facebook</div>
+          <span class="action-channel coord">Coordinato entrambi</span>
+          <div class="action-detail">IG: 2 uscite/mese ogni 12–15 giorni. Costruire un backlog di 10–12 termini. Fissare i giorni nel calendario editoriale.<br><br>FB: test 1 uscita/mese per 3 mesi. Il pubblico FB (61,9% sopra 45 anni, prevalentemente fiorentino) è il target ideale per il vernacolo locale. Se l'ER supera la media mensile, inserire nel piano fisso.</div>
+          <div class="action-kpi">KPI: IG 2 uscite/mese x3 mesi ≥200 int · FB: 3 test — se ER>media mensile → serie fissa</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEZIONE 8: FASE 3 -->
+  <div class="section" id="fase3">
+    <div class="section-header">
+      <div class="section-eyebrow">08 — Piano d'azione · Fase 3</div>
+      <div class="section-title">MEDIO TERMINE<br>3–6 MESI</div>
+      <div class="section-sub">Costruire il sistema editoriale · 5 azioni di consolidamento</div>
+    </div>
+
+    <div class="phase-header p3">
+      <div class="phase-icon">🎯</div>
+      <div>
+        <div class="phase-title">Costruire il sistema editoriale</div>
+        <div class="phase-sub">Misurare i progressi, aggiungere serie editoriali, riattivare strumenti mai usati.</div>
+      </div>
+    </div>
+
+    <div class="action-grid">
+      <div class="action-card p3">
+        <div class="action-num">11</div>
+        <div class="action-body">
+          <div class="action-title">Prima misurazione progressi (mese 3)</div>
+          <span class="action-channel ent">Entrambi i canali</span>
+          <div class="action-detail">Confronto baseline aprile 2026 vs luglio 2026 su tutte le metriche. Se un KPI è sotto target per 2 mesi consecutivi, anticipare l'azione della fase successiva.</div>
+          <div class="action-kpi">Target 3M: IG copertura >20.000/gg · FB viz >70.000/gg · CTR: IG 2.500/mese · FB 6.000/mese</div>
+        </div>
+      </div>
+
+      <div class="action-card p3">
+        <div class="action-num">12</div>
+        <div class="action-body">
+          <div class="action-title">Serie editoriali aggiuntive</div>
+          <span class="action-channel coord">Coordinato entrambi</span>
+          <div class="action-detail">"Firenze in numeri" (entrambi): stesso dato, formato adattato per canale.<br>"Firenze dall'alto" (solo IG): foto aerea settimanale. Costo basso, resa visiva alta.<br>"Il quartiere questa settimana" (solo FB): rotante sui 5 quartieri con i Consigli di Quartiere.</div>
+          <div class="action-kpi">KPI: 2 nuove serie/canale attive per 8 settimane consecutive</div>
+        </div>
+      </div>
+
+      <div class="action-card p3">
+        <div class="action-num">13</div>
+        <div class="action-body">
+          <div class="action-title">Riattivare gli eventi Facebook</div>
+          <span class="action-channel fb">Facebook</span>
+          <div class="action-detail">Inaugurazioni Tramvia e opere pubbliche · Scadenze bandi con impatto ampio · Appuntamenti civici ricorrenti. Ogni evento: data, luogo, descrizione con link, immagine di copertina.</div>
+          <div class="action-kpi">KPI: ≥2 eventi propri pubblicati al mese a partire dal mese 3</div>
+        </div>
+      </div>
+
+      <div class="action-card p3">
+        <div class="action-num">14</div>
+        <div class="action-body">
+          <div class="action-title">Strategia hashtag strutturata</div>
+          <span class="action-channel ig">Instagram</span>
+          <div class="action-detail">Set fisso 8–10 hashtag per categoria:<br>Branded: #Firenze · #CittàdiFirenze · #cittadifirenzeufficiale<br>Nicchia: #FirenzeSostenibile · #FirenzeServizi · #FirenzeSiTrasforma<br>Geografici: #Toscana · #FirenzeCity · #VisitFlorence</div>
+          <div class="action-kpi">KPI: set definito entro mese 1 · copertura non-follower 57%→65% entro 3 mesi</div>
+        </div>
+      </div>
+
+      <div class="action-card p3" style="grid-column: 1 / -1;">
+        <div class="action-num">15</div>
+        <div class="action-body">
+          <div class="action-title">Monitoraggio continuo e ottimizzazione</div>
+          <span class="action-channel ent">Entrambi i canali</span>
+          <div class="action-detail">Ogni primo lunedì del mese: export Meta Business Suite, aggiornamento dashboard KPI, confronto con baseline. Se un KPI è sotto target per 2 mesi consecutivi, anticipare l'azione della fase successiva. Il monitoraggio è il prerequisito per misurare l'efficacia dell'intero piano.</div>
+          <div class="action-kpi">KPI: 5 metriche per canale registrate ogni mese senza interruzione · dashboard aggiornata</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEZIONE 9: KPI DASHBOARD -->
+  <div class="section" id="kpi">
+    <div class="section-header">
+      <div class="section-eyebrow">09 — Dashboard di monitoraggio</div>
+      <div class="section-title">KPI UNIFICATA</div>
+      <div class="section-sub">Baseline · Target 30 giorni · Target 3 mesi · Target 6 mesi</div>
+    </div>
+
+    <div class="kpi-section">
+      <div class="kpi-channel-title ig">🔴 INSTAGRAM</div>
+      <table class="kpi-table">
+        <thead>
+          <tr>
+            <th>KPI</th>
+            <th>Baseline (mar 2026)</th>
+            <th>Target 30gg</th>
+            <th>Target 3 mesi</th>
+            <th>Target 6 mesi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Copertura media/giorno</td><td class="baseline">15.919</td><td class="baseline">16.500</td><td class="target3">20.000</td><td class="target6">25.000</td></tr>
+          <tr><td>Nuovi follower/mese</td><td class="baseline">1.489 (−28,8%)</td><td class="baseline">1.700</td><td class="target3">2.000</td><td class="target6">2.500</td></tr>
+          <tr><td>CTR link in bio/mese</td><td class="baseline">953 clic</td><td class="baseline">1.500</td><td class="target3">2.500</td><td class="target6">4.000</td></tr>
+          <tr><td>ER su copertura</td><td class="baseline">7,60%</td><td class="baseline">7,5%+</td><td class="target3">7,5%+</td><td class="target6">8%+</td></tr>
+          <tr><td>Interazioni media/giorno</td><td class="baseline">1.210</td><td class="baseline">1.500</td><td class="target3">1.700</td><td class="target6">2.000</td></tr>
+          <tr><td>Copertura non-follower</td><td class="baseline">57%</td><td class="baseline">58%</td><td class="target3">63%</td><td class="target6">68%</td></tr>
+          <tr><td>Reel pubblicati/mese</td><td class="baseline">Non strutturale</td><td class="baseline">2</td><td class="target3">8</td><td class="target6">8+</td></tr>
+          <tr><td>Serie editoriali fisse attive</td><td class="baseline">2 (irregolari)</td><td class="baseline">3</td><td class="target3">4</td><td class="target6">5</td></tr>
+        </tbody>
+      </table>
+
+      <div class="kpi-channel-title fb">🔵 FACEBOOK</div>
+      <table class="kpi-table">
+        <thead>
+          <tr>
+            <th>KPI</th>
+            <th>Baseline (gen–apr 2026)</th>
+            <th>Target 30gg</th>
+            <th>Target 3 mesi</th>
+            <th>Target 6 mesi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Visualizzazioni media/giorno</td><td class="baseline">61.071</td><td class="baseline">63.000</td><td class="target3">70.000</td><td class="target6">80.000</td></tr>
+          <tr><td>Interazioni media/giorno</td><td class="baseline">686</td><td class="baseline">750</td><td class="target3">900</td><td class="target6">1.100</td></tr>
+          <tr><td>CTR link/mese</td><td class="baseline">~1.603 clic</td><td class="baseline">2.000</td><td class="target3">6.000</td><td class="target6">10.000</td></tr>
+          <tr><td>ER su visualizzazioni</td><td class="baseline">1,12%</td><td class="baseline">1,20%</td><td class="target3">1,30%</td><td class="target6">1,50%</td></tr>
+          <tr><td>Nuovi follower/mese</td><td class="baseline">~1.025</td><td class="baseline">1.100</td><td class="target3">1.200</td><td class="target6">1.500</td></tr>
+          <tr><td>Reel pubblicati/mese</td><td class="baseline">~2,7</td><td class="baseline">8</td><td class="target3">8+</td><td class="target6">8+</td></tr>
+          <tr><td>Storie pubblicate/mese</td><td class="baseline">39</td><td class="baseline">16</td><td class="target3">12</td><td class="target6">12</td></tr>
+          <tr><td>Recensioni presidiate (1–3 stelle)</td><td class="baseline">~0%</td><td class="baseline">90%</td><td class="target3">100%</td><td class="target6">100%</td></tr>
+        </tbody>
+      </table>
+
+      <div class="kpi-channel-title cross">⚡ KPI CONDIVISI CROSS-PLATFORM</div>
+      <table class="kpi-table">
+        <thead>
+          <tr>
+            <th>KPI</th>
+            <th>Baseline</th>
+            <th>Target 30gg</th>
+            <th>Target 3 mesi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Contenuti partecipativi/mese</td><td class="baseline">0–1 (non strutturale)</td><td class="baseline">1 coordinato</td><td class="target3">1/mese entrambi</td></tr>
+          <tr><td>Collab @sarafunaro/mese</td><td class="baseline">Non strutturale</td><td class="baseline">1</td><td class="target3">2 coordinati</td></tr>
+          <tr><td>Rapporto feed obbligatori:discrezionali</td><td class="baseline">~1:1</td><td class="baseline">1:2</td><td class="target3">1:3</td></tr>
+          <tr><td>Reel settimanali combinati (IG+FB)</td><td class="baseline">0,9/settimana</td><td class="baseline">4/settimana</td><td class="target3">4/settimana</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:48px; padding:28px; background:var(--card2); border-radius:10px; border:1px solid var(--border); text-align:center;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:2px;margin-bottom:12px;">I 3 PRINCIPI DEL PIANO</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+        <div style="background:rgba(225,48,108,0.08);border:1px solid rgba(225,48,108,0.2);border-radius:8px;padding:20px;">
+          <div style="font-size:28px;margin-bottom:10px;">🚪</div>
+          <div style="font-weight:700;font-size:13px;color:var(--white);margin-bottom:8px;">Ogni post deve aprire una porta</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6;">Il canale esiste per portare i cittadini ai servizi. Ogni contenuto — obbligatorio o discrezionale — deve avere una CTA specifica verso un'azione reale.</div>
+        </div>
+        <div style="background:rgba(39,174,96,0.08);border:1px solid rgba(39,174,96,0.2);border-radius:8px;padding:20px;">
+          <div style="font-size:28px;margin-bottom:10px;">🎬</div>
+          <div style="font-weight:700;font-size:13px;color:var(--white);margin-bottom:8px;">Stesso video, doppia copertura</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6;">I Reel prodotti per Instagram si adattano e si pubblicano su Facebook. Il costo produttivo è uno, la reach si moltiplica su entrambe le piattaforme.</div>
+        </div>
+        <div style="background:rgba(66,103,178,0.08);border:1px solid rgba(66,103,178,0.2);border-radius:8px;padding:20px;">
+          <div style="font-size:28px;margin-bottom:10px;">🗳️</div>
+          <div style="font-weight:700;font-size:13px;color:var(--white);margin-bottom:8px;">1 contenuto partecipativo al mese</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6;">Il pattern del 27 febbraio è documentato e replicabile. Tema civico + sondaggio + collab @sarafunaro = picco garantito ogni mese su entrambi i canali.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;padding:20px;text-align:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);border-top:1px solid var(--border);">
+      Comune di Firenze · Social PA v10 · Analisi multicanale Instagram + Facebook · Aprile 2026<br>
+      Dati: Meta Business Suite Insights · Periodo: gennaio–aprile 2026 · Analisi con supporto AI (Claude, Anthropic)
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Scroll spy e intersection observer
+  function scrollTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Intersection observer per animazioni
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Animate bars
+        entry.target.querySelectorAll('.chart-fill[data-w]').forEach(bar => {
+          setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 100);
+        });
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  // Nav active state
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const id = entry.target.id;
+        const active = document.querySelector(`.nav-link[onclick="scrollTo('${id}')"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => navObserver.observe(s));
+</script>
+
+</body>
+</html>
