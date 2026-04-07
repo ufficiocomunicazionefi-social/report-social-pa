@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facebook Scenario C — Città di Firenze</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0A0B0E;
+  --surface: #13151A;
+  --surface2: #1C1F28;
+  --border: #252832;
+  --accent: #E8A430;
+  --accent2: #4ECDC4;
+  --accent3: #FF6B35;
+  --accent4: #A8E6CF;
+  --text: #F0F1F3;
+  --text-dim: #8B8FA8;
+  --text-muted: #525670;
+  --sidebar-w: 240px;
+  --red: #FF4757;
+  --green: #2ED573;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.sidebar-logo {
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-logo .badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.sidebar-logo h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.sidebar-logo .sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+nav { padding: 16px 0; flex: 1; }
+
+.nav-section {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  padding: 12px 20px 6px;
+  text-transform: uppercase;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-dim);
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+
+.nav-item.active {
+  background: var(--surface2);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.nav-item .icon { font-size: 14px; width: 16px; text-align: center; }
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.section {
+  min-height: 100vh;
+  padding: 48px 56px;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  letter-spacing: 1px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.section-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+}
+
+/* ── BIG NUMBERS ── */
+.bignumbers {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.bignum {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bignum::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+}
+
+.bignum.accent2::before { background: var(--accent2); }
+.bignum.accent3::before { background: var(--accent3); }
+.bignum.accent4::before { background: var(--accent4); }
+.bignum.dim::before { background: var(--text-muted); }
+
+.bignum-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.bignum-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  letter-spacing: 1px;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.bignum-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── KPI CARDS ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.kpi-card .kpi-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1px;
+}
+
+.kpi-card .kpi-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.kpi-card .kpi-val.green { color: var(--green); }
+.kpi-card .kpi-val.red { color: var(--red); }
+.kpi-card .kpi-val.teal { color: var(--accent2); }
+
+.kpi-card .kpi-note {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* ── TABLES ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+
+.data-table th {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.data-table tr:hover td { background: var(--surface2); color: var(--text); }
+
+.data-table .mono { font-family: 'DM Mono', monospace; font-size: 12px; }
+.data-table .bold { font-weight: 600; color: var(--text); }
+.data-table .accent { color: var(--accent); font-weight: 600; }
+.data-table .green-text { color: var(--green); font-weight: 600; }
+.data-table .red-text { color: var(--red); font-weight: 600; }
+
+/* ── CHARTS ── */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.chart-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.chart-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.chart-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  font-family: 'DM Mono', monospace;
+}
+
+.chart-box canvas { max-height: 220px; }
+
+/* ── BAR CHART CUSTOM ── */
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 70px;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-family: 'DM Mono', monospace;
+  text-align: right;
+}
+
+.bar-track {
+  background: var(--surface2);
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+}
+
+.bar-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  color: var(--text);
+}
+
+/* ── PICCHI TABLE ── */
+.picchi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.picco-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.picco-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent3);
+}
+
+.picco-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.picco-int {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px;
+  color: var(--accent3);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.picco-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 12px;
+}
+
+.picco-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.picco-stat {
+  font-size: 11px;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: space-between;
+}
+
+.picco-stat span { color: var(--text); font-family: 'DM Mono', monospace; }
+
+.moltiplicatore {
+  display: inline-block;
+  background: rgba(255,107,53,0.15);
+  color: var(--accent3);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+/* ── DEMOGRAFICO ── */
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.demo-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.demo-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 50px;
+  align-items: center;
+  gap: 8px;
+}
+
+.demo-fascia {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.demo-bar-wrap {
+  display: flex;
+  gap: 2px;
+  height: 12px;
+}
+
+.demo-bar-f {
+  background: var(--accent);
+  border-radius: 2px;
+  height: 100%;
+  width: 0;
+  transition: width 1.2s ease;
+}
+
+.demo-bar-m {
+  background: var(--accent2);
+  border-radius: 2px;
+  height: 100%;
+  width: 0;
+  transition: width 1.2s ease 0.1s;
+}
+
+.demo-total {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: right;
+}
+
+.demo-legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* ── SWOT ── */
+.swot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.swot-quadrant {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.swot-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.swot-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.swot-icon.s { background: rgba(46,213,115,0.15); }
+.swot-icon.w { background: rgba(255,71,87,0.15); }
+.swot-icon.o { background: rgba(78,205,196,0.15); }
+.swot-icon.t { background: rgba(232,164,48,0.15); }
+
+.swot-type {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+.swot-type.s { color: var(--green); }
+.swot-type.w { color: var(--red); }
+.swot-type.o { color: var(--accent2); }
+.swot-type.t { color: var(--accent); }
+
+.swot-item {
+  border-left: 2px solid var(--border);
+  padding-left: 14px;
+  margin-bottom: 16px;
+}
+
+.swot-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.swot-item-text {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* ── PIANO AZIONE ── */
+.piano-section {
+  margin-bottom: 40px;
+}
+
+.fase-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.fase-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  padding: 6px 16px;
+  border-radius: 6px;
+  color: #0A0B0E;
+}
+
+.fase-periodo {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.fase-obiettivo {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.azioni-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.azione-row {
+  display: grid;
+  grid-template-columns: 50px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  transition: border-color 0.2s;
+}
+
+.azione-row:hover { border-color: var(--accent); }
+
+.azione-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.azione-content {}
+
+.azione-titolo {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.azione-kpi {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.urgency-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.urgency-badge.alta { background: rgba(255,71,87,0.15); color: var(--red); }
+.urgency-badge.media { background: rgba(232,164,48,0.15); color: var(--accent); }
+.urgency-badge.pianificata { background: rgba(78,205,196,0.15); color: var(--accent2); }
+
+/* ── FORMATI SECTION ── */
+.formati-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.formato-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.formato-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.formato-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.formato-stat:last-child { border-bottom: none; }
+
+.formato-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.formato-stat-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.formato-stat-val.highlight { color: var(--accent); font-weight: 600; }
+
+/* ── ALERT BOX ── */
+.alert-box {
+  background: rgba(232,164,48,0.08);
+  border: 1px solid rgba(232,164,48,0.3);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.alert-icon { font-size: 20px; flex-shrink: 0; }
+
+.alert-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.alert-text strong { color: var(--accent); }
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 32px 0;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">Social PA v10 · Scenario C</div>
+    <h2>Facebook<br>Firenze</h2>
+    <div class="sub">Strategia di miglioramento</div>
+  </div>
+  
+  <nav>
+    <div class="nav-section">Panoramica</div>
+    <div class="nav-item active" onclick="scrollTo('overview')">
+      <span class="icon">◈</span> Big Numbers
+    </div>
+    <div class="nav-item" onclick="scrollTo('mensile')">
+      <span class="icon">◎</span> Andamento mensile
+    </div>
+    
+    <div class="nav-section">Analisi</div>
+    <div class="nav-item" onclick="scrollTo('formati')">
+      <span class="icon">▣</span> Formati contenuti
+    </div>
+    <div class="nav-item" onclick="scrollTo('picchi')">
+      <span class="icon">△</span> Giorni di picco
+    </div>
+    <div class="nav-item" onclick="scrollTo('pubblico')">
+      <span class="icon">◉</span> Pubblico reale
+    </div>
+    
+    <div class="nav-section">Strategia</div>
+    <div class="nav-item" onclick="scrollTo('swot')">
+      <span class="icon">⊞</span> SWOT operativa
+    </div>
+    <div class="nav-item" onclick="scrollTo('piano')">
+      <span class="icon">▶</span> Piano d'azione
+    </div>
+  </nav>
+  
+  <div class="sidebar-footer">
+    6 gen – 5 apr 2026<br>
+    90 giorni · Meta Business Suite<br>
+    Benchmark: Bologna
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main" id="mainScroll">
+
+  <!-- ── SECTION 1: OVERVIEW ── -->
+  <section class="section" id="overview">
+    <div class="section-tag">Panoramica · 90 giorni</div>
+    <div class="section-title">BIG NUMBERS</div>
+    <div class="section-sub">facebook.com/cittadifirenzeufficiale · 137.373 follower · 6 gennaio – 5 aprile 2026</div>
+    
+    <div class="bignumbers">
+      <div class="bignum">
+        <div class="bignum-label">Visualizzazioni</div>
+        <div class="bignum-value">5,5M</div>
+        <div class="bignum-sub">media 61.071/giorno</div>
+      </div>
+      <div class="bignum accent2">
+        <div class="bignum-label">Interazioni</div>
+        <div class="bignum-value">61.785</div>
+        <div class="bignum-sub">media 686/giorno</div>
+      </div>
+      <div class="bignum accent3">
+        <div class="bignum-label">Clic sui link</div>
+        <div class="bignum-value">4.809</div>
+        <div class="bignum-sub">media 53/giorno</div>
+      </div>
+      <div class="bignum accent4">
+        <div class="bignum-label">Visite pagina</div>
+        <div class="bignum-value">63.631</div>
+        <div class="bignum-sub">media 707/giorno</div>
+      </div>
+      <div class="bignum dim">
+        <div class="bignum-label">Nuovi follower</div>
+        <div class="bignum-value">+3.077</div>
+        <div class="bignum-sub">media +34/giorno</div>
+      </div>
+    </div>
+    
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">ER su visualizzazioni</div>
+        <div class="kpi-val green">1,12%</div>
+        <div class="kpi-note">Dato interno reale — chi vede interagisce. Era stimato 0,1% dall'esterno.</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">CTR link (critico)</div>
+        <div class="kpi-val red">0,087%</div>
+        <div class="kpi-note">Su 5,5M visualizzazioni solo 4.809 clic ai servizi. Gap principale sull'obiettivo 3.</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Reach / follower</div>
+        <div class="kpi-val teal">44,5%</div>
+        <div class="kpi-note">Buona penetrazione organica. L'algoritmo non sta penalizzando la pagina.</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Obiettivo CTR (6 mesi)</div>
+        <div class="kpi-val">0,2%</div>
+        <div class="kpi-note">Da 53 clic/giorno a >130 clic/giorno. Richiede caption con CTA e formato visivo.</div>
+      </div>
+    </div>
+    
+    <div class="alert-box">
+      <div class="alert-icon">⚡</div>
+      <div class="alert-text">
+        <strong>Revisione della baseline Scenario B:</strong> l'ER reale su visualizzazioni (1,12%) è 11× superiore all'ER stimato dall'esterno su follower (0,1%). Il problema non è che i contenuti non piacciono — è che il canale non converte le interazioni in azioni verso i servizi. Il CTR dello 0,087% è il gap da colmare.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 2: MENSILE ── -->
+  <section class="section" id="mensile">
+    <div class="section-tag">Andamento</div>
+    <div class="section-title">TREND MENSILE</div>
+    <div class="section-sub">Gennaio – Marzo 2026 · Aprile escluso per anomalia dati export</div>
+    
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title">VISUALIZZAZIONI</div>
+        <div class="chart-subtitle">MENSILE · GEN–MAR 2026</div>
+        <canvas id="chartViz"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">INTERAZIONI</div>
+        <div class="chart-subtitle">MENSILE · GEN–MAR 2026</div>
+        <canvas id="chartInt"></canvas>
+      </div>
+    </div>
+    
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Mese</th>
+          <th>Visualizzazioni</th>
+          <th>Interazioni</th>
+          <th>ER medio</th>
+          <th>Clic link</th>
+          <th>Nuovi follower</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bold">Gennaio</td>
+          <td class="mono">1.575.842</td>
+          <td class="mono">15.981</td>
+          <td class="mono">1,11%</td>
+          <td class="mono">1.293</td>
+          <td class="mono green-text">+949</td>
+        </tr>
+        <tr>
+          <td class="bold">Febbraio</td>
+          <td class="mono">1.796.930</td>
+          <td class="mono accent">20.024</td>
+          <td class="mono">1,12%</td>
+          <td class="mono">1.392</td>
+          <td class="mono green-text">+948</td>
+        </tr>
+        <tr>
+          <td class="bold">Marzo</td>
+          <td class="mono">1.793.071</td>
+          <td class="mono">20.010</td>
+          <td class="mono">1,10%</td>
+          <td class="mono accent">2.014</td>
+          <td class="mono green-text">+909</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="alert-box">
+      <div class="alert-icon">📌</div>
+      <div class="alert-text">
+        <strong>Osservazione:</strong> la reach è stabile tra gennaio e marzo (1,57–1,79 milioni/mese) senza crescita strutturale. La frequenza attuale di 3–4 post/giorno mantiene la visibilità ma non la fa crescere. I clic sui link crescono da gennaio a marzo (+55%): segnale positivo, ma il valore assoluto resta basso.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 3: FORMATI ── -->
+  <section class="section" id="formati">
+    <div class="section-tag">Analisi formato</div>
+    <div class="section-title">PERFORMANCE PER FORMATO</div>
+    <div class="section-sub">Dati reali Meta Business Suite · 90 giorni · 317 contenuti totali pubblicati</div>
+    
+    <div class="alert-box">
+      <div class="alert-icon">🎯</div>
+      <div class="alert-text">
+        <strong>Il dato più importante del report:</strong> un Reel genera in media <strong>45.507 visualizzazioni</strong> contro le 20.684 di una foto (+2,2×) e <strong>645 interazioni</strong> contro 240 (+2,7×). Con solo 8 Reels in 90 giorni, questo è il formato più efficiente e il più sottoutilizzato.
+      </div>
+    </div>
+    
+    <div class="formati-grid">
+      <div class="formato-card" style="border-color: var(--accent3);">
+        <div class="formato-name" style="color:var(--accent3)">⚡ REELS</div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Pubblicati</span>
+          <span class="formato-stat-val" style="color:var(--red)">8 su 90 gg</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Viz media/contenuto</span>
+          <span class="formato-stat-val highlight">45.507</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Int media/contenuto</span>
+          <span class="formato-stat-val highlight">645</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">ER formato</span>
+          <span class="formato-stat-val highlight">1,42%</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Quota viz totali</span>
+          <span class="formato-stat-val">6,6%</span>
+        </div>
+      </div>
+      
+      <div class="formato-card">
+        <div class="formato-name" style="color:var(--accent)">FOTO SINGOLA</div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Pubblicati</span>
+          <span class="formato-stat-val">192 su 90 gg</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Viz media/contenuto</span>
+          <span class="formato-stat-val">20.684</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Int media/contenuto</span>
+          <span class="formato-stat-val">240</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">ER formato</span>
+          <span class="formato-stat-val">1,16%</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Quota viz totali</span>
+          <span class="formato-stat-val">72,3%</span>
+        </div>
+      </div>
+      
+      <div class="formato-card" style="border-color: var(--red);">
+        <div class="formato-name" style="color:var(--red)">STORIE</div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Pubblicate</span>
+          <span class="formato-stat-val" style="color:var(--red)">117 su 90 gg</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Viz media/contenuto</span>
+          <span class="formato-stat-val" style="color:var(--red)">1.702</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Int media/contenuto</span>
+          <span class="formato-stat-val" style="color:var(--red)">12</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">ER formato</span>
+          <span class="formato-stat-val" style="color:var(--red)">0,71%</span>
+        </div>
+        <div class="formato-stat">
+          <span class="formato-stat-label">Quota viz totali</span>
+          <span class="formato-stat-val">3,6%</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title">VISUALIZZAZIONI PER FORMATO</div>
+        <div class="chart-subtitle">DISTRIBUZIONE % · 90 GIORNI</div>
+        <canvas id="chartFormatiViz"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">EFFICIENZA FORMATO</div>
+        <div class="chart-subtitle">VISUALIZZAZIONI MEDIE PER CONTENUTO PUBBLICATO</div>
+        <div class="bar-chart" style="margin-top:16px">
+          <div class="bar-row">
+            <div class="bar-label">Reels</div>
+            <div class="bar-track"><div class="bar-fill" data-pct="100" style="background:var(--accent3)"></div></div>
+            <div class="bar-val" style="color:var(--accent3)">45.507</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Foto</div>
+            <div class="bar-track"><div class="bar-fill" data-pct="45" style="background:var(--accent)"></div></div>
+            <div class="bar-val">20.684</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Storie</div>
+            <div class="bar-track"><div class="bar-fill" data-pct="4" style="background:var(--red)"></div></div>
+            <div class="bar-val" style="color:var(--red)">1.702</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 4: PICCHI ── -->
+  <section class="section" id="picchi">
+    <div class="section-tag">Analisi picchi</div>
+    <div class="section-title">GIORNI DI PICCO</div>
+    <div class="section-sub">I giorni con più interazioni generano 3,5× la media · Identificare il contenuto è la priorità</div>
+    
+    <div class="picchi-grid">
+      <div class="picco-card">
+        <div class="picco-date">27 FEBBRAIO 2026</div>
+        <div class="picco-int">2.487</div>
+        <div class="picco-label">INTERAZIONI</div>
+        <div class="picco-stats">
+          <div class="picco-stat">Visualizzazioni <span>176.571</span></div>
+          <div class="picco-stat">ER giornaliero <span>1,41%</span></div>
+          <div class="picco-stat">Nuovi follower <span>+123</span></div>
+          <div class="picco-stat">Clic link <span>40</span></div>
+        </div>
+        <div class="moltiplicatore">3,6× la media</div>
+      </div>
+      
+      <div class="picco-card">
+        <div class="picco-date">21 MARZO 2026</div>
+        <div class="picco-int">2.393</div>
+        <div class="picco-label">INTERAZIONI</div>
+        <div class="picco-stats">
+          <div class="picco-stat">Visualizzazioni <span>148.093</span></div>
+          <div class="picco-stat">ER giornaliero <span style="color:var(--green)">1,62%</span></div>
+          <div class="picco-stat">Nuovi follower <span>+74</span></div>
+          <div class="picco-stat">Clic link <span>90</span></div>
+        </div>
+        <div class="moltiplicatore">3,5× la media · ER massimo</div>
+      </div>
+      
+      <div class="picco-card">
+        <div class="picco-date">5 APRILE 2026</div>
+        <div class="picco-int">2.262</div>
+        <div class="picco-label">INTERAZIONI</div>
+        <div class="picco-stats">
+          <div class="picco-stat">Visualizzazioni <span>151.449</span></div>
+          <div class="picco-stat">ER giornaliero <span>1,49%</span></div>
+          <div class="picco-stat">Nuovi follower <span>+124</span></div>
+          <div class="picco-stat">Clic link <span>37</span></div>
+        </div>
+        <div class="moltiplicatore">3,3× la media</div>
+      </div>
+      
+      <div class="picco-card" style="border-color: var(--text-muted)">
+        <div class="picco-date">31 GENNAIO 2026</div>
+        <div class="picco-int" style="color:var(--text-dim)">1.264</div>
+        <div class="picco-label">INTERAZIONI · MAX REACH</div>
+        <div class="picco-stats">
+          <div class="picco-stat">Visualizzazioni <span style="color:var(--accent)">202.305</span></div>
+          <div class="picco-stat">ER giornaliero <span style="color:var(--red)">0,62%</span></div>
+          <div class="picco-stat">Nuovi follower <span style="color:var(--accent)">+139</span></div>
+          <div class="picco-stat">Clic link <span>156</span></div>
+        </div>
+        <div class="moltiplicatore" style="background:rgba(139,143,168,0.1);color:var(--text-muted)">Reach max · ER basso → reach passiva</div>
+      </div>
+    </div>
+    
+    <div class="alert-box">
+      <div class="alert-icon">🔍</div>
+      <div class="alert-text">
+        <strong>Azione prioritaria — Azione 1.1 del piano:</strong> andare su Meta Business Suite → Insights → Contenuti → filtrare per 27 febbraio, 21 marzo e 5 aprile. Annotare formato, prime 2 righe della caption e numero di condivisioni. Questi sono i contenuti da cui costruire i format strutturali. Il 31 gennaio ha la reach più alta ma l'ER più basso: è un caso di contenuto virale non coinvolgente — diverso dai tre picchi strutturali.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 5: PUBBLICO ── -->
+  <section class="section" id="pubblico">
+    <div class="section-tag">Demografico</div>
+    <div class="section-title">PUBBLICO REALE</div>
+    <div class="section-sub">Dati Meta Business Suite · Pubblico.csv · Distribuzione per età, genere e geografia</div>
+    
+    <div class="demo-grid">
+      <div class="chart-box">
+        <div class="chart-title">ETÀ E GENERE</div>
+        <div class="chart-subtitle">% SUL TOTALE PUBBLICO</div>
+        <div class="demo-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Donne (63,6%)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div> Uomini (36,4%)</div>
+        </div>
+        <div class="demo-bars" id="demoBars">
+          <!-- filled by JS -->
+        </div>
+      </div>
+      
+      <div class="chart-box">
+        <div class="chart-title">CITTÀ PRINCIPALI</div>
+        <div class="chart-subtitle">% FOLLOWER PER CITTÀ</div>
+        <div class="bar-chart" style="margin-top:16px" id="cittaBars">
+          <!-- filled by JS -->
+        </div>
+        <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border)">
+          <div class="chart-subtitle" style="margin-bottom:12px">DISTRIBUZIONE GEOGRAFICA</div>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <div class="bar-label" style="font-size:10px">Italia</div>
+              <div class="bar-track"><div class="bar-fill" data-pct="100" style="background:var(--accent)"></div></div>
+              <div class="bar-val" style="font-size:14px">77,7%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label" style="font-size:10px">Estero</div>
+              <div class="bar-track"><div class="bar-fill" data-pct="29" style="background:var(--accent2)"></div></div>
+              <div class="bar-val" style="font-size:14px">22,3%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Fascia dominante</div>
+        <div class="kpi-val" style="font-size:24px">45–54 anni</div>
+        <div class="kpi-note">24,4% del pubblico totale. Fascia più rappresentata.</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Over 45</div>
+        <div class="kpi-val">61,9%</div>
+        <div class="kpi-note">Pubblico maturo. I contenuti di servizio su bandi, mobilità, sanità sono pertinenti.</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Donne</div>
+        <div class="kpi-val teal">63,6%</div>
+        <div class="kpi-note">Prevalenza femminile netta in tutte le fasce d'età.</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Under 25</div>
+        <div class="kpi-val red">1,1%</div>
+        <div class="kpi-note">Quasi assenti. Per raggiungere i giovani: Instagram e TikTok, non Facebook.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 6: SWOT ── -->
+  <section class="section" id="swot">
+    <div class="section-tag">Analisi strategica</div>
+    <div class="section-title">SWOT OPERATIVA</div>
+    <div class="section-sub">Basata esclusivamente su dati Insights reali · Valori numerici dal periodo gennaio–aprile 2026</div>
+    
+    <div class="swot-grid">
+      <div class="swot-quadrant">
+        <div class="swot-header">
+          <div class="swot-icon s">💪</div>
+          <div class="swot-type s">PUNTI DI FORZA</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">Reach organica: 44,5% della fanbase ogni giorno</div>
+          <div class="swot-item-text">L'algoritmo non sta penalizzando la pagina. Buona base di distribuzione da cui partire.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">ER reale 1,12% — chi vede interagisce</div>
+          <div class="swot-item-text">11× superiore alla stima pubblica (0,1%). Il problema non è la qualità dei contenuti.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">Reels: 2,2× viz e 2,7× interazioni rispetto alle foto</div>
+          <div class="swot-item-text">Il formato più efficiente della pagina — largamente sottoutilizzato (8 in 90 giorni).</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">Ecosistema cross-canale e collab Sindaca già attivi</div>
+          <div class="swot-item-text">Crossposting su 5 canali + collab post strutturati — asset già funzionante da sistematizzare.</div>
+        </div>
+      </div>
+      
+      <div class="swot-quadrant">
+        <div class="swot-header">
+          <div class="swot-icon w">⚠️</div>
+          <div class="swot-type w">PUNTI DI DEBOLEZZA</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">CTR link 0,087% — il canale non porta ai servizi</div>
+          <div class="swot-item-text">Su 5,5M visualizzazioni solo 4.809 clic verso i servizi. Obiettivo 3 quasi completamente disatteso.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">Storie: 117 pubblicate, ER 0,71%, viz media 1.702</div>
+          <div class="swot-item-text">Il 37% della produzione nel formato con il peggior rapporto sforzo/risultato.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">Post con link: 3.538 viz totali in 90 giorni</div>
+          <div class="swot-item-text">Quasi invisibili. L'algoritmo non distribuisce link senza contenuto visivo di accompagnamento.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">Picchi senza pattern noto ancora identificato</div>
+          <div class="swot-item-text">3 giorni a 3,5× la media, ma i contenuti specifici non sono ancora stati analizzati.</div>
+        </div>
+      </div>
+      
+      <div class="swot-quadrant">
+        <div class="swot-header">
+          <div class="swot-icon o">🚀</div>
+          <div class="swot-type o">OPPORTUNITÀ</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">8 Reels/mese = +200.000 viz senza nuovi costi</div>
+          <div class="swot-item-text">Sostituire 8 foto con 8 Reels mensili aggiunge ~200K visualizzazioni grazie al vantaggio algoritmico.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">28% area metropolitana: pubblico locale già presente</div>
+          <div class="swot-item-text">Contenuti iper-locali (cantieri, servizi, quartieri) trovano un pubblico motivato a interagire.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">Soglia 140K viz → effetto valanga sull'engagement</div>
+          <div class="swot-item-text">Oltre questa soglia l'engagement cresce più che proporzionalmente. Ogni condivisione conta.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">343 recensioni non presidiate — risposta a costo zero</div>
+          <div class="swot-item-text">86% raccomandazioni: rispondere alle negative è visibile a tutti i visitatori e segnala ascolto.</div>
+        </div>
+      </div>
+      
+      <div class="swot-quadrant">
+        <div class="swot-header">
+          <div class="swot-icon t">⚡</div>
+          <div class="swot-type t">MINACCE</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">CTR basso → rischio penalizzazione algoritmica</div>
+          <div class="swot-item-text">Meta tende a ridurre la distribuzione dei post con link se il CTR non migliora nel tempo.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">Pubblico che invecchia: 61,9% over 45</div>
+          <div class="swot-item-text">Senza contenuti per le fasce 25–44, la fanbase rischia di non rinnovarsi naturalmente.</div>
+        </div>
+        <div class="swot-item">
+          <div class="swot-item-title">117 Storie/trimestre: dispersione di risorse documentata</div>
+          <div class="swot-item-text">Continuare questo volume mentre si producono 8 Reels è una scelta che va contro i dati.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 7: PIANO ── -->
+  <section class="section" id="piano">
+    <div class="section-tag">Strategia operativa</div>
+    <div class="section-title">PIANO D'AZIONE</div>
+    <div class="section-sub">3 fasi temporali · Realizzabile da un team PA interno · KPI misurabili</div>
+    
+    <!-- FASE 1 -->
+    <div class="piano-section">
+      <div class="fase-header">
+        <div class="fase-badge" style="background:var(--accent3)">FASE 1</div>
+        <div>
+          <div class="fase-periodo">0–30 GIORNI</div>
+          <div class="fase-obiettivo">Correggere le criticità di formato e CTA · Impostare la baseline di monitoraggio</div>
+        </div>
+      </div>
+      <div class="azioni-list">
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent3)">1.1</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Identificare i contenuti dei 3 giorni di picco in Meta Business Suite</div>
+            <div class="azione-kpi">KPI → Analisi documentata entro 7 giorni · Prerequisito di tutto il piano</div>
+          </div>
+          <div class="urgency-badge alta">Priorità 1</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent3)">1.2</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Portare i Reels a 2 a settimana (da 1 ogni 11 giorni)</div>
+            <div class="azione-kpi">KPI → 8 Reels/mese · viz media >30.000 per Reel</div>
+          </div>
+          <div class="urgency-badge alta">Priorità 1</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent3)">1.3</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Ridurre le Storie a 3–4 a settimana · ridistribuire le risorse sui Reels</div>
+            <div class="azione-kpi">KPI → Max 16 Storie/mese · Solo avvisi urgenti e comunicazioni brevi</div>
+          </div>
+          <div class="urgency-badge alta">Priorità 1</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent3)">1.4</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Mai pubblicare un link senza foto o video di accompagnamento</div>
+            <div class="azione-kpi">KPI → CTR mensile >2.000 clic entro 60 giorni (da ~1.600/mese attuale)</div>
+          </div>
+          <div class="urgency-badge alta">Priorità 1</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent3)">1.5</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Dashboard mensile di monitoraggio — 5 metriche chiave</div>
+            <div class="azione-kpi">KPI → Dati registrati il primo lunedì di ogni mese senza interruzione</div>
+          </div>
+          <div class="urgency-badge media">Media</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <!-- FASE 2 -->
+    <div class="piano-section">
+      <div class="fase-header">
+        <div class="fase-badge" style="background:var(--accent2)">FASE 2</div>
+        <div>
+          <div class="fase-periodo">1–3 MESI</div>
+          <div class="fase-obiettivo">Nuovi format dai pattern dei picchi · Migliorare il CTR dei link</div>
+        </div>
+      </div>
+      <div class="azioni-list">
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent2)">2.1</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Costruire il format "Firenze in cantiere" — foto/video cantieri + dato numerico in apertura</div>
+            <div class="azione-kpi">KPI → Engagement medio >400 interazioni/post entro 8 settimane consecutive</div>
+          </div>
+          <div class="urgency-badge alta">Alta</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent2)">2.2</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Riscrivere le caption dei post di servizio con il dato in apertura (max 3–5 frasi)</div>
+            <div class="azione-kpi">KPI → CTR post servizio riscritti 2× la baseline su 5 post consecutivi</div>
+          </div>
+          <div class="urgency-badge alta">Alta</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent2)">2.3</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Reel mensile sui cantieri principali (drone o smartphone, 20–30 secondi)</div>
+            <div class="azione-kpi">KPI → 1 Reel cantieri/mese · visualizzazioni medie >50.000</div>
+          </div>
+          <div class="urgency-badge media">Media</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent2)">2.4</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Presidiare le recensioni — risposta alle 1–3 stelle entro 48 ore</div>
+            <div class="azione-kpi">KPI → Tasso risposta recensioni negative >90% entro 30 giorni dall'attivazione</div>
+          </div>
+          <div class="urgency-badge media">Media</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent2)">2.5</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Sistematizzare i collab post con la Sindaca sui contenuti strategici</div>
+            <div class="azione-kpi">KPI → 4 collab post/mese · monitorare reach incrementale vs post senza collab</div>
+          </div>
+          <div class="urgency-badge media">Media</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <!-- FASE 3 -->
+    <div class="piano-section">
+      <div class="fase-header">
+        <div class="fase-badge" style="background:var(--accent4); color:#0A0B0E">FASE 3</div>
+        <div>
+          <div class="fase-periodo">3–6 MESI</div>
+          <div class="fase-obiettivo">Misurare progressi vs baseline · Seconda serie strutturale · Riattivare eventi</div>
+        </div>
+      </div>
+      <div class="azioni-list">
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent4)">3.1</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Prima misurazione progressi vs baseline gennaio–aprile 2026</div>
+            <div class="azione-kpi">KPI 3 mesi → Viz >70K/gg · CTR >6K clic/mese · ER >1,3% · 6 mesi → CTR >10K/mese</div>
+          </div>
+          <div class="urgency-badge pianificata">Pianificata</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent4)">3.2</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Seconda serie editoriale strutturale (Firenze in numeri / Quartiere / Firenze funziona)</div>
+            <div class="azione-kpi">KPI → 8 settimane continuative · engagement medio >300 interazioni/post</div>
+          </div>
+          <div class="urgency-badge pianificata">Pianificata</div>
+        </div>
+        <div class="azione-row">
+          <div class="azione-num" style="color:var(--accent4)">3.3</div>
+          <div class="azione-content">
+            <div class="azione-titolo">Riattivare gli eventi Facebook (abbandonati dal 2019)</div>
+            <div class="azione-kpi">KPI → 2 eventi propri/mese a partire dal mese 3 · monitorare "Interessati" come proxy reach</div>
+          </div>
+          <div class="urgency-badge pianificata">Pianificata</div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 40px; padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;">
+      <div class="section-tag" style="margin-bottom:16px">Obiettivi numerici riassunti</div>
+      <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:16px;">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);margin-bottom:6px">BASELINE (apr 2026)</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.8">
+            Viz/giorno: 61.071<br>
+            CTR: 0,087%<br>
+            ER: 1,12%<br>
+            Reels/mese: 2,7
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent3);margin-bottom:6px">TARGET 30 GIORNI</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.8">
+            Reels: 8/mese<br>
+            CTR: >2.000/mese<br>
+            Storie: max 16/mese<br>
+            0 post link puri
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent2);margin-bottom:6px">TARGET 3 MESI</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.8">
+            Viz/giorno: >70.000<br>
+            CTR: >6.000/mese<br>
+            ER: >1,3%<br>
+            Format cantiere attivo
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent4);margin-bottom:6px">TARGET 6 MESI</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.8">
+            CTR: >10.000/mese<br>
+            2 serie strutturali<br>
+            2 eventi/mese<br>
+            Reel cantieri >60K viz
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ── DATA ──
+const mensile = [
+  { mese: "Gen", viz: 1575842, int: 15981 },
+  { mese: "Feb", viz: 1796930, int: 20024 },
+  { mese: "Mar", viz: 1793071, int: 20010 },
+];
+
+const demografico = [
+  { fascia: "18–24", donne: 0.6,  uomini: 0.5 },
+  { fascia: "25–34", donne: 8.4,  uomini: 5.7 },
+  { fascia: "35–44", donne: 14.1, uomini: 8.8 },
+  { fascia: "45–54", donne: 16.0, uomini: 8.4 },
+  { fascia: "55–64", donne: 13.6, uomini: 6.9 },
+  { fascia: "65+",   donne: 10.9, uomini: 6.1 },
+];
+
+const citta = [
+  { nome: "Firenze", pct: 22.6 },
+  { nome: "Roma", pct: 2.0 },
+  { nome: "Prato", pct: 1.8 },
+  { nome: "Sesto Fiorentino", pct: 1.1 },
+  { nome: "Scandicci", pct: 1.0 },
+  { nome: "Campi Bisenzio", pct: 0.9 },
+  { nome: "Milano", pct: 0.9 },
+  { nome: "Empoli", pct: 0.7 },
+];
+
+// ── CHARTS ──
+const chartDefaults = {
+  responsive: true,
+  maintainAspectRatio: true,
+  plugins: { legend: { display: false } },
+};
+
+const gridColor = 'rgba(255,255,255,0.05)';
+const textColor = '#8B8FA8';
+
+// Viz mensile
+new Chart(document.getElementById('chartViz'), {
+  type: 'bar',
+  data: {
+    labels: mensile.map(d => d.mese),
+    datasets: [{
+      data: mensile.map(d => d.viz),
+      backgroundColor: ['rgba(232,164,48,0.5)', 'rgba(232,164,48,0.8)', 'rgba(232,164,48,0.6)'],
+      borderColor: ['#E8A430','#E8A430','#E8A430'],
+      borderWidth: 1,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: textColor, font: { family: 'DM Mono', size: 11 } } },
+      y: { grid: { color: gridColor }, ticks: { color: textColor, font: { family: 'DM Mono', size: 10 },
+        callback: v => (v/1000000).toFixed(1)+'M' } }
+    }
+  }
+});
+
+// Int mensile
+new Chart(document.getElementById('chartInt'), {
+  type: 'bar',
+  data: {
+    labels: mensile.map(d => d.mese),
+    datasets: [{
+      data: mensile.map(d => d.int),
+      backgroundColor: ['rgba(78,205,196,0.4)', 'rgba(78,205,196,0.8)', 'rgba(78,205,196,0.6)'],
+      borderColor: ['#4ECDC4','#4ECDC4','#4ECDC4'],
+      borderWidth: 1,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: textColor, font: { family: 'DM Mono', size: 11 } } },
+      y: { grid: { color: gridColor }, ticks: { color: textColor, font: { family: 'DM Mono', size: 10 },
+        callback: v => v.toLocaleString('it') } }
+    }
+  }
+});
+
+// Formati viz donut
+new Chart(document.getElementById('chartFormatiViz'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Foto', 'Più foto', 'Reels', 'Storie', 'Altro'],
+    datasets: [{
+      data: [72.3, 17.4, 6.6, 3.6, 0.1],
+      backgroundColor: ['#E8A430', '#525670', '#FF6B35', '#FF4757', '#252832'],
+      borderColor: '#0A0B0E',
+      borderWidth: 2,
+    }]
+  },
+  options: {
+    ...chartDefaults,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',
+        labels: { color: '#8B8FA8', font: { family: 'DM Mono', size: 10 }, boxWidth: 10, padding: 10 }
+      }
+    },
+    cutout: '65%',
+  }
+});
+
+// ── DEMO BARS ──
+const demoBarsEl = document.getElementById('demoBars');
+const maxDemo = 16.0 + 8.4; // max total = 24.4 (45-54)
+demografico.forEach(d => {
+  const total = d.donne + d.uomini;
+  const row = document.createElement('div');
+  row.className = 'demo-row';
+  row.innerHTML = `
+    <div class="demo-fascia">${d.fascia}</div>
+    <div class="demo-bar-wrap">
+      <div class="demo-bar-f" data-pct="${(d.donne/maxDemo*100).toFixed(0)}" style="width:0"></div>
+      <div class="demo-bar-m" data-pct="${(d.uomini/maxDemo*100).toFixed(0)}" style="width:0"></div>
+    </div>
+    <div class="demo-total">${total.toFixed(1)}%</div>
+  `;
+  demoBarsEl.appendChild(row);
+});
+
+// ── CITTA BARS ──
+const cittaBarsEl = document.getElementById('cittaBars');
+citta.forEach(c => {
+  const row = document.createElement('div');
+  row.className = 'bar-row';
+  row.style.gridTemplateColumns = '150px 1fr 50px';
+  row.innerHTML = `
+    <div class="bar-label" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nome}</div>
+    <div class="bar-track"><div class="bar-fill" data-pct="${(c.pct/22.6*100).toFixed(0)}" style="background:${c.nome==='Firenze'?'var(--accent)':'var(--accent2)'}"></div></div>
+    <div class="bar-val" style="font-size:13px">${c.pct}%</div>
+  `;
+  cittaBarsEl.appendChild(row);
+});
+
+// ── SCROLL ANIMATION ──
+const sections = document.querySelectorAll('.section');
+const navItems = document.querySelectorAll('.nav-item');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      animateBars(entry.target);
+      
+      // update nav
+      const id = entry.target.id;
+      navItems.forEach(n => {
+        n.classList.toggle('active', n.getAttribute('onclick')?.includes(id));
+      });
+    }
+  });
+}, { threshold: 0.1 });
+
+sections.forEach(s => observer.observe(s));
+
+function animateBars(container) {
+  container.querySelectorAll('.bar-fill').forEach(bar => {
+    const pct = bar.dataset.pct;
+    setTimeout(() => { bar.style.width = pct + '%'; }, 100);
+  });
+  container.querySelectorAll('.demo-bar-f, .demo-bar-m').forEach(bar => {
+    const pct = bar.dataset.pct;
+    setTimeout(() => { bar.style.width = pct + '%'; }, 150);
+  });
+}
+
+// ── SCROLL TO ──
+function scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
+
+// First section visible on load
+setTimeout(() => {
+  sections[0].classList.add('visible');
+  animateBars(sections[0]);
+}, 100);
+</script>
+</body>
+</html>
