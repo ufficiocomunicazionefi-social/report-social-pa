@@ -157,7 +157,7 @@ nav{padding:16px 0;flex:1}
   <div class="sidebar-header">
     <div class="sidebar-logo">Social PA<br>Analytics</div>
     <div class="sidebar-sub">@cittadifirenzeufficiale</div>
-    <div class="sidebar-date">Scenario C · 31 marzo 2026</div>
+    <div class="sidebar-date">Scenario C · 31 mar 2026 · Agg. 8 apr 2026</div>
   </div>
   <nav>
     <div class="nav-section">Overview</div>
@@ -352,8 +352,8 @@ nav{padding:16px 0;flex:1}
       <div class="bar-row"><div class="bar-label"><span>Copertura e visibilità</span><span>6/10 — in calo -16,3%</span></div><div class="bar-track"><div class="bar-fill" data-w="60" style="background:#2E75B6"></div></div></div>
       <div class="bar-row"><div class="bar-label"><span>Engagement e qualità interazione</span><span>8/10 — ER 7,60%</span></div><div class="bar-track"><div class="bar-fill" data-w="80" style="background:#1E6B3C"></div></div></div>
       <div class="bar-row"><div class="bar-label"><span>Crescita community</span><span>5/10 — -28,8% gen→mar</span></div><div class="bar-track"><div class="bar-fill" data-w="50" style="background:#C65911"></div></div></div>
-      <div class="bar-row"><div class="bar-label"><span>Performance per formato</span><span>5/10 — reel non strutturale</span></div><div class="bar-track"><div class="bar-fill" data-w="50" style="background:#5B2C8D"></div></div></div>
-      <div class="bar-row"><div class="bar-label"><span>Pubblico reale</span><span>6/10 — dati demografici da completare</span></div><div class="bar-track"><div class="bar-fill" data-w="60" style="background:#2E75B6"></div></div></div>
+      <div class="bar-row"><div class="bar-label"><span>Performance per formato</span><span>6/10 — reel 3,7× più efficaci ma solo 2% del piano</span></div><div class="bar-track"><div class="bar-fill" data-w="60" style="background:#5B2C8D"></div></div></div>
+      <div class="bar-row"><div class="bar-label"><span>Pubblico reale</span><span>7/10 — demografici completi integrati</span></div><div class="bar-track"><div class="bar-fill" data-w="70" style="background:#2E75B6"></div></div></div>
       <div class="bar-row"><div class="bar-label"><span>Top performer strutturali</span><span>8/10 — pattern validati</span></div><div class="bar-track"><div class="bar-fill" data-w="80" style="background:#1E6B3C"></div></div></div>
     </div>
   </div>
@@ -374,14 +374,59 @@ nav{padding:16px 0;flex:1}
     <div class="asse-data"><div class="asse-datum">Gennaio: 2.090/mese</div><div class="asse-datum">Marzo: 1.489/mese</div><div class="asse-datum">Trend: -28,8%</div><div class="asse-datum">Obiettivo: 2.000/mese</div></div>
   </div>
   <div class="asse-card reveal">
-    <div class="asse-header"><span class="asse-title">Asse 4 · Performance per formato</span><span class="badge badge-y">Da completare</span></div>
-    <div class="asse-body">Il breakdown per formato non è disponibile nei CSV. Segnale indiretto: il picco di 247.322 visualizzazioni del 27 febbraio non è raggiungibile con un post statico su 119K follower — suggerisce presenza di video/reel. I giorni sotto 600 interazioni coincidono con le grafiche istituzionali statiche. I reel non sono strutturati come formato fisso nel piano editoriale.</div>
-    <div class="asse-data"><div class="asse-datum">Reel: non strutturale</div><div class="asse-datum">Dato mancante: sezione "Contenuti" app Instagram</div></div>
+    <div class="asse-header"><span class="asse-title">Asse 4 · Performance per formato</span><span class="badge badge-g">Dati reali</span></div>
+    <div class="asse-body">Dati reali confermati da CSV. Pubblicati 248 contenuti: 123 Storie (49,6%), 120 Foto (48,4%), 5 Reel (2%). Il dato chiave: i Reel generano <strong style="color:#C39BD3">459 interazioni per contenuto</strong> vs 125 delle Foto — <strong style="color:#C39BD3">3,7× più efficaci</strong>. ER per formato: Reel 2,17% vs Foto 1,35%. Il formato più potente è quello meno usato nel piano editoriale.</div>
+    <div class="asse-data">
+      <div class="asse-datum">Reel: 459 interazioni/contenuto</div>
+      <div class="asse-datum">Foto: 125 interazioni/contenuto</div>
+      <div class="asse-datum">ER Reel: 2,17%</div>
+      <div class="asse-datum">Reel pubblicati: 5 su 248 (2%)</div>
+    </div>
+    <div style="margin-top:16px">
+      <div class="card-title">Interazioni per formato (totale 90gg)</div>
+      <div style="position:relative;height:160px;margin-top:8px"><canvas id="chartFormatiInt"></canvas></div>
+    </div>
+    <div style="margin-top:16px">
+      <div class="card-title">Contenuti pubblicati per formato</div>
+      <div style="position:relative;height:80px;margin-top:8px"><canvas id="chartFormatiPub"></canvas></div>
+    </div>
   </div>
   <div class="asse-card reveal">
-    <div class="asse-header"><span class="asse-title">Asse 5 · Pubblico reale</span><span class="badge badge-y">Parziale</span></div>
-    <div class="asse-body">Dati disponibili: 57% copertura mensile da non-follower (66.677 su ~116.000). Dati demografici (età, genere, città) non raccolti in questa sessione — necessari per verificare corrispondenza con target strategico. Indicazioni qualitative: forte risposta a identità locale e contenuti infrastrutturali → pubblico prevalentemente residente.</div>
-    <div class="asse-data"><div class="asse-datum">Non-follower: 57%</div><div class="asse-datum">Demografici: da completare</div></div>
+    <div class="asse-header"><span class="asse-title">Asse 5 · Pubblico reale</span><span class="badge badge-g">Completo</span></div>
+    <div class="asse-body">Dati demografici completi integrati da CSV. Pubblico prevalentemente <strong style="color:#7BB8E8">femminile (63,6%)</strong> e <strong style="color:#7BB8E8">maturo</strong>: fascia 45-54 dominante (24,4%), fascia 35+ all'84,8%. Area metropolitana fiorentina: 28,1% del pubblico — il nucleo di residenti che accede direttamente ai servizi comunali. Pubblico internazionale: 22,4%.</div>
+    <div class="asse-data">
+      <div class="asse-datum">Donne: 63,6% · Uomini: 36,4%</div>
+      <div class="asse-datum">Fascia 45-54: 24,4% (top)</div>
+      <div class="asse-datum">Fascia 35+: 84,8%</div>
+      <div class="asse-datum">Area fiorentina: 28,1%</div>
+      <div class="asse-datum">Italia: 77,6% · Internazionale: 22,4%</div>
+    </div>
+    <div class="grid-2" style="margin-top:20px">
+      <div>
+        <div class="card-title">Distribuzione per età e genere</div>
+        <div style="position:relative;height:200px;margin-top:8px"><canvas id="chartEta"></canvas></div>
+      </div>
+      <div>
+        <div class="card-title">Città principali (% follower)</div>
+        <div style="position:relative;height:200px;margin-top:8px"><canvas id="chartCitta"></canvas></div>
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <div class="card-title">Paesi principali (% follower)</div>
+      <div style="position:relative;height:120px;margin-top:8px"><canvas id="chartPaesi"></canvas></div>
+    </div>
+    <div style="margin-top:16px">
+      <div class="card-title">Allineamento pubblico attuale vs target strategico PA</div>
+      <table class="tbl" style="margin-top:8px">
+        <thead><tr><th>Dimensione</th><th>Pubblico attuale</th><th>Target ottimale PA</th><th>Valutazione</th></tr></thead>
+        <tbody>
+          <tr><td>Residenti area fiorentina</td><td class="mono" style="color:#F0A070">28,1%</td><td class="mono">&#62;50%</td><td><span class="badge badge-y">Gap significativo</span></td></tr>
+          <tr><td>Fascia 25-54 (core servizi)</td><td class="mono" style="color:#5DBF8A">61,4%</td><td class="mono">&#62;60%</td><td><span class="badge badge-g">Allineato</span></td></tr>
+          <tr><td>Pubblico femminile</td><td class="mono" style="color:#7BB8E8">63,6%</td><td class="mono">Neutro</td><td><span class="badge badge-b">Da considerare nel tono</span></td></tr>
+          <tr><td>Pubblico italiano</td><td class="mono" style="color:#F0A070">77,6%</td><td class="mono">&#62;80%</td><td><span class="badge badge-y">22% internazionale</span></td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="asse-card reveal">
     <div class="asse-header"><span class="asse-title">Asse 6 · Top performer strutturali</span><span class="badge badge-g">Validato</span></div>
@@ -687,7 +732,115 @@ const ioReveal=new IntersectionObserver(entries=>{
 },{threshold:.08});
 document.querySelectorAll('.reveal').forEach(el=>ioReveal.observe(el));
 
-// ACTIVE NAV
+// ── GRAFICO INTERAZIONI PER FORMATO ──────────────────────────────────────────
+new Chart(document.getElementById('chartFormatiInt'),{
+  type:'bar',
+  data:{
+    labels:['Foto','Più foto','Reel','Storie','Altri'],
+    datasets:[{
+      data:[15050,3161,2297,625,250],
+      backgroundColor:['#2E75B6','#1F4E7A','#5B2C8D','#4A5A6E','#243040'],
+      borderRadius:4,borderSkipped:false
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:v=>v.raw.toLocaleString('it')+' int.'}}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#4A5A6E',font:{family:'DM Mono',size:10}}},
+      y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#4A5A6E',font:{family:'DM Mono',size:10},callback:v=>v.toLocaleString('it')}}
+    }
+  }
+});
+
+// ── GRAFICO CONTENUTI PUBBLICATI PER FORMATO (orizzontale) ───────────────────
+new Chart(document.getElementById('chartFormatiPub'),{
+  type:'bar',
+  data:{
+    labels:['Storie','Foto','Reel'],
+    datasets:[{
+      data:[123,120,5],
+      backgroundColor:['#2E75B6','#1E6B3C','#C65911'],
+      borderRadius:4,borderSkipped:false
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:v=>v.raw+' contenuti'}}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#4A5A6E',font:{family:'DM Mono',size:10}}},
+      y:{grid:{display:false},ticks:{color:'#8A9BB0',font:{family:'DM Mono',size:10}}}
+    }
+  }
+});
+
+// ── GRAFICO ETA E GENERE ─────────────────────────────────────────────────────
+new Chart(document.getElementById('chartEta'),{
+  type:'bar',
+  data:{
+    labels:['18-24','25-34','35-44','45-54','55-64','65+'],
+    datasets:[
+      {label:'Donne',data:[0.6,8.4,14.1,16.0,13.6,10.9],backgroundColor:'#2E75B6',borderRadius:2,borderSkipped:false},
+      {label:'Uomini',data:[0.5,5.7,8.8,8.4,6.9,6.1],backgroundColor:'#5B2C8D',borderRadius:2,borderSkipped:false}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{display:true,position:'top',labels:{color:'#8A9BB0',font:{family:'DM Mono',size:10},boxWidth:10,padding:12}},
+      tooltip:{callbacks:{label:v=>v.dataset.label+': '+v.raw+'%'}}
+    },
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#4A5A6E',font:{family:'DM Mono',size:10}}},
+      y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#4A5A6E',font:{family:'DM Mono',size:10},callback:v=>v+'%'}}
+    }
+  }
+});
+
+// ── GRAFICO CITTA PRINCIPALI ─────────────────────────────────────────────────
+new Chart(document.getElementById('chartCitta'),{
+  type:'bar',
+  data:{
+    labels:['Firenze','Roma','Prato','S. Fiorentino','Scandicci','C. Bisenzio','Milano','Empoli','Pistoia','Napoli'],
+    datasets:[{
+      data:[22.6,2.0,1.8,1.1,1.0,0.9,0.9,0.7,0.7,0.5],
+      backgroundColor:['#2E75B6','#4A5A6E','#1E6B3C','#1E6B3C','#1E6B3C','#1E6B3C','#4A5A6E','#1E6B3C','#1E6B3C','#4A5A6E'],
+      borderRadius:3,borderSkipped:false
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:v=>v.raw+'%'}}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#4A5A6E',font:{family:'DM Mono',size:9},callback:v=>v+'%'}},
+      y:{grid:{display:false},ticks:{color:'#8A9BB0',font:{family:'DM Mono',size:9}}}
+    }
+  }
+});
+
+// ── GRAFICO PAESI PRINCIPALI ─────────────────────────────────────────────────
+new Chart(document.getElementById('chartPaesi'),{
+  type:'bar',
+  data:{
+    labels:['Italia','USA','Brasile','Francia','Spagna','Argentina','Germania','Messico','Romania','UK'],
+    datasets:[{
+      data:[77.6,3.1,2.5,1.4,1.2,1.0,0.9,0.9,0.9,0.8],
+      backgroundColor:['#2E75B6','#1E6B3C','#C65911','#5B2C8D','#5B2C8D','#C65911','#4A5A6E','#C65911','#4A5A6E','#4A5A6E'],
+      borderRadius:3,borderSkipped:false
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:v=>v.raw+'%'}}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#4A5A6E',font:{family:'DM Mono',size:10}}},
+      y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#4A5A6E',font:{family:'DM Mono',size:10},callback:v=>v+'%'}}
+    }
+  }
+});
+
 const sections=document.querySelectorAll('.section[id]');
 const navLinks=document.querySelectorAll('.nav-link');
 const ioNav=new IntersectionObserver(entries=>{
